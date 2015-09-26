@@ -20,7 +20,7 @@ class Trr_Ctl_Calendar {
 	}
 	
 	public function init(){
-		wp_enqueue_style( 'jquery-ui.css', TRR_PLUGIN_URL . 'assets/jquery-ui/jquery-ui.min.css' );
+		//wp_enqueue_style( 'jquery-ui.css', TRR_PLUGIN_URL . 'assets/jquery-ui/jquery-ui.min.css' );
 		wp_enqueue_script( 'jquery-ui.js', TRR_PLUGIN_URL . 'assets/jquery-ui/jquery-ui.min.js', array(), '1.0.0', true );
 	}
 	
