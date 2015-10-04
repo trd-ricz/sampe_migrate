@@ -33,10 +33,24 @@ define( 'TRR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'TRR_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 
+// ACF KEYS
+define( 'RESERVATION_CLASS_ROOM',     'field_5604fe02a2b9a' );
+define( 'RESERVATION_CLASS_TYPE',     'field_5605756287a86' );
+define( 'RESERVATION_STUDENT',        'field_5605757d87a87' );
+define( 'RESERVATION_TEACHER',        'field_560575d587a88' );
+define( 'RESERVATION_CLASS_SCHEDULE', 'field_560575fa87a89' );
+define( 'RESERVATION_MEMO',           'field_5605765d87a8a' );
+define( 'RESERVATION_DATE',           'field_5605776046ce6' );
+
+
+
 require_once( TRR_PLUGIN_DIR . 'class.trr.php' );
 
 // ctl
 require_once( TRR_PLUGIN_DIR . 'class/ctl/calendar.php' );
+
+// ajax
+require_once( TRR_PLUGIN_DIR . 'class/ajax/calendar.php' );
 
 $Trr = new Trr();
 

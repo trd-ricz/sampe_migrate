@@ -100,16 +100,43 @@ var days_list = {
 		var class_name_draggable = fromDom[0].id.split( '_' )[0];
 		var class_name_droppable = toDom[0].id.split( '_' )[2];
 		if (class_name_draggable != class_name_droppable) { return; }
-		
-		var titleDom = $('<span>' + fromDom[0].innerText + '</span>');
-		var statusDom = $('<span class="show_status">更新</span>');
-		
-		toDom.find( "p" ).html('');
-		toDom.find( "p" ).append(titleDom);
-		toDom.find( "p" ).append(statusDom);
-		statusDom.fadeOut(5000);
-	}
 
+		//console.log(fromDom[0].id.split( '_' ));
+		//console.log(toDom[0].id.split( '_' ));
+
+		var class_schedule_pid = toDom[0].id.split( '_' )[0];
+		var ymd                = toDom[0].id.split( '_' )[1];
+		var key                = fromDom[0].id.split( '_' )[0];
+		var val                = fromDom[0].id.split( '_' )[1];
+		var arg = "?action=update_reservation";
+			arg += "&ymd=" + ymd;
+			arg += "&class_schedule_pid=" + class_schedule_pid;
+			arg += "&" + key + "=" + val;
+			console.log(arg);
+		$.ajax({
+			url: "/wp-admin/admin-ajax.php" + arg
+		}).done(function(data, status, xhr) {
+
+			var titleDom = $('<div>' + fromDom[0].innerText + '</div>');
+			var statusDom = $('<span class="show_status">更新</span>');
+			// if teacher or student
+			if (class_name_draggable == "class-room" 
+				|| class_name_draggable == "class-type" ) {
+				toDom.find( "p" ).html('');
+			}
+			toDom.find( "p" ).append(titleDom);
+			toDom.find( "p" ).append(statusDom);
+			statusDom.fadeOut(5000);
+			
+			
+		}).fail(function(xhr, status, error) {
+			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
+		}).always(function(arg1, status, arg2) {
+		});
+
+		
+		
+	}
 	
 });})(jQuery);
 
@@ -120,10 +147,10 @@ var days_list = {
 
 </script>
 
-<div id="class-room_34" class="draggable class-room">
+<div id="class-room_22" class="draggable class-room">
 	<p>cube-01</p>
 </div>
-<div id="class-room_33"  class="draggable class-room">
+<div id="class-room_23"  class="draggable class-room">
 	<p>cube-02</p>
 </div>
 
@@ -131,12 +158,21 @@ var days_list = {
 	<p>Man-to-Man</p>
 </div>
 
+<div id="teacher_5"  class="draggable teacher">
+	<p>teacher02</p>
+</div>
+
+<div id="student_2"  class="draggable student">
+	<p>student01</p>
+</div>
+
+
 <?php 
 
 $cal_data = array(
 	// week
 	"2015-08-30" => array(
-		"1" => array(
+		"11" => array(
 			"2015-08-30" => array(
 				"class-room" => 22,
 				"class-type" => 34,
@@ -169,7 +205,7 @@ $cal_data = array(
 			"2015-08-30" => array(
 					"class-room" => 22,
 					"class-type" => 34,
-					"student"    => "tanaka<br/>masaru",
+					"student"    => "<div>tanaka</div><div>masaru</div>",
 					"teacher"    => array(4, 5)
 			),
 			"2015-08-31" => array(
