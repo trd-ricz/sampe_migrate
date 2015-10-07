@@ -6,11 +6,77 @@ class Tros_Model_Reservation {
 	
 	public $reservations = array();
 	
+	public $week_title_key = array(
+		"+ 0day" => "(日)",
+		"+ 1day" => "(月)",
+		"+ 2day" => "(火)",
+		"+ 3day" => "(水)",
+		"+ 4day" => "(木)",
+		"+ 5day" => "(金)",
+		"+ 6day" => "(土)",
+	);
+	
+	public $schedule_data = array();
+	
+	public $days_list = array();
+	
+	public $post_id = "";
+	public $class_schedule_id = "";
+	public $ymd = "";
+	
+	function get_cal_data($week_list) {
+		
+		$target_stt_ymd = "";
+		$target_end_ymd = "";
+		foreach ($week_list as $week_key => $class_schedule_data) {
+			$week_stt_time = strtotime($week_key);
+			foreach ($this->week_title_key as $format => $whatday) {
+				$ymd = date("Y-m-d", strtotime($format, $week_stt_time));
+				
+				$this->days_list[$week_key][] = $ymd;
+				
+				// first ymd
+				if (!$target_stt_ymd) {
+					$target_stt_ymd = $ymd;
+				}
+				// final ymd
+				$target_end_ymd = $ymd;
+			}
+		}
+		
+		
+		$this->get_reservation($target_stt_ymd, $target_end_ymd);
+		
+		// ClassSchedule
+		require_once( TRR_PLUGIN_DIR . 'class/model/class_schedule.php' );
+		$mCS = new Tros_Model_ClassSchedule();
+		$mCS->get();
+		
+		$this->schedule_data = $mCS->data;
+		
+		// make cal_data
+		$cal_data = array();
+		foreach ($week_list as $week_key => $dummy) {
+			foreach ($mCS->data as $class_schedule_id => $dummy) {
+				$week_stt_time = strtotime($week_key);
+				foreach ($this->week_title_key as $format => $whatday) {
+					$ymd = date("Y-m-d", strtotime($format, $week_stt_time));
+					$cal_data[$week_key][$class_schedule_id][$ymd]
+						= $this->reservations[$ymd][$class_schedule_id];
+				}
+			}
+		}
+		return $cal_data;
+	}
+	
 	
 	/**
 	 * create_reservation()
 	 */
 	function update($ymd, $class_schedule_pid, $option=array()) {
+		
+		$this->ymd               = $ymd;
+		$this->class_schedule_id = $class_schedule_pid;
 		
 		// ClassSchedule
 		require_once( TRR_PLUGIN_DIR . 'class/model/class_schedule.php' );
@@ -18,11 +84,10 @@ class Tros_Model_Reservation {
 		$mCS->get(array($class_schedule_pid));
 		$schedule = $mCS->data[$class_schedule_pid]['post_title'];
 		
-		$post_ID = "";
 		if ($this->get_reservation($ymd, $ymd, $class_schedule_pid)) {
-			$post_ID = $this->reservations[$ymd][$class_schedule_pid]["post_id"];
+			$this->post_id = $this->reservations[$ymd][$class_schedule_pid]["post_id"];
 			$arg = array(
-				"ID"         => $post_ID,
+				"ID"         => $this->post_id,
 				"post_title" => "{$ymd}_{$schedule}"
 			);
 			wp_update_post($arg);
@@ -32,7 +97,7 @@ class Tros_Model_Reservation {
 			$post['post_title']  = "{$ymd}_{$schedule}";
 			$post['post_status'] = 'publish';
 			$post['post_type']   = 'reservation';
-			$post_ID = wp_insert_post($post);
+			$this->post_id = wp_insert_post($post);
 			
 			$this->reservations[$ymd][$class_schedule_pid] = array(
 				"class_room"     => "",
@@ -45,8 +110,8 @@ class Tros_Model_Reservation {
 			);
 			
 			// fixed meta
-			update_field(RESERVATION_DATE, $ymd, $post_ID);
-			update_field(RESERVATION_CLASS_SCHEDULE, $class_schedule_pid, $post_ID);
+			update_field(RESERVATION_DATE, $ymd, $this->post_id);
+			update_field(RESERVATION_CLASS_SCHEDULE, $class_schedule_pid, $this->post_id);
 		}
 		
 		// marget update datas
@@ -64,23 +129,28 @@ class Tros_Model_Reservation {
 			}
 		}
 		
+		$this->update_metas($option);
+		
+	}
 	
+	function update_metas($option) {
+		
 		// update only add ( not delete )
-		foreach ($this->reservations[$ymd][$class_schedule_pid] as $key => $update) {
+		foreach ($this->reservations[$this->ymd][$this->class_schedule_id] as $key => $update) {
 			// if empty arg dont touch
-			if (!$option[$key]) { continue; }
+			if (!isset($option[$key])) { continue; }
 			switch ($key) {
 				case "class_room":
-					update_field(RESERVATION_CLASS_ROOM, $update, $post_ID);
+					update_field(RESERVATION_CLASS_ROOM, $update, $this->post_id);
 					break;
 				case "class_type":
-					update_field(RESERVATION_CLASS_TYPE, $update, $post_ID);
+					update_field(RESERVATION_CLASS_TYPE, $update, $this->post_id);
 					break;
 				case "teacher":
-					update_field(RESERVATION_TEACHER, $update, $post_ID);
+					update_field(RESERVATION_TEACHER, $update, $this->post_id);
 					break;
 				case "student":
-					update_field(RESERVATION_STUDENT, $update, $post_ID);
+					update_field(RESERVATION_STUDENT, $update, $this->post_id);
 					break;
 				case "memo":
 					break;
@@ -90,7 +160,6 @@ class Tros_Model_Reservation {
 		}
 		
 	}
-	
 	
 	
 	/**
@@ -134,5 +203,38 @@ class Tros_Model_Reservation {
 		}
 		return true;
 	}
+	
+	function delete($ymd, $class_schedule_pid, $option) {
+		
+		$this->ymd               = $ymd;
+		$this->class_schedule_id = $class_schedule_pid;
+		
+		if (!$this->get_reservation($ymd, $ymd, $class_schedule_pid)) {
+			return;
+		}
+		$this->post_id = $this->reservations[$ymd][$class_schedule_pid]["post_id"];
+		
+		if ($option['class_room']) {
+			$this->reservations[$ymd][$class_schedule_pid]['class_room'] = "";
+		} else if ($option['class_type']) {
+			$this->reservations[$ymd][$class_schedule_pid]['class_type'] = "";
+		} else if ($option['teacher']) {
+			foreach ($this->reservations[$ymd][$class_schedule_pid]['teacher'] as $key => $value) {
+				if ($value != $option['teacher']) { continue; }
+				unset($this->reservations[$ymd][$class_schedule_pid]['teacher'][$key]);
+			}
+		} else if ($option['student']) {
+			foreach ($this->reservations[$ymd][$class_schedule_pid]['student'] as $key => $value) {
+				if ($value != $option['student']) { continue; }
+				unset($this->reservations[$ymd][$class_schedule_pid]['student'][$key]);
+			}
+		} else {
+			return;
+		}
+		
+		$this->update_metas($option);
+		
+	}
+	
 	
 }

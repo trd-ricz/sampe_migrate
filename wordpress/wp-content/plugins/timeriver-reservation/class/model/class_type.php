@@ -13,7 +13,7 @@ class Tros_Model_ClassType extends Tros_Model_Post {
 	/**
 	 *   get data
 	 */
-	function get_data($ids) {
+	function get($ids=array()) {
 		
 		$metas = array();
 		$this->get_info_by_ids($ids, $metas);

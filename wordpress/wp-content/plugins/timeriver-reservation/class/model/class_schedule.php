@@ -13,7 +13,7 @@ class Tros_Model_ClassSchedule extends Tros_Model_Post {
 	/**
 	 *   get data
 	 */
-	function get($ids) {
+	function get($ids=array()) {
 		
 		$metas = array(
 			"stt",

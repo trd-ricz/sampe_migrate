@@ -12,9 +12,11 @@ class Tros_Model_Post {
 		$args = array(
 			'posts_per_page' => -1,
 			'post_type'      => $this->target_post_type,
-			'post_status'    => 'publish',
-			'ID'             => implode($ids, ",")
+			'post_status'    => 'publish'
 		);
+		if ($ids) {
+			$args['ID'] = implode($ids, ",");
+		}
 		$res = get_posts( $args );
 		
 		foreach ($res as $obj) {

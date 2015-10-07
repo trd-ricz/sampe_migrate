@@ -13,7 +13,7 @@ class Tros_Model_ClassRoom extends Tros_Model_Post {
 	/**
 	 *   get data
 	 */
-	function get_data($ids) {
+	function get($ids=array()) {
 		
 		$metas = array(
 			"man-to-man_flag"

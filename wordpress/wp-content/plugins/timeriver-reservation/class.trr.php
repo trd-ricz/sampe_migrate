@@ -24,6 +24,9 @@ class Trr {
 		
 		add_action( 'wp_ajax_update_reservation',  'Trr_Ajax_Calendar::update_reservation');
 		add_action( 'wp_ajax_nopriv_update_reservation',  'Trr_Ajax_Calendar::update_reservation');
+
+		add_action( 'wp_ajax_delete_reservation',  'Trr_Ajax_Calendar::delete_reservation');
+		add_action( 'wp_ajax_nopriv_delete_reservation',  'Trr_Ajax_Calendar::delete_reservation');
 		
 	}
 	

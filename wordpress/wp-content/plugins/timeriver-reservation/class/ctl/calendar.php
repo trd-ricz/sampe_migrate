@@ -20,13 +20,12 @@ class Trr_Ctl_Calendar {
 		$stt = $_REQUEST['stt'];
 		$end = $_REQUEST['end'];
 		
-		$stt = "2015-09-05";
-		$end = "2015-09-10";
+		// save reservation
+		require_once( TRR_PLUGIN_DIR . 'class/model/reservation.php' );
+		$mRE = new Tros_Model_Reservation();
 		
-		//$stt_sunday = get_beginning_week_date($stt);
-		//$end_sunday = get_beginning_week_date($end);
+		// week list
 		$week_list = array();
-		
 		$stt_time = strtotime($stt);
 		$end_time = strtotime($end);
 		while ($stt_time <= $end_time) {
@@ -34,7 +33,41 @@ class Trr_Ctl_Calendar {
 			$week_list[$week_begin] = 1;
 			$stt_time = strtotime("+1 day", $stt_time);
 		}
-		$data["week_list"] = $week_list;
+		
+		// display titles
+		require_once( TRR_PLUGIN_DIR . 'class/model/class_room.php' );
+		$mSR = new Tros_Model_ClassRoom();
+		$mSR->get();
+		$data["mt_class_room"] = $mSR->data;
+		
+		require_once( TRR_PLUGIN_DIR . 'class/model/class_schedule.php' );
+		$mCS = new Tros_Model_ClassSchedule();
+		$mCS->get();
+		$data["mt_class_schedule"] = $mCS->data;
+		
+		require_once( TRR_PLUGIN_DIR . 'class/model/class_type.php' );
+		$mCT = new Tros_Model_ClassType();
+		$mCT->get();
+		$data["mt_class_type"] = $mCT->data;
+		
+		require_once( TRR_PLUGIN_DIR . 'class/model/student.php' );
+		$mSt = new Tros_Model_Student();
+		$mSt->get();
+		$data["mt_student"] = $mSt->data;
+		
+		require_once( TRR_PLUGIN_DIR . 'class/model/teacher.php' );
+		$mTe = new Tros_Model_Teacher();
+		$mTe->get();
+		$data["mt_teacher"] = $mTe->data;
+		
+		
+		// show args
+		$data["week_list"]      = $week_list;
+		$data["cal_data"]       = $mRE->get_cal_data($week_list);
+		$data["schedule_data"]  = $mRE->schedule_data;
+		$data["schedule_keys"]  = array_keys($mRE->schedule_data);
+		$data["days_list"]      = $mRE->days_list;
+		$data["week_title_key"] = $mRE->week_title_key;
 		
 		self::load_view($data);
 	}
