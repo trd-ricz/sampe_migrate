@@ -7,30 +7,20 @@ class Tros_Model_User {
 	public $target_user_type;
 	public $data = array();
 	
-	function get_info_by_ids($ids = array(), $metas = array()) {
+	function get_info_by_ids($ids = array(), $meta_query = array()) {
 		
 		$args = array(
 			'blog_id'      => $GLOBALS['blog_id'],
 			'role'         => $this->target_user_type,
-			'meta_key'     => '',
-			'meta_value'   => '',
-			'meta_compare' => '',
-			'meta_query'   => array(),
-			'date_query'   => array(),
-			'include'      => array(),
-			'exclude'      => array(),
-			'orderby'      => 'login',
-			'order'        => 'ASC',
-			'offset'       => '',
-			'search'       => '',
-			'number'       => '',
-			'count_total'  => false,
-			'fields'       => 'all',
-			'who'          => ''
+			'meta_query'   => array()
 		);
 		
 		if ($ids) {
 			$args['include'] = $ids;
+		}
+		
+		if ($meta_query) {
+			$args['meta_query'] = $meta_query;
 		}
 		
 		$blogusers = get_users($args);

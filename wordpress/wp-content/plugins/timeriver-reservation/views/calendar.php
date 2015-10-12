@@ -22,7 +22,6 @@
 	}
 	.ui-state-target {
 		border: 1px solid #000;
-		background-color: #fff;
 		font-weight: bold;
 	}
 	.ui-state-hover {
@@ -38,19 +37,52 @@
 	}
 	
 </style>
+
+
 <?php 
 function json_safe_encode($data){
 	return json_encode($data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 }
 ?>
 <script>
+
+/*
+ * vars 
+ */
+
+ // shcelude_ids
 var schedule_ids = '<?php echo json_safe_encode($schedule_keys); ?>';
 schedule_ids     = JSON.parse(schedule_ids);
 
+// days_list
 var days_list = '<?php echo json_safe_encode($days_list); ?>';
 days_list     = JSON.parse(days_list);
 
+// post_type
+var post_type = '<?php echo $post_type?>';
+
+// post_id
+var post_id   = '<?php echo $post_id?>';
+
+
 (function($){$(function() {
+
+
+	$(window).load(function(){
+
+		// only student can regst and delete
+		if (post_type == "student") {
+			$("#regist_box").show();
+			$("#regist_box_not").hide();
+		} else {
+			$("#regist_box").hide();
+			$("#regist_box_not").show();
+		}
+	
+		$("#post_type_select").trigger("change");
+	});
+
+	
 	$( ".draggable" ).draggable({ revert: "valid" });
 
 	// single
@@ -126,33 +158,43 @@ days_list     = JSON.parse(days_list);
 		var arg = "?action=update_reservation";
 			arg += "&ymd=" + ymd;
 			arg += "&class_schedule_pid=" + class_schedule_pid;
+			arg += "&student_id=" + post_id;
 			arg += "&" + key + "=" + val;
 			console.log(arg);
 		$.ajax({
-			url: "/wp-admin/admin-ajax.php" + arg
+			url: "/wp-admin/admin-ajax.php" + arg,
+			dataType: 'json'
 		}).done(function(data, status, xhr) {
-			var box_id = 'del--' + class_schedule_pid + '--' + ymd + '--' + key + '--' + val;
 			
-			var del_link = $('<a>x</a>');
-			del_link.attr('id', box_id);
-			del_link.click(del_box);
-
-			var del_span = $('<span></span>');
-			del_span.append(del_link);
+			if (data["status"] == "ok") { 
+				var box_id = 'del--' + class_schedule_pid + '--' + ymd + '--' + key + '--' + val;
+				var del_link = $('<a>x</a>');
+				del_link.attr('id', box_id);
+				del_link.attr('class', 'box_del');
+				del_link.click(del_box);
+	
+				var del_span = $('<span></span>');
+				del_span.append(del_link);
+				
+				var titleDom = $('<span class="block">' + fromDom[0].innerText + '</span>');
+				titleDom.append(del_span);
+				
+				// if teacher or student
+				if (class_name_draggable == "class_room" 
+					|| class_name_draggable == "class_type" ) {
+					toDom.find( "p" ).html('');
+				}
+				toDom.find( "p" ).append(titleDom);
+				var statusDom = $('<span class="show_status">◯ 更新</span>');
 			
-			var titleDom = $('<span class="block">' + fromDom[0].innerText + '</span>');
-			titleDom.append(del_span);
-			
-			var statusDom = $('<span class="show_status">更新</span>');
-			// if teacher or student
-			if (class_name_draggable == "class_room" 
-				|| class_name_draggable == "class_type" ) {
-				toDom.find( "p" ).html('');
+			} else if (data["status"] == "duplicate") {
+				var statusDom = $('<span class="show_status">Ｘ 重複</span>');
+			} else if (data["status"] == "error") {
+				var statusDom = $('<span class="show_status">Ｘ '+ data["mess"] +'</span>');
 			}
-			toDom.find( "p" ).append(titleDom);
-			toDom.find( "p" ).append(statusDom);
-			statusDom.fadeOut(5000);
 			
+			toDom.find( "p" ).append(statusDom);
+			statusDom.fadeOut(10000);
 			
 		}).fail(function(xhr, status, error) {
 			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
@@ -170,11 +212,13 @@ days_list     = JSON.parse(days_list);
 		
 		var arg = "?action=delete_reservation";
 		arg += "&ymd=" + ymd;
+		arg += "&" + post_type + "=" + post_id;
 		arg += "&class_schedule_pid=" + schedule_id;
 		arg += "&" + key + "=" + val;
 		console.log(arg);
 		$.ajax({
-			url: "/wp-admin/admin-ajax.php" + arg
+			url: "/wp-admin/admin-ajax.php" + arg,
+			dataType: 'json'
 		}).done(function(data, status, xhr) {
 			var targetDom = $("#" + target_id).parent().parent();
 			var parentDom = $("#" + target_id).parent().parent().parent();
@@ -189,92 +233,142 @@ days_list     = JSON.parse(days_list);
 	}
 	
 
-	$(function() {
-		$( "#from" ).datepicker({
-			dateFormat: "yy-mm-dd",
-			defaultDate: "+1w",
-			changeMonth: true,
-			numberOfMonths: 3,
-			onClose: function( selectedDate ) {
-				$( "#to" ).datepicker( "option", "minDate", selectedDate );
-			}
-		});
-		$( "#to" ).datepicker({
-			dateFormat: "yy-mm-dd",
-			defaultDate: "+1w",
-			changeMonth: true,
-			numberOfMonths: 3,
-			onClose: function( selectedDate ) {
-				$( "#from" ).datepicker( "option", "maxDate", selectedDate );
-			}
-		});
+	$( "#from" ).datepicker({
+		dateFormat: "yy-mm-dd",
+		defaultDate: "+1w",
+		changeMonth: true,
+		numberOfMonths: 3,
+		onClose: function( selectedDate ) {
+			$( "#to" ).datepicker( "option", "minDate", selectedDate );
+		}
+	});
+	
+	$( "#to" ).datepicker({
+		dateFormat: "yy-mm-dd",
+		defaultDate: "+1w",
+		changeMonth: true,
+		numberOfMonths: 3,
+		onClose: function( selectedDate ) {
+			$( "#from" ).datepicker( "option", "maxDate", selectedDate );
+		}
 	});
 
+	/*
+	 * post type
+	 */
+
+	// undisplay selected post_type class
+	$("." + post_type).css("display", "none");
 	
+	// when change select "post_type"
+	$("#post_type_select").change( function() {
+		var post_type = $(this).val();
+		get_post_type_choices_by_ajax(post_type);
+	});
+	$("#from").change( function() {
+		var post_type = $("#post_type_select").val();
+		get_post_type_choices_by_ajax(post_type);
+	});
+	$("#to").change( function() {
+		var post_type = $("#post_type_select").val();
+		get_post_type_choices_by_ajax(post_type);
+	});
+
+	// Get Choices by ajax
+	function get_post_type_choices_by_ajax (post_type) {
+
+		var stt_date = $("#from").val();
+		var end_date = $("#to").val();
+		
+		var arg = "?action=get_choices";
+		arg += "&stt_date=" + stt_date;
+		arg += "&end_date=" + end_date;
+		arg += "&post_type=" + post_type;
+		console.log(arg);
+		$.ajax({
+			url: "/wp-admin/admin-ajax.php" + arg,
+			dataType: 'json'
+		}).done(function(data, status, xhr) {
+			if (data["status"] != "ok") { return; }
+			$("#choices_select").html("");
+			for(key in data["res"]){
+				var selected = "";
+				if (key == post_id) {
+					selected = "selected";
+					$("#shown_target").html(data["res"][key]["display_name"]);
+				}
+				var option = $('<option value="' + key + '" ' + selected + '>' + data["res"][key]["display_name"] + '</option>');
+				$("#choices_select").append(option);
+			}
+		}).fail(function(xhr, status, error) {
+			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
+		}).always(function(arg1, status, arg2) {
+		});
+	}
 	
 });})(jQuery);
-
-
-
-
-
-
 </script>
 
 
-
 <div id="search_form">
-	<form action="" method="post">
-		　＃表示タイプ：
-		<select name="post_type">
-			<option value="student">生徒別</option>
-			<option value="teacher">講師別</option>
-			<option value="class_room">教室別</option>
-			<option value="class_type">授業別</option>
-		</select>
-		
-		　＃絞り込み：
-		<select name="post_id">
-		</select>
-		
+	<form action="" method="get">
 		　＃日付：
 		<input type="text" id="from" name="stt" value="<?php echo $_REQUEST["stt"];?>">
 		<label for="to">〜</label>
 		<input type="text" id="to" name="end" value="<?php echo $_REQUEST["end"];?>">
 		
+		　＃表示タイプ：
+		<select name="post_type" id="post_type_select">
+			<option value="student" <?php if ($post_type == "student") { echo "selected"; }?>><?php echo $p_typ_list["student"];?></option>
+			<option value="teacher" <?php if ($post_type == "teacher") { echo "selected"; }?>><?php echo $p_typ_list["teacher"];?></option>
+			<option value="class_room" <?php if ($post_type == "class_room") { echo "selected"; }?>><?php echo $p_typ_list["class_room"];?></option>
+		</select>
+		
+		　＃絞り込み：
+		<select name="post_id" id="choices_select">
+		</select>
+		
 		<input type="submit" value="更新" />
+		<input type="hidden" name="page" value="calendar" />
 	</form>
 </div>
-
-
-<div id="class_room--22" class="draggable class_room">
-	<p>cube-01</p>
-</div>
-<div id="class_room--23"  class="draggable class_room">
-	<p>cube-02</p>
+<div>
+表示タイプ：[<b><?php echo $p_typ_list[$post_type];?></b>]　　表示中：[<b><span id="shown_target"></span></b>]
 </div>
 
-<div id="class_type--30"  class="draggable class_type">
-	<p>UE</p>
-</div>
-<div id="class_type--31"  class="draggable class_type">
-	<p>VOA</p>
-</div>
 
-<div id="teacher--4"  class="draggable teacher">
-	<p>teacher01</p>
+<div id="regist_box">
+	<div id="class_room--22" class="draggable class_room">
+		<p>cube-01</p>
+	</div>
+	<div id="class_room--23"  class="draggable class_room">
+		<p>cube-02</p>
+	</div>
+	
+	<div id="class_type--30"  class="draggable class_type">
+		<p>UE</p>
+	</div>
+	<div id="class_type--31"  class="draggable class_type">
+		<p>VOA</p>
+	</div>
+	
+	<div id="teacher--4"  class="draggable teacher">
+		<p>teacher01</p>
+	</div>
+	<div id="teacher--5"  class="draggable teacher">
+		<p>teacher02</p>
+	</div>
+	
+	<div id="student--2"  class="draggable student">
+		<p>student01</p>
+	</div>
+	<div id="student--3"  class="draggable student">
+		<p>student02</p>
+	</div>
 </div>
-<div id="teacher--5"  class="draggable teacher">
-	<p>teacher02</p>
+<div id="regist_box_not">
+登録は表示タイプが生徒別の場合のみ可能です。
 </div>
-
-<div id="student--2"  class="draggable student">
-	<p>student01</p>
-</div>
-<div id="student--3"  class="draggable student">
-	<p>student02</p>
-</div>
-
 
 
 

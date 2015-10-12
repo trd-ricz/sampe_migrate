@@ -16,9 +16,9 @@ class Tros_Model_Student extends Tros_Model_User {
 	/**
 	 *   get data
 	 */
-	function get($user_ids = array()) {
+	function get($user_ids = array(), $meta_query = array()) {
 		
-		$this->get_info_by_ids($user_ids);
+		$this->get_info_by_ids($user_ids, $meta_query);
 		
 		return;
 	}

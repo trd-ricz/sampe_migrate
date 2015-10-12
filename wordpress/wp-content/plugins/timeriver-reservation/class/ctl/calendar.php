@@ -5,6 +5,12 @@
 
 class Trr_Ctl_Calendar {
 	
+	public static $select_type_list = array(
+		"student"    => "生徒別",
+		"teacher"    => "講師別",
+		"class_room" => "教室別",
+	);
+	
 	public function action() {
 		self::init();
 		switch ($_REQUEST['action']) {
@@ -17,12 +23,14 @@ class Trr_Ctl_Calendar {
 	public function show_main() {
 		$data = array();
 		
+		if (!$_REQUEST['post_type']) { $_REQUEST['post_type'] = "student"; }
+		if (!$_REQUEST['stt']) { $_REQUEST['stt'] = date("Y-m-d"); }
+		if (!$_REQUEST['end']) { $_REQUEST['end'] = date("Y-m-d"); }
+		
+		$post_id   = $_REQUEST['post_id'];
+		$post_type = $_REQUEST['post_type'];
 		$stt = $_REQUEST['stt'];
 		$end = $_REQUEST['end'];
-		
-		// save reservation
-		require_once( TRR_PLUGIN_DIR . 'class/model/reservation.php' );
-		$mRE = new Tros_Model_Reservation();
 		
 		// week list
 		$week_list = array();
@@ -33,6 +41,14 @@ class Trr_Ctl_Calendar {
 			$week_list[$week_begin] = 1;
 			$stt_time = strtotime("+1 day", $stt_time);
 		}
+		
+		// save reservation
+		require_once( TRR_PLUGIN_DIR . 'class/model/reservation.php' );
+		$mRE = new Tros_Model_Reservation();
+		$option = array(
+			$post_type => $post_id
+		);
+		$cal_data = $mRE->get_cal_data($week_list, $option);
 		
 		// display titles
 		require_once( TRR_PLUGIN_DIR . 'class/model/class_room.php' );
@@ -63,11 +79,14 @@ class Trr_Ctl_Calendar {
 		
 		// show args
 		$data["week_list"]      = $week_list;
-		$data["cal_data"]       = $mRE->get_cal_data($week_list);
+		$data["cal_data"]       = $cal_data;
 		$data["schedule_data"]  = $mRE->schedule_data;
 		$data["schedule_keys"]  = array_keys($mRE->schedule_data);
 		$data["days_list"]      = $mRE->days_list;
 		$data["week_title_key"] = $mRE->week_title_key;
+		$data["post_type"]      = $post_type;
+		$data["post_id"]        = $post_id;
+		$data["p_typ_list"]     = self::$select_type_list;
 		
 		self::load_view($data);
 	}
