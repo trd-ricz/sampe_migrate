@@ -33,6 +33,20 @@ class Trr_Ajax_Calendar {
 		die();
 	}
 	
+	function copy_week() {
+	
+		$from_ymd   = $_REQUEST['from_ymd'];
+		$to_ymd     = $_REQUEST['to_ymd'];
+		$student_id = $_REQUEST['student_id'];
+		
+		// save reservation
+		require_once( TRR_PLUGIN_DIR . 'class/model/reservation.php' );
+		$obj = new Tros_Model_Reservation();
+		$res = $obj->copy_week($from_ymd, $to_ymd, $student_id);
+		echo json_encode($res);
+		die();
+	}
+	
 	function delete_reservation() {
 		
 		$ymd                = $_REQUEST['ymd'];

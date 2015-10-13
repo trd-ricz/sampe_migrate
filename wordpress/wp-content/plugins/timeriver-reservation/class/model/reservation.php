@@ -26,6 +26,8 @@ class Tros_Model_Reservation {
 	public $student_id = "";
 	public $option = array();
 	public $error_res = array();
+	public $target_id = "";
+	public $target_type = "";
 	
 	function get_cal_data($week_list, $option = array()) {
 		
@@ -83,6 +85,9 @@ class Tros_Model_Reservation {
 		$this->student_id        = $student_id;
 		$this->option            = $option;
 		
+		// get box text(post_title or display_name)
+		$box_text = $this->get_info_by_option($option);
+		
 		// ClassSchedule
 		require_once( TRR_PLUGIN_DIR . 'class/model/class_schedule.php' );
 		$mCS = new Tros_Model_ClassSchedule();
@@ -124,16 +129,13 @@ class Tros_Model_Reservation {
 		
 		// check duplicate
 		if($this->exist_duplicate($ymd, $class_schedule_pid, $this->post_id, $option)) {
-			return array(
-				"status" => "duplicate"
-			);
+			return $this->get_result_data("duplicate");
 		}
 		
 		// check cant prossess
 		if ($this->chk_error()) {
-			return $this->error_res;
+			return $this->get_result_data(null, $box_text, $this->error_res);
 		}
-		
 		
 		// marget update datas
 		$option["student"] = $student_id;
@@ -161,9 +163,24 @@ class Tros_Model_Reservation {
 		);
 		wp_update_post($arg);
 		
-		return array(
-			"status" => "ok"
+		$to_id = $this->class_schedule_id . "--" . $this->ymd 
+				. "--" . $this->target_type;
+		return $this->get_result_data("ok", $box_text);
+	}
+	
+	function get_result_data($status="error", $text="error_get_result_data", $option=array()) {
+		
+		$default = array(
+			"status"    => $status,
+			"box_text"  => $text,
+			"to_id"     => $this->class_schedule_id . "--" . $this->ymd 
+							. "--" . $this->target_type,
+			"post_type" => $this->target_type,
+			"post_id"   => $this->target_id
 		);
+		$default = array_merge($default, $option);
+		
+		return $default;
 	}
 	
 	function chk_error() {
@@ -188,7 +205,6 @@ class Tros_Model_Reservation {
 			);
 			return true;
 		}
-		
 		// when teacher check
 		if ($update_type == "teacher") {
 			if($this->error_res = $this->is_error_date_time($update_post_id)) {
@@ -230,6 +246,44 @@ class Tros_Model_Reservation {
 		}
 	}
 	
+	function get_info_by_option($option) {
+		
+		// get update target
+		foreach ($option as $type => $id) {
+			if (!$id) {  continue; }
+			$this->target_type = $type;
+			$this->target_id   = $id;
+			break;
+		}
+		switch ($type) {
+			case "student":
+				require_once( TRR_PLUGIN_DIR . 'class/model/student.php' );
+				$m = new Tros_Model_Student();
+				$m->get(array($id));
+				return $m->data[$id]["display_name"];
+				break;
+			case "teacher":
+				require_once( TRR_PLUGIN_DIR . 'class/model/teacher.php' );
+				$m = new Tros_Model_Teacher();
+				$m->get(array($id));
+				return $m->data[$id]["display_name"];
+				break;
+			case "class_room":
+				require_once( TRR_PLUGIN_DIR . 'class/model/class_room.php' );
+				$m = new Tros_Model_ClassRoom();
+				$m->get(array($id));
+				return $m->data[$id]["post_title"];
+				break;
+			case "class_type":
+				require_once( TRR_PLUGIN_DIR . 'class/model/class_type.php' );
+				$m = new Tros_Model_ClassType();
+				$m->get(array($id));
+				return $m->data[$id]["post_title"];
+				break;
+			default:
+				break;
+		}
+	}
 	
 	function exist_duplicate($ymd, $class_schedule, $post_id, $option) {
 		
@@ -237,7 +291,7 @@ class Tros_Model_Reservation {
 			if (!$value) { continue; }
 			if ($key == "class_type") { continue; }
 			$check_option = array(
- 				"class_schedule" => $class_schedule,
+				"class_schedule" => $class_schedule,
 				$key             => $value,
 			);
 			if ($this->get_reservation($ymd, $ymd, $check_option)) {
@@ -312,6 +366,82 @@ class Tros_Model_Reservation {
 			}
 		}
 		
+	}
+	
+	/**
+	 * copy week
+	 */
+	function copy_week($from_ymd, $to_ymd, $student_id) {
+		// get from data
+		$option = array(
+			"student" => $student_id
+		);
+		
+		$date_replace = array();
+		for ($i = 0; $i < 7; $i++) {
+			$from = date('Y-m-d', strtotime("+{$i} day", strtotime($from_ymd)));
+			$to   = date('Y-m-d', strtotime("+{$i} day", strtotime($to_ymd)));
+			$date_replace[$from] = $to;
+		}
+		
+		$from_end_week = date('Y-m-d', strtotime("+6 day", strtotime($from_ymd)));
+		$this->get_reservation($from_ymd, $from_end_week, $option);
+		$from_data = $this->reservations;
+		$res = array();
+		foreach ($from_data as $ymd => $schedule_data) {
+			$to_ymd = $date_replace[$ymd];
+			foreach ($schedule_data as $class_schedule_pid => $resevations) {
+				$tmp = $this->update_reservation_all(
+					$to_ymd, 
+					$class_schedule_pid, 
+					$student_id,
+					$resevations
+				);
+				$res = array_merge($res, $tmp);
+			}
+		}
+		return array(
+			"status" => "ok",
+			"result" => $res
+		);
+	}
+	
+	/**
+	 *  update resevation all
+	 */
+	function update_reservation_all($ymd, $class_schedule_pid, $student_id, $data) {
+		$res = array();
+		
+		if ($data["class_type"]) {
+			$res[] = $this->update(
+				$ymd, 
+				$class_schedule_pid,
+				$student_id, 
+				array("class_type" => $data["class_type"])
+			);
+		}
+		
+		if ($data["class_room"]) {
+			$res[] = $this->update(
+				$ymd,
+				$class_schedule_pid,
+				$student_id,
+				array("class_room" => $data["class_room"])
+			);
+		}
+		
+		if (count($data["teacher"])) {
+			foreach ($data["teacher"] as $post_id) {
+				$res[] = $this->update(
+					$ymd,
+					$class_schedule_pid,
+					$student_id,
+					array("teacher" => $post_id)
+				);
+			}
+		}
+		
+		return $res;
 	}
 	
 	

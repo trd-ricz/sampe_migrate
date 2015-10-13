@@ -31,6 +31,9 @@ class Trr {
 		add_action( 'wp_ajax_get_choices',  'Trr_Ajax_Calendar::get_choices');
 		add_action( 'wp_ajax_nopriv_get_choices',  'Trr_Ajax_Calendar::get_choices');
 		
+		add_action( 'wp_ajax_copy_week',  'Trr_Ajax_Calendar::copy_week');
+		add_action( 'wp_ajax_nopriv_copy_week',  'Trr_Ajax_Calendar::copy_week');
+		
 	}
 	
 	

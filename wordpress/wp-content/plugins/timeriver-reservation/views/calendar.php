@@ -25,7 +25,7 @@
 		font-weight: bold;
 	}
 	.ui-state-hover {
-		border: 1px solid red;
+		border: 2px solid red;
 		background-color: #fff;
 	}
 	.update-nag {
@@ -41,6 +41,19 @@
 	}
 	#regist_box table td {
 		border: solid 1px #666;
+	}
+	
+	.row_ctl_from {
+		width: 20px;
+		height: 200px;
+		background-color: #8fbc8f;
+		margin: 5px;
+	}
+	.row_ctl_to {
+		width: 20px;
+		height: 200px;
+		background-color: #b0c4de;
+		margin: 5px;
 	}
 	
 </style>
@@ -120,6 +133,8 @@ var post_id   = '<?php echo $post_id?>';
 				update_box_row(from_id, to_id);
 			} else if (change_target == "col") {
 				update_box_col(from_id, to_id);
+			} else if (change_target == "row_ctl") {
+				copy_week_by_ajax(from_id, to_id);
 			} else {
 				update_box_single(from_id, to_id);
 			}
@@ -130,7 +145,12 @@ var post_id   = '<?php echo $post_id?>';
 	$(".box_del").click(del_box);
 	$(".make_box").click(make_regst_box);
 	
-
+	// update row_ctl
+	function update_row_ctl(from_id, to_id) {
+		console.log(from_id);
+		console.log(to_id);
+	}
+	
 	// Update to Col
 	function update_box_col(from_id, to_id) {
 		var from_class_key = from_id.split('--')[0];
@@ -178,43 +198,77 @@ var post_id   = '<?php echo $post_id?>';
 			url: "/wp-admin/admin-ajax.php" + arg,
 			dataType: 'json'
 		}).done(function(data, status, xhr) {
-			
-			if (data["status"] == "ok") { 
-				var box_id = 'del--' + class_schedule_pid + '--' + ymd + '--' + key + '--' + val;
-				var del_link = $('<a>x</a>');
-				del_link.attr('id', box_id);
-				del_link.attr('class', 'box_del');
-				del_link.click(del_box);
-	
-				var del_span = $('<span></span>');
-				del_span.append(del_link);
-
-				var titleDom = $('<span class="block">' + fromDom.text() + '</span>');
-				titleDom.append(del_span);
-				
-				// if teacher or student
-				if (class_name_draggable == "class_room" 
-					|| class_name_draggable == "class_type" ) {
-					toDom.find( "p" ).html('');
-				}
-				toDom.find( "p" ).append(titleDom);
-				var statusDom = $('<span class="show_status">◯ 更新</span>');
-			
-			} else if (data["status"] == "duplicate") {
-				var statusDom = $('<span class="show_status">Ｘ 重複</span>');
-			} else if (data["status"] == "error") {
-				var statusDom = $('<span class="show_status">Ｘ '+ data["mess"] +'</span>');
-			}
-			
-			toDom.find( "p" ).append(statusDom);
-			statusDom.fadeOut(10000);
-			
+			update_box_info(data);
 		}).fail(function(xhr, status, error) {
 			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
 		}).always(function(arg1, status, arg2) {
 		});
 	}
 
+	/*
+	*
+	*/
+	function copy_week_by_ajax(from_id, to_id) {
+		var from_ymd = from_id.split('--')[1];
+		var to_ymd   = to_id.split('--')[1];
+		var arg = "?action=copy_week";
+		arg += "&from_ymd=" + from_ymd;
+		arg += "&to_ymd=" + to_ymd;
+		arg += "&student_id=" + post_id;
+		$.ajax({
+			url: "/wp-admin/admin-ajax.php" + arg,
+			dataType: 'json'
+		}).done(function(data, status, xhr) {
+			if (data["status"] != "ok") {
+				alert("処理が正常に完了しませんでした。ページを更新して最新の情報を確認ください。");
+			}
+			for ( var id in data["result"]) {
+				update_box_info(data["result"][id]);
+			}
+		}).fail(function(xhr, status, error) {
+			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
+		}).always(function(arg1, status, arg2) {
+		});
+	}
+
+	/*
+	*  update box info
+	*/
+	function update_box_info(data) {
+		console.log(data["to_id"]);
+		
+		var toDom = $("#" + data["to_id"]);
+		if (data["status"] == "ok") { 
+			// delete
+			var box_id = 'del--' + data["to_id"] + '--' + data["post_id"];
+			var del_link = $('<a>x</a>');
+			del_link.attr('id', box_id);
+			del_link.attr('class', 'box_del');
+			del_link.click(del_box);
+			var del_span = $('<span></span>');
+			del_span.append(del_link);
+			var titleDom = $('<span class="block">' + data["box_text"] + '</span>');
+			titleDom.append(del_span);
+			// if teacher or student
+			if (data["post_type"] == "class_room" 
+				|| data["post_type"] == "class_type" ) {
+				toDom.find( "p" ).html('');
+			}
+			toDom.find( "p" ).append(titleDom);
+			var statusDom = $('<span class="show_status">◯ 更新</span>');
+		} else if (data["status"] == "duplicate") {
+			var statusDom = $('<span class="show_status">Ｘ 重複</span>');
+		} else if (data["status"] == "error") {
+			var statusDom = $('<span class="show_status">Ｘ '+ data["mess"] +'</span>');
+		}
+		
+		toDom.find( "p" ).append(statusDom);
+		statusDom.fadeOut(10000);
+	}
+	
+	/*
+	*  del
+	*/
 	function del_box (e){
 		var target_id   = $( this ).context.id;
 
@@ -245,7 +299,7 @@ var post_id   = '<?php echo $post_id?>';
 		});
 	}
 	
-
+	
 	$( "#from" ).datepicker({
 		dateFormat: "yy-mm-dd",
 		defaultDate: "+1w",
@@ -404,7 +458,10 @@ var post_id   = '<?php echo $post_id?>';
 	?>
 	<table class="wp-list-table widefat striped">
 		<tr>
-			<th rowspan="11"></th>
+			<th rowspan="11">
+				<div id="row_ctl--<?php echo $week_key?>" class="draggable row_ctl_from">from</div>
+				<div id="row_ctl--<?php echo $week_key?>" class="droppable row_ctl_to">to</div>
+			</th>
 			<th>コマ</th>
 			<?php foreach ($week_title_key as $format => $whatday) { ?>
 				<?php $ymd = date("Y-m-d", strtotime($format, $week_stt_time)); ?>
