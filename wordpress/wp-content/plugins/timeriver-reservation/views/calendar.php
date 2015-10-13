@@ -36,6 +36,13 @@
 		width: 90px;
 	}
 	
+	#regist_box table th {
+		text-align: left;
+	}
+	#regist_box table td {
+		border: solid 1px #666;
+	}
+	
 </style>
 
 
@@ -80,6 +87,10 @@ var post_id   = '<?php echo $post_id?>';
 		}
 	
 		$("#post_type_select").trigger("change");
+
+		get_post_type_choices_by_ajax("class_room", "#class_room_select");
+		get_post_type_choices_by_ajax("class_type", "#class_type_select");
+		get_post_type_choices_by_ajax("teacher",    "#teacher_select");
 	});
 
 	
@@ -117,6 +128,8 @@ var post_id   = '<?php echo $post_id?>';
 	});
 
 	$(".box_del").click(del_box);
+	$(".make_box").click(make_regst_box);
+	
 
 	// Update to Col
 	function update_box_col(from_id, to_id) {
@@ -263,7 +276,7 @@ var post_id   = '<?php echo $post_id?>';
 	// when change select "post_type"
 	$("#post_type_select").change( function() {
 		var post_type = $(this).val();
-		get_post_type_choices_by_ajax(post_type);
+		get_post_type_choices_by_ajax(post_type, "#choices_select");
 	});
 	$("#from").change( function() {
 		var post_type = $("#post_type_select").val();
@@ -275,7 +288,7 @@ var post_id   = '<?php echo $post_id?>';
 	});
 
 	// Get Choices by ajax
-	function get_post_type_choices_by_ajax (post_type) {
+	function get_post_type_choices_by_ajax (post_type, target) {
 
 		var stt_date = $("#from").val();
 		var end_date = $("#to").val();
@@ -290,20 +303,40 @@ var post_id   = '<?php echo $post_id?>';
 			dataType: 'json'
 		}).done(function(data, status, xhr) {
 			if (data["status"] != "ok") { return; }
-			$("#choices_select").html("");
+			$(target).html("");
 			for(key in data["res"]){
 				var selected = "";
 				if (key == post_id) {
 					selected = "selected";
-					$("#shown_target").html(data["res"][key]["display_name"]);
+					if (target == "#choices_select") {
+						$("#shown_target").html(data["res"][key]["display_name"]);
+					}
 				}
 				var option = $('<option value="' + key + '" ' + selected + '>' + data["res"][key]["display_name"] + '</option>');
-				$("#choices_select").append(option);
+				$(target).append(option);
 			}
 		}).fail(function(xhr, status, error) {
 			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
 		}).always(function(arg1, status, arg2) {
 		});
+	}
+
+	// make regst_box
+	function make_regst_box(e) {
+		var id   = $( this ).context.id;
+		console.log(id);
+		var post_type = id.split('--')[1];
+		console.log(post_type);
+		var selected_id = "#" + post_type + "_select option:selected";
+		var post_id = $(selected_id).val();
+		var text    = $(selected_id).text();
+		console.log(post_id);
+		var divDom = $('<div id="' + post_type + '--' + post_id + '" class="draggable ' + post_type + '">');
+		console.log(divDom);
+		var pDom = $('<p>' + text + '</p>')
+		divDom.append(pDom);
+		divDom.draggable({ revert: "valid" });
+		$('#' + post_type +'_box_space').append(divDom);
 	}
 	
 });})(jQuery);
@@ -338,40 +371,31 @@ var post_id   = '<?php echo $post_id?>';
 
 
 <div id="regist_box">
-	<div id="class_room--22" class="draggable class_room">
-		<p>cube-01</p>
-	</div>
-	<div id="class_room--23"  class="draggable class_room">
-		<p>cube-02</p>
-	</div>
-	
-	<div id="class_type--30"  class="draggable class_type">
-		<p>UE</p>
-	</div>
-	<div id="class_type--31"  class="draggable class_type">
-		<p>VOA</p>
-	</div>
-	
-	<div id="teacher--4"  class="draggable teacher">
-		<p>teacher01</p>
-	</div>
-	<div id="teacher--5"  class="draggable teacher">
-		<p>teacher02</p>
-	</div>
-	
-	<div id="student--2"  class="draggable student">
-		<p>student01</p>
-	</div>
-	<div id="student--3"  class="draggable student">
-		<p>student02</p>
-	</div>
+<table>
+	<tr>
+		<th>
+			教室：<select id="class_room_select"></select><button id="make_box--class_room" class="make_box">box表示</button>
+		</th>
+		<th>
+			講座：<select id="class_type_select"></select><button id="make_box--class_type" class="make_box">box表示</button>
+		</th>
+		<th>
+			講師：<select id="teacher_select"></select><button id="make_box--teacher" class="make_box">box表示</button>
+		</th>
+	</tr>
+	<tr>
+		<td>
+			<div id="class_room_box_space"></div>
+		</td>
+		<td>
+			<div id="class_type_box_space"></div>
+		</td>
+		<td>
+			<div id="teacher_box_space"></div>
+		</td>
+	</tr>
+</table>
 </div>
-<div id="regist_box_not">
-登録は表示タイプが生徒別の場合のみ可能です。
-</div>
-
-
-
 
 
 <?php foreach ($cal_data as $week_key => $class_schedule_data) { ?>

@@ -237,7 +237,7 @@ class Tros_Model_Reservation {
 			if (!$value) { continue; }
 			if ($key == "class_type") { continue; }
 			$check_option = array(
-				"class_schedule" => $class_schedule,
+ 				"class_schedule" => $class_schedule,
 				$key             => $value,
 			);
 			if ($this->get_reservation($ymd, $ymd, $check_option)) {

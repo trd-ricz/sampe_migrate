@@ -118,7 +118,20 @@ class Trr_Ajax_Calendar {
 					"res"    => $obj->data
 				);
 				break;
-
+				
+			case "class_type":
+				require_once( TRR_PLUGIN_DIR . 'class/model/class_type.php' );
+				$obj = new Tros_Model_ClassType();
+				$obj->get();
+				foreach ($obj->data as $key => $value) {
+					$obj->data[$key]["display_name"]  = $value["post_title"];
+				}
+				$res = array(
+					"status" => "ok",
+					"res"    => $obj->data
+				);
+				break;
+				
 			default:
 				$res = array(
 					"status" => "error"
