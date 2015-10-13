@@ -188,8 +188,8 @@ var post_id   = '<?php echo $post_id?>';
 	
 				var del_span = $('<span></span>');
 				del_span.append(del_link);
-				
-				var titleDom = $('<span class="block">' + fromDom[0].innerText + '</span>');
+
+				var titleDom = $('<span class="block">' + fromDom.text() + '</span>');
 				titleDom.append(del_span);
 				
 				// if teacher or student
