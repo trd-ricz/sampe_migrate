@@ -2,11 +2,11 @@
 /*
 Plugin Name: WP Admin UI Customize
 Description: An excellent plugin to customize the management screens.
-Plugin URI: http://wpadminuicustomize.com/?utm_source=use_plugin&utm_medium=list&utm_content=wauc&utm_campaign=1_5_6
-Version: 1.5.6
+Plugin URI: http://wpadminuicustomize.com/?utm_source=use_plugin&utm_medium=list&utm_content=wauc&utm_campaign=1_5_7
+Version: 1.5.7
 Author: gqevu6bsiz
-Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=wauc&utm_campaign=1_5_6
-Text Domain: wauc
+Author URI: http://gqevu6bsiz.chicappa.jp/?utm_source=use_plugin&utm_medium=list&utm_content=wauc&utm_campaign=1_5_7
+Text Domain: wp-admin-ui-customize
 Domain Path: /languages
 */
 
@@ -58,7 +58,7 @@ class WP_Admin_UI_Customize
 
 
 	function __construct() {
-		$this->Ver = '1.5.6';
+		$this->Ver = '1.5.7';
 		$this->Name = 'WP Admin UI Customize';
 		$this->Dir = plugin_dir_path( __FILE__ );
 		$this->Url = plugin_dir_url( __FILE__ );
@@ -102,7 +102,7 @@ class WP_Admin_UI_Customize
 	// PluginSetup
 	function PluginSetup() {
 		// load text domain
-		load_plugin_textdomain( $this->ltd , false , $this->PluginSlug . '/languages' );
+		load_plugin_textdomain( 'wp-admin-ui-customize' , false , $this->PluginSlug . '/languages' );
 		
 		add_action( 'plugins_loaded' , array( $this , 'plugins_loaded' ) );
 		
@@ -149,7 +149,7 @@ class WP_Admin_UI_Customize
 		if( plugin_basename(__FILE__) == $file ) {
 			$link = '<a href="' . self_admin_url( 'admin.php?page=' . $this->PageSlug ) . '">' . __( 'Settings' ) . '</a>';
 			$support_link = '<a href="http://wordpress.org/support/plugin/' . $this->PluginSlug . '" target="_blank">' . __( 'Support Forums' ) . '</a>';
-			$delete_userrole_link = '<a href="' . self_admin_url( 'admin.php?page=' . $this->PageSlug . '_reset_userrole' ) . '">' . __( 'Reset User Roles' , $this->ltd ) . '</a>';
+			$delete_userrole_link = '<a href="' . self_admin_url( 'admin.php?page=' . $this->PageSlug . '_reset_userrole' ) . '">' . __( 'Reset User Roles' , 'wp-admin-ui-customize' ) . '</a>';
 			array_unshift( $links, $link , $delete_userrole_link , $support_link  );
 		}
 		return $links;
@@ -178,17 +178,17 @@ class WP_Admin_UI_Customize
 		$capability = $this->get_plugin_cap();
 
 		add_menu_page( $this->Name , $this->Name , $capability, $this->PageSlug , array( $this , 'setting_default') );
-		add_submenu_page( $this->PageSlug , __( 'Site Settings' , $this->ltd ) , __( 'Site Settings' , $this->ltd ) , $capability , $this->PageSlug . '_setting_site' , array( $this , 'setting_site' ) );
-		add_submenu_page( $this->PageSlug , sprintf( __( '%1$s %2$s' , $this->ltd ) , __( 'General' ) , __( 'Settings' ) ) , sprintf( __( '%1$s %2$s' , $this->ltd ) , __( 'General' ) , __( 'Settings' ) ) , $capability , $this->PageSlug . '_admin_general_setting' , array( $this , 'setting_admin_general' ) );
+		add_submenu_page( $this->PageSlug , __( 'Site Settings' , 'wp-admin-ui-customize' ) , __( 'Site Settings' , 'wp-admin-ui-customize' ) , $capability , $this->PageSlug . '_setting_site' , array( $this , 'setting_site' ) );
+		add_submenu_page( $this->PageSlug , sprintf( __( '%1$s %2$s' , 'wp-admin-ui-customize' ) , __( 'General' ) , __( 'Settings' ) ) , sprintf( __( '%1$s %2$s' , 'wp-admin-ui-customize' ) , __( 'General' ) , __( 'Settings' ) ) , $capability , $this->PageSlug . '_admin_general_setting' , array( $this , 'setting_admin_general' ) );
 		add_submenu_page( $this->PageSlug , __( 'Dashboard' ) , __( 'Dashboard' ) , $capability , $this->PageSlug . '_dashboard' , array( $this , 'setting_dashboard' ) );
-		add_submenu_page( $this->PageSlug , __( 'Admin Bar Menu' , $this->ltd ) , __( 'Admin Bar Menu' , $this->ltd ) , $capability , $this->PageSlug . '_admin_bar' , array( $this , 'setting_admin_bar_menu' ) );
-		add_submenu_page( $this->PageSlug , __( 'Side Menu' , $this->ltd ) , __( 'Side Menu' , $this->ltd ) , $capability , $this->PageSlug . '_sidemenu' , array( $this , 'setting_sidemenu' ) );
-		add_submenu_page( $this->PageSlug , __( 'Manage meta box' , $this->ltd ) , __( 'Manage meta box' , $this->ltd ) , $capability , $this->PageSlug . '_manage_metabox' , array( $this , 'setting_manage_metabox' ) );
-		add_submenu_page( $this->PageSlug , __( 'Add New Post and Edit Post Screen Setting' , $this->ltd ) , __( 'Add New Post and Edit Post Screen Setting' , $this->ltd ) , $capability , $this->PageSlug . '_post_add_edit_screen' , array( $this , 'setting_post_add_edit' ) );
-		add_submenu_page( $this->PageSlug , __( 'Appearance Menus Screen Setting' , $this->ltd ) , __( 'Appearance Menus Screen Setting' , $this->ltd ) , $capability , $this->PageSlug . '_appearance_menus' , array( $this , 'setting_appearance_menus' ) );
-		add_submenu_page( $this->PageSlug , __( 'Login Screen' , $this->ltd ) , __( 'Login Screen' , $this->ltd ) , $capability , $this->PageSlug . '_loginscreen' , array( $this , 'setting_loginscreen' ) );
-		add_submenu_page( $this->PageSlug , sprintf( __( '%1$s of %2$s %3$s' , $this->ltd ) , __( 'Change' ) , __( 'Plugin' ) , __( 'Capabilities' ) ) , sprintf( __( '%1$s of %2$s %3$s' , $this->ltd ) , __( 'Change' ) , __( 'Plugin' ) , __( 'Capabilities' ) ) , $capability , $this->PageSlug . '_plugin_cap' , array( $this , 'setting_plugin_cap' ) );
-		add_submenu_page( $this->PageSlug , __( 'Reset User Roles' , $this->ltd ) , __( 'Reset User Roles' , $this->ltd ) , $capability , $this->PageSlug . '_reset_userrole' , array( $this , 'reset_userrole' ) );
+		add_submenu_page( $this->PageSlug , __( 'Admin Bar Menu' , 'wp-admin-ui-customize' ) , __( 'Admin Bar Menu' , 'wp-admin-ui-customize' ) , $capability , $this->PageSlug . '_admin_bar' , array( $this , 'setting_admin_bar_menu' ) );
+		add_submenu_page( $this->PageSlug , __( 'Side Menu' , 'wp-admin-ui-customize' ) , __( 'Side Menu' , 'wp-admin-ui-customize' ) , $capability , $this->PageSlug . '_sidemenu' , array( $this , 'setting_sidemenu' ) );
+		add_submenu_page( $this->PageSlug , __( 'Manage meta box' , 'wp-admin-ui-customize' ) , __( 'Manage meta box' , 'wp-admin-ui-customize' ) , $capability , $this->PageSlug . '_manage_metabox' , array( $this , 'setting_manage_metabox' ) );
+		add_submenu_page( $this->PageSlug , __( 'Add New Post and Edit Post Screen Setting' , 'wp-admin-ui-customize' ) , __( 'Add New Post and Edit Post Screen Setting' , 'wp-admin-ui-customize' ) , $capability , $this->PageSlug . '_post_add_edit_screen' , array( $this , 'setting_post_add_edit' ) );
+		add_submenu_page( $this->PageSlug , __( 'Appearance Menus Screen Setting' , 'wp-admin-ui-customize' ) , __( 'Appearance Menus Screen Setting' , 'wp-admin-ui-customize' ) , $capability , $this->PageSlug . '_appearance_menus' , array( $this , 'setting_appearance_menus' ) );
+		add_submenu_page( $this->PageSlug , __( 'Login Screen' , 'wp-admin-ui-customize' ) , __( 'Login Screen' , 'wp-admin-ui-customize' ) , $capability , $this->PageSlug . '_loginscreen' , array( $this , 'setting_loginscreen' ) );
+		add_submenu_page( $this->PageSlug , sprintf( __( '%1$s of %2$s %3$s' , 'wp-admin-ui-customize' ) , __( 'Change' ) , __( 'Plugin' ) , __( 'Capabilities' ) ) , sprintf( __( '%1$s of %2$s %3$s' , 'wp-admin-ui-customize' ) , __( 'Change' ) , __( 'Plugin' ) , __( 'Capabilities' ) ) , $capability , $this->PageSlug . '_plugin_cap' , array( $this , 'setting_plugin_cap' ) );
+		add_submenu_page( $this->PageSlug , __( 'Reset User Roles' , 'wp-admin-ui-customize' ) , __( 'Reset User Roles' , 'wp-admin-ui-customize' ) , $capability , $this->PageSlug . '_reset_userrole' , array( $this , 'reset_userrole' ) );
 	}
 
 	// PluginSetup
@@ -351,7 +351,7 @@ class WP_Admin_UI_Customize
 		}
 		if( empty( $Data ) ) {
 			if( $current_screen->parent_base == $this->PageSlug && $current_screen->id != 'toplevel_page_' . $this->PageSlug ) {
-				echo '<div class="error"><p><strong>' . sprintf( __( 'Authority to apply the setting is not selected. <a href="%s">From here</a>, please select the permissions you want to set.' , $this->ltd ) , admin_url( 'admin.php?page=' . $this->PageSlug ) ) . '</strong></p></div>';
+				echo '<div class="error"><p><strong>' . sprintf( __( 'Authority to apply the setting is not selected. <a href="%s">From here</a>, please select the permissions you want to set.' , 'wp-admin-ui-customize' ) , admin_url( 'admin.php?page=' . $this->PageSlug ) ) . '</strong></p></div>';
 			}
 		}
 	}
@@ -376,7 +376,7 @@ class WP_Admin_UI_Customize
 		$apply_user_roles = $this->get_data( 'user_role' );
 		unset( $apply_user_roles["UPFN"] );
 		
-		$Contents =  __( 'Apply user roles' , $this->ltd ) . ' : ';
+		$Contents =  __( 'Apply user roles' , 'wp-admin-ui-customize' ) . ' : ';
 		
 		if( !empty( $apply_user_roles ) ) {
 			$UserRoles = $this->get_user_role();
@@ -789,7 +789,7 @@ class WP_Admin_UI_Customize
 
 				<?php if( $menu_widget["slug"] != 'separator' ) : ?>
 					<div class="submenu">
-						<p class="description"><?php _e( 'Sub Menus' , $this->ltd ); ?></p>
+						<p class="description"><?php _e( 'Sub Menus' , 'wp-admin-ui-customize' ); ?></p>
 						<?php if( empty( $menu_widget["new"] ) && !empty( $menu_widget["submenu"] ) ) : ?>
 							<?php foreach( $menu_widget["submenu"] as $sm ) : ?>
 								<?php $sepalator_widget = ''; ?>
@@ -884,7 +884,7 @@ class WP_Admin_UI_Customize
 				<div class="widget-title">
 					<h4>
 						<?php if( !empty( $menu_widget["group"] ) ) : ?>
-							<?php _e( 'Menu Group' , $this->ltd ); ?>
+							<?php _e( 'Menu Group' , 'wp-admin-ui-customize' ); ?>
 							: <span class="in-widget-title"><?php echo $menu_widget["id"]; ?></span>
 						<?php elseif( preg_match( '/\<form/' , $menu_widget["title"] ) ) : ?>
 							<?php echo $menu_widget["id"]; ?>
@@ -904,9 +904,9 @@ class WP_Admin_UI_Customize
 							URL: <input type="text" class="regular-text linktext" value="<?php echo $menu_widget["href"]; ?>" name="data[][href]" placeholder="http://" />
 						<?php else:  ?>
 							<?php if( $menu_widget["id"] == 'edit-post_type' ) : ?>
-								<strong><?php _e( 'Show only on front end.' , $this->ltd ); ?></strong>
+								<strong><?php _e( 'Show only on front end.' , 'wp-admin-ui-customize' ); ?></strong>
 							<?php elseif( !empty( $menu_widget["group"] ) ) : ?>
-								<strong><?php _e( 'Menu Group' , $this->ltd ); ?></strong>
+								<strong><?php _e( 'Menu Group' , 'wp-admin-ui-customize' ); ?></strong>
 							<?php elseif( $menu_widget["id"] == 'menu-toggle' ) : ?>
 								<strong><?php echo $menu_widget["id"]; ?></strong>
 							<?php else: ?>
@@ -963,7 +963,7 @@ class WP_Admin_UI_Customize
 
 				<?php if( !in_array( $menu_widget["id"] , $no_submenu ) ) : ?>
 					<div class="submenu">
-						<p class="description"><?php _e( 'Sub Menus' , $this->ltd ); ?></p>
+						<p class="description"><?php _e( 'Sub Menus' , 'wp-admin-ui-customize' ); ?></p>
 						
 						<?php if( empty( $new_widget ) && !empty( $node_type ) ) : ?>
 
@@ -1213,7 +1213,7 @@ class WP_Admin_UI_Customize
 
 	// SetList
 	function admin_bar_places() {
-		return $Place_types = array( "left" => __( 'Left' ) , "right" => __( 'Right' ) , "front" => __( 'Front' , $this->ltd ) );
+		return $Place_types = array( "left" => __( 'Left' ) , "right" => __( 'Right' ) , "front" => __( 'Front' , 'wp-admin-ui-customize' ) );
 	}
 	
 	// SetList
@@ -2625,7 +2625,7 @@ class WP_Admin_UI_Customize
 			if( $msg == 'update' or $msg == 'delete' ) {
 				$this->Msg .= '<div class="updated"><p><strong>' . __( 'Settings saved.' ) . '</strong></p></div>';
 			} elseif( $msg == 'donated' ) {
-				$this->Msg .= '<div class="updated"><p><strong>' . __( 'Thank you for your donation.' , $this->ltd ) . '</strong></p></div>';
+				$this->Msg .= '<div class="updated"><p><strong>' . __( 'Thank you for your donation.' , 'wp-admin-ui-customize' ) . '</strong></p></div>';
 			}
 		}
 	}
@@ -2640,7 +2640,7 @@ class WP_Admin_UI_Customize
 	function DisplayDonation() {
 		$donation = get_option( $this->Record["donate"] );
 		if( $this->DonateKey != $donation ) {
-			$this->Msg .= '<div class="error"><p><strong>' . __( 'Please consider making a donation.' , $this->ltd ) . '</strong> <a href="' . self_admin_url( 'admin.php?page=' . $this->PageSlug ) . '">' . __( 'Donate' , $this->ltd ) . '</a></p></div>';
+			$this->Msg .= '<div class="error"><p><strong>' . __( 'Please consider making a donation.' , 'wp-admin-ui-customize' ) . '</strong> <a href="' . self_admin_url( 'admin.php?page=' . $this->PageSlug ) . '">' . __( 'Donate' , 'wp-admin-ui-customize' ) . '</a></p></div>';
 		}
 	}
 
