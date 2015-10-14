@@ -7,6 +7,9 @@ class Trr {
 		// Load Ajax
 		self::load_ajax_endpoints();
 		
+		wp_enqueue_script( 'jquery-ui.js', TRR_PLUGIN_URL . 'assets/jquery-ui/jquery-ui.min.js', array(), '1.0.0', true );
+		wp_enqueue_style( 'custom.css', TRR_PLUGIN_URL . 'assets/css/custom.css', array(), null, 'all');
+		
 		// Show Menu
 		add_action('admin_menu', array($this, 'show_menu'));
 	}

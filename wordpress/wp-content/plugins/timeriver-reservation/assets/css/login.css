@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+.login h1 a {
+	background-size: 300px;
+	width: auto;
+	height: 60px;
+}
+
+#backtoblog {
+	display: none;
+}

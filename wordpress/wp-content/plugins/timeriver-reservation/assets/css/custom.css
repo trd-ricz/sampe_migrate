@@ -1,0 +1,127 @@
+@CHARSET "UTF-8";
+
+/*
+ *
+ *  common
+ *
+ */
+
+.update-nag {
+	display : none;
+}
+
+/*
+ *
+ *  user-new-php
+ *
+ */
+.user-new-php .form-table:nth-of-type(3) {
+	display : none;
+}
+
+/*
+ *
+ *  user-edit-php
+ *
+ */
+.user-edit-php #your-profile h3:nth-of-type(1) {
+	display : none;
+}
+ .user-edit-php .form-table:nth-of-type(1) tr:nth-of-type(1)
+,.user-edit-php .form-table:nth-of-type(1) tr:nth-of-type(2)
+,.user-edit-php .form-table:nth-of-type(1) tr:nth-of-type(3)
+,.user-edit-php .form-table:nth-of-type(1) tr:nth-of-type(4)
+{
+	display : none;
+}
+.user-edit-php #your-profile h3:nth-of-type(2) {
+	display : none;
+}
+ .user-edit-php .form-table:nth-of-type(2) tr:nth-of-type(2)
+,.user-edit-php .form-table:nth-of-type(2) tr:nth-of-type(5)
+,.user-edit-php .form-table:nth-of-type(2) tr:nth-of-type(6)
+{
+	display : none;
+}
+.user-edit-php #your-profile h3:nth-of-type(3) {
+	display : none;
+}
+.user-edit-php .form-table:nth-of-type(3) tr:nth-of-type(2)
+{
+	display : none;
+}
+.user-edit-php #your-profile h3:nth-of-type(4) {
+	display : none;
+}
+.user-edit-php .form-table:nth-of-type(4) tr:nth-of-type(1)
+{
+	display : none;
+}
+.user-edit-php .form-table:nth-of-type(6) {
+	display : none;
+}
+.user-edit-php h3:nth-of-type(5) {
+	display : none;
+}
+.user-edit-php h3:nth-of-type(6) {
+	display : none;
+}
+
+/*
+ *
+ *  profile edit
+ *
+ */
+
+.profile-php #your-profile h3:nth-of-type(1) {
+	display : none;
+}
+ .profile-php .form-table:nth-of-type(1) tr:nth-of-type(1)
+,.profile-php .form-table:nth-of-type(1) tr:nth-of-type(2)
+,.profile-php .form-table:nth-of-type(1) tr:nth-of-type(3)
+,.profile-php .form-table:nth-of-type(1) tr:nth-of-type(4)
+{
+	display : none;
+}
+.profile-php #your-profile h3:nth-of-type(2) {
+	display : none;
+}
+ .profile-php .form-table:nth-of-type(2) tr:nth-of-type(4)
+,.profile-php .form-table:nth-of-type(2) tr:nth-of-type(5)
+{
+	display : none;
+}
+.profile-php #your-profile h3:nth-of-type(3) {
+	display : none;
+}
+.profile-php .form-table:nth-of-type(3) tr:nth-of-type(2)
+{
+	display : none;
+}
+.profile-php #your-profile h3:nth-of-type(4) {
+	display : none;
+}
+.profile-php .form-table:nth-of-type(4) tr:nth-of-type(1)
+{
+	display : none;
+}
+.profile-php .form-table:nth-of-type(6) {
+	display : none;
+}
+.profile-php h3:nth-of-type(5) {
+	display : none;
+}
+.profile-php h3:nth-of-type(6) {
+	display : none;
+}
+
+/*
+ *
+ *  create user
+ *
+ */
+
+.user-new-php .form-table:nth-of-type(1) tr:nth-of-type(5) {
+	display : none;
+}
+
