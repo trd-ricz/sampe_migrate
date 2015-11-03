@@ -290,7 +290,7 @@ var post_id   = '<?php echo $post_id?>';
 			var targetDom = $("#" + target_id).parent().parent();
 			var parentDom = $("#" + target_id).parent().parent().parent();
 			targetDom.remove();
-			var statusDom = $('<span class="show_status">削除</span>');
+			var statusDom = $('<span class="show_status">Delete</span>');
 			parentDom.append(statusDom);
 			statusDom.fadeOut(5000);
 		}).fail(function(xhr, status, error) {
@@ -399,19 +399,19 @@ var post_id   = '<?php echo $post_id?>';
 
 <div id="search_form">
 	<form action="" method="get">
-		　＃日付：
+		　＃DATE：
 		<input type="text" id="from" name="stt" value="<?php echo $_REQUEST["stt"];?>">
 		<label for="to">〜</label>
 		<input type="text" id="to" name="end" value="<?php echo $_REQUEST["end"];?>">
 		
-		　＃表示タイプ：
+		　＃ViewType：
 		<select name="post_type" id="post_type_select">
 			<option value="student" <?php if ($post_type == "student") { echo "selected"; }?>><?php echo $p_typ_list["student"];?></option>
 			<option value="teacher" <?php if ($post_type == "teacher") { echo "selected"; }?>><?php echo $p_typ_list["teacher"];?></option>
 			<option value="class_room" <?php if ($post_type == "class_room") { echo "selected"; }?>><?php echo $p_typ_list["class_room"];?></option>
 		</select>
 		
-		　＃絞り込み：
+		　＃Select：
 		<select name="post_id" id="choices_select">
 		</select>
 		
@@ -420,7 +420,7 @@ var post_id   = '<?php echo $post_id?>';
 	</form>
 </div>
 <div>
-表示タイプ：[<b><?php echo $p_typ_list[$post_type];?></b>]　　表示中：[<b><span id="shown_target"></span></b>]
+ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　　Now：[<b class="now_display"><span id="shown_target"></span></b>]
 </div>
 
 
@@ -428,13 +428,13 @@ var post_id   = '<?php echo $post_id?>';
 <table>
 	<tr>
 		<th>
-			教室：<select id="class_room_select"></select><button id="make_box--class_room" class="make_box">box表示</button>
+			ClassRoom：<select id="class_room_select"></select><button id="make_box--class_room" class="make_box">ShowBox</button>
 		</th>
 		<th>
-			講座：<select id="class_type_select"></select><button id="make_box--class_type" class="make_box">box表示</button>
+			ClassType：<select id="class_type_select"></select><button id="make_box--class_type" class="make_box">ShowBox</button>
 		</th>
 		<th>
-			講師：<select id="teacher_select"></select><button id="make_box--teacher" class="make_box">box表示</button>
+			Teacher：<select id="teacher_select"></select><button id="make_box--teacher" class="make_box">ShowBox</button>
 		</th>
 	</tr>
 	<tr>

@@ -6,9 +6,9 @@
 class Trr_Ctl_Calendar {
 	
 	public static $select_type_list = array(
-		"student"    => "生徒別",
-		"teacher"    => "講師別",
-		"class_room" => "教室別",
+		"student"    => "Student",
+		"teacher"    => "Ceacher",
+		"class_room" => "Room",
 	);
 	
 	public function action() {
