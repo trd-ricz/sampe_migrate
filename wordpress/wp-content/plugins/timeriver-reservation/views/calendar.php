@@ -131,6 +131,7 @@
 		font-size: 11px;
 		border-collapse: collapse;
 		text-align: center;
+		margin-bottom: 2px;
 	}
 
 	.print_view td {
@@ -436,20 +437,6 @@ var post_id   = '<?php echo $post_id?>';
 		get_post_type_choices_by_ajax(post_type);
 	});
 
-	//set Print Schedule date
-	function setSchedDate(strDate, endDate) {
-		var mText = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", 
-		"SEP", "OCT", "NOV", "DEC"];
-		strDate = Date.parse(strDate);
-		strDate = new Date(strDate);
-		endDate = Date.parse(endDate);
-		endDate = new Date(endDate);
-	
-		$("#schedDate").text(mText[strDate.getMonth()] + " " + strDate.getDate() +
-		" TO " + endDate.getDate() + ", '" + endDate.getYear().toString().slice(-2) +
-		" WEEKLY SCHEDULE");
-	}
-
 	// Get Choices by ajax
 	function get_post_type_choices_by_ajax (post_type, target) {
 
@@ -507,16 +494,35 @@ var post_id   = '<?php echo $post_id?>';
 	* handling & processing for printing here
 	* by aaron
 	*/
-	
+
+	//set Print Schedule date
+	function setSchedDate(strDate, endDate, booleanForSecondData) {
+		var mText = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", 
+		"SEP", "OCT", "NOV", "DEC"];
+		strDate = Date.parse(strDate);
+		strDate = new Date(strDate);
+		endDate = Date.parse(endDate);
+		endDate = new Date(endDate);
+		var secondData = "";
+
+		if (booleanForSecondData == true) {
+			secondData = "-2";
+		}
+
+		$("#schedDate" + secondData).text(mText[strDate.getMonth()] + " " + strDate.getDate() +
+		" TO " + endDate.getDate() + ", '" + endDate.getYear().toString().slice(-2) +
+		" WEEKLY SCHEDULE");
+	}
+
 	//get single day class schedule
-	function getDaySchedule() {
+	function getDaySchedule(classSched, booleanForSecondData) {
 		var sched = [], y = 0, x = 0, stop = false;
 		var cubeNum =  0, budteach = "";
 
 		//get schedule for one day
-		for (var date in class_sched) {
-			for (var time in class_sched[date]) {
-				var idArr = class_sched[date][time];
+		for (var date in classSched) {
+			for (var time in classSched[date]) {
+				var idArr = classSched[date][time];
 				idArr["class-room"] = $("#"+idArr["class-room"]+" .block").text().match(/(.*[^\sx])/);
 				idArr["class-type"] = $("#"+idArr["class-type"]+" .block").text().match(/(.*[^\sx])/);
 				idArr["teacher"] = $("#"+idArr["teacher"]+" .block").text().match(/(.*[^\sx])/);
@@ -556,31 +562,50 @@ var post_id   = '<?php echo $post_id?>';
 			}
 		}
 
-		$("#cubicleNum").text(cubeNum);
-		$("#buddyTeacher").text(budteach);
+		if (booleanForSecondData != true) {
+			$("#cubicleNum").text(cubeNum);
+			$("#buddyTeacher").text(budteach);
+		} else {
+			var tmpObj = {};
+			tmpObj["cubicle_number"] = cubeNum;
+			tmpObj["buddy_teacher"] = budteach;
+			localStorage.tmpObj = JSON.stringify(tmpObj);
+		}
 
 		return sched;
 	}
 
 	//handles the setting of data for printing
-	function setPrintContent(sched) {
+	function setPrintContent(sched, booleanForSecondData) {
 		//assigns value to print view table
 		var mmc = 0, gcc = 0, studentId = $("#choices_select").val();
-		var classStartDate = new Date($("#from").val());
-		var startDate = new Date(student_meta[studentId]['start-date']);
-		var endDate = new Date(student_meta[studentId]['end-date']);
+		if (booleanForSecondData != true) {
+			var classStartDate = new Date($("#from").val());
+			var startDate = new Date(student_meta[studentId]['start-date']);
+			var endDate = new Date(student_meta[studentId]['end-date']);
+		} else {
+			var schedData = JSON.parse(localStorage.schedData);
+			var classStartDate = new Date();
+			var startDate = new Date(schedData["meta"]['start-date']);
+			var endDate = new Date(schedData["meta"]['end-date']);
+		}
 		var monthString = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 		var msDay =  86400000;
+		var secondData = "";
 
-		$("#stdStartDate").text(startDate.getDate() + " " + monthString[startDate.getMonth()] + 
+		if (booleanForSecondData) {
+			secondData = "-2";
+		}
+
+		$("#stdStartDate" + secondData).text(startDate.getDate() + " " + monthString[startDate.getMonth()] + 
 		" " + startDate.getFullYear().toString().slice(-2));
-		$("#stdEndDate").text(endDate.getDate() + " " + monthString[endDate.getMonth()] + 
+		$("#stdEndDate" + secondData).text(endDate.getDate() + " " + monthString[endDate.getMonth()] + 
 		" " + endDate.getFullYear().toString().slice(-2));
 
 		if ( (((classStartDate.getTime() - startDate.getTime()) / msDay) + startDate.getDay()) <= 7 ) {
-			$("#stdType").text("NEW STUDENT");
+			$("#stdType" + secondData).text("NEW STUDENT");
 		} else {
-			$("#stdType").text("OLD STUDENT");
+			$("#stdType" + secondData).text("OLD STUDENT");
 		}
 
 		for(var y=1; y<sched.length; y++) {
@@ -589,15 +614,22 @@ var post_id   = '<?php echo $post_id?>';
 			} else {
 				++mmc;
 			}
-			$("#class-"+(y+1)+"-type").text(sched[y]["class-type"]);
-			$("#class-"+(y+1)+"-teacher").text(sched[y]["teacher"]);
+			$("#class-"+(y+1)+"-type" + secondData).text(sched[y]["class-type"]);
+			$("#class-"+(y+1)+"-teacher" + secondData).text(sched[y]["teacher"]);
 			if (sched[y]["class-room"].indexOf("Cubicle") == -1) {
-				$("#class-"+(y+1)+"-gc-room").text(sched[y]["class-room"]);
+				$("#class-"+(y+1)+"-gc-room" + secondData).text(sched[y]["class-room"]);
 			}
 		}
 		var classCount = "<span class='rgb-red-txt'> "+mmc+" MM "+gcc+" GC </span> )";
-		var studName = $("#choices_select option:selected").text();
-		$("#studentName").text(studName+" ( ").append(classCount);
+		if (booleanForSecondData != true) {
+			var studName = $("#choices_select option:selected").text();
+			$("#studentName").text(studName+" ( ").append(classCount);
+		} else {
+			var studName = schedData["student_name"];
+			$("#studentName-2").text(studName+" ( ").append(classCount);
+			$("#cubicleNum-2").text(schedData["cubicle_number"]);
+			$("#buddyTeacher-2").text(schedData["buddy_teacher"]);
+		}
 	}
 
 	$("#printPreview").on("click", function() {
@@ -605,15 +637,22 @@ var post_id   = '<?php echo $post_id?>';
 		$("#searchLabel").hide();
 		$("#regist_box").hide();
 		$(".wp-list-table").hide();
-		setSchedDate($("#from").val(), $("#to").val());
+		setSchedDate($("#from").val(), $("#to").val(), false);
 		/*
 		*call function that gets single day class schedule
 		*assign data to new variable sched
 		*/
-		var sched = getDaySchedule();
+		var sched = getDaySchedule(class_sched, false);
 		//calls the handler for data assigning in print view
-		setPrintContent(sched);
-		
+		setPrintContent(sched, false);
+
+		if (localStorage.getItem("schedData") != null) {
+			var schedData = JSON.parse(localStorage.schedData);
+			//var sched = getDaySchedule(schedData["class"], true);
+			setSchedDate(schedData["schedule-start"], schedData["schedule-end"], true);
+			setPrintContent(schedData["class"], true);
+		}
+
 		$("#print_view_container").css("display", "block");
 		//console.log(sched);
 // 		setTimeout(function() {
@@ -627,54 +666,23 @@ var post_id   = '<?php echo $post_id?>';
 	});
 
 	$("#printQueue").on('click', function () {
-		var tmpId, tmpMeta;
-	
-		if (localStorage.ids != 'undefined' && localStorage.userMeta != 'undefined') {
-			tmpId = JSON.parse(localStorage.ids);
-			tmpMeta = JSON.parse(localStorage.userMeta);
+		var tmpObj, student_id = $("#choices_select").val();
+		//localStorage.removeItem("schedData");
+		tmpObj = {};
+		tmpObj["student_name"] = $("#choices_select option:selected").text();
+		tmpObj["class"] = getDaySchedule(class_sched, true);
+		tmpObj["meta"] = student_meta[student_id];
+		tmpObj["schedule-start"] = $("#from").val();
+		tmpObj["schedule-end"] = $("#to").val();
+		localStorage.schedData = JSON.stringify(tmpObj);
 
-			if (tmpId.length > 1) {
-				localStorage.ids = undefined;
-				localStorage.userMeta = undefined;
-				tmpId = [];
-				tmpId.push(class_sched);
-				localStorage.ids = JSON.stringify(tmpId);
-				tmpMeta = [];
-				tmpMeta.push(student_meta);
-				localStorage.userMeta = JSON.stringify(tmpMeta);
-			} else {
-				tmpId.push(class_sched);
-				localStorage.ids = JSON.stringify(tmpId);
-				tmpMeta.push(student_meta);
-				localStorage.userMeta = JSON.stringify(tmpMeta);
-			}
-		} else {
-			tmp = [];
-			tmp.push(class_sched);
-			localStorage.ids = JSON.stringify(tmp);
-			tmpMeta = [];
-			tmpMeta.push(student_meta);
-			localStorage.userMeta = JSON.stringify(tmpMeta);
+		if (localStorage.tmpObj != null) {
+			tmpObj = JSON.parse(localStorage.schedData);
+			tmpObj["cubicle_number"] = JSON.parse(localStorage.tmpObj)["cubicle_number"];
+			tmpObj["buddy_teacher"] = JSON.parse(localStorage.tmpObj)["buddy_teacher"];
+			localStorage.schedData = JSON.stringify(tmpObj);
+			localStorage.removeItem("tmpObj");
 		}
-
-		if (localStorage.ids != 'undefined') {
-			console.log("localStorage.ids :");
-			console.log(JSON.parse(localStorage.ids));
-			console.log("localStorage.userMeta :");
-			console.log(JSON.parse(localStorage.userMeta));
-		}
-// 		if (tmp1.length == 2) {
-// 			localStorage.ids = undefined;
-// 		} 
-
-// 		if (localStorage.ids == undefined) {
-// 			localStorage.ids = JSON.stringify(sched);
-// 		} else {
-// 			var tmp = [];
-// 			tmp.push(JSON.parse(localStorage.ids));
-// 			tmp.push(class_sched);
-// 			localStorage.ids = JSON.stringify(tmp);
-// 		}
 	});
 
 });})(jQuery);
@@ -940,6 +948,110 @@ foreach ($studentIdArr as $id) {
 			<td id="class-5-gc-room" class="class-5"> </td>
 			<td id="class-10-teacher" class="class-10"> </td>
 			<td id="class-10-gc-room" class="class-10"> </td>
+		</tr>
+	</table>
+	<!-- second print data -->
+	<table class="print_view">
+		<tr>
+			<td id="schedDate-2"colspan="2" class="bold-txt no-border-bottom center-txt rgb-blue-txt"> </td>
+			<td class="no-border-bottom left-txt"> START: <span id="stdStartDate-2" class="rgb-blue-txt"></span> </td>
+			<td class="no-border-bottom left-txt bold-txt fnt-12-txt"> CUBICLE NO. </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="no-border-top no-border-bottom right-txt"> <span class="underline-txt"> Buddy Teacher: </span> </td>
+			<td class="no-border-top no-border-bottom left-txt"> <span id="stdType-2" class="rgb-red-txt">  </span> </td>
+			<td id="cubicleNum-2" rowspan="2" class="no-border-top no-border-bottom center-txt fnt-24-txt"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="no-border-top no-border-bottom right-txt"> 
+				<span id="buddyTeacher-2" class="rgb-red-txt fnt-8-txt bold-txt"> </span> 
+			</td>
+			<td class="no-border-top left-txt"> END: <span id="stdEndDate-2" class="rgb-blue-txt"> </span> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="no-border-top left-txt"> <span class="underline-txt"> Student: </span> </td>
+			<td colspan="2" class="rgb-blue-bg"> <?php echo $class_time[5]["stt"]." - ".$class_time[5]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="studentName-2" colspan="2" rowspan="2" class="bold-txt"> TAKURO </td>
+			<td id="class-6-type-2" class="class-6" colspan="2">  </td>
+		</tr>
+		<tr>
+			<td id="class-6-teacher-2" class="class-6"> </td>
+			<td id="class-6-gc-room-2" class="class-6"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="rgb-gray-bg"> <?php echo $class_time[0]["stt"]." - ".$class_time[0]["end"]; ?> - WORD BUCKET TEST </td>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+		</tr>
+		<tr class="rgb-blue-bg">
+			<td colspan="2"> <?php echo $class_time[1]["stt"]." - ".$class_time[1]["end"]; ?> </td>
+			<td colspan="2"> <?php echo $class_time[6]["stt"]." - ".$class_time[6]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="class-2-type-2" class="class-2" colspan="2"> </td>
+			<td id="class-7-type-2" class="class-7" colspan="2"> </td>
+		</tr>
+		<tr>
+			<td id="class-2-teacher-2" class="class-2"> </td>
+			<td id="class-2-gc-room-2" class="class-2"> </td>
+			<td id="class-7-teacher-2" class="class-7"> </td>
+			<td id="class-7-gc-room-2" class="class-7"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+		</tr>
+		<tr class="rgb-blue-bg">
+			<td colspan="2"> <?php echo $class_time[2]["stt"]." - ".$class_time[2]["end"]; ?> </td>
+			<td colspan="2"> <?php echo $class_time[7]["stt"]." - ".$class_time[7]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="class-3-type-2" class="class-3" colspan="2"> </td>
+			<td id="class-8-type-2" class="class-8" colspan="2"> </td>
+		</tr>
+		<tr>
+			<td id="class-3-teacher-2" class="class-3"> </td>
+			<td id="class-3-gc-room-2" class="class-3"> </td>
+			<td id="class-8-teacher-2" class="class-8"> </td>
+			<td id="class-8-gc-room-2" class="class-8"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+		</tr>
+
+		<tr class="rgb-blue-bg">
+			<td colspan="2"> <?php echo $class_time[3]["stt"]." - ".$class_time[3]["end"]; ?> </td>
+			<td colspan="2"> <?php echo $class_time[8]["stt"]." - ".$class_time[8]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="class-4-type-2" class="class-4" colspan="2"> </td>
+			<td id="class-9-type-2" class="class-9" colspan="2"> </td>
+		</tr>
+		<tr>
+			<td id="class-4-teacher-2" class="class-4"> </td>
+			<td id="class-4-gc-room-2" class="class-4"> </td>
+			<td id="class-9-teacher-2" class="class-9"> </td>
+			<td id="class-9-gc-room-2" class="class-9"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+			<td colspan="2" class="rgb-red-txt"> Monday-Thursday/GRADUATION-Friday </td>
+		</tr>
+		<tr class="rgb-blue-bg">
+			<td colspan="2"> <?php echo $class_time[4]["stt"]." - ".$class_time[4]["end"]; ?> </td>
+			<td colspan="2"> <?php echo $class_time[9]["stt"]." - ".$class_time[9]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="class-5-type-2" class="class-5" colspan="2"> </td>
+			<td id="class-10-type-2" class="class-10" colspan="2"> </td>
+		</tr>
+		<tr>
+			<td id="class-5-teacher-2" class="class-5"> </td>
+			<td id="class-5-gc-room-2" class="class-5"> </td>
+			<td id="class-10-teacher-2" class="class-10"> </td>
+			<td id="class-10-gc-room-2" class="class-10"> </td>
 		</tr>
 	</table>
 </div>
