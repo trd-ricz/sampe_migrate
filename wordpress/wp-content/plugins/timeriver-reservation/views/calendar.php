@@ -57,6 +57,101 @@
 	}
 	
 </style>
+<!-- styling for printing by aaron-->
+<style type="text/css">
+	.left-txt {
+		text-align: left;
+	}
+	.right-txt {
+		text-align: right;
+	}
+
+	.rgb-blue-txt {
+		color: rgb(51, 51, 153);
+	}
+
+	.rgb-blue-bg {
+		background-color: rgb(51, 204, 204);
+		-webkit-print-color-adjust: exact;
+	}
+
+	.rgb-gray-bg {
+		background-color: rgb(192, 192, 192);
+		-webkit-print-color-adjust: exact;
+	}
+
+	.rgb-red-txt {
+		color: rgb(255, 0, 0);
+	}
+
+	.underline-txt {
+		text-decoration: underline;
+	}
+
+	.bold-txt {
+		font-weight: bold;
+	}
+
+	.fnt-8-txt {
+		font-size: 8px;
+	}
+
+	.fnt-12-txt {
+		font-size: 12px;
+	}
+
+	.fnt-24-txt {
+		font-size: 24px;
+	}
+
+	.no-border-top {
+		border-top: none !important;
+	}
+
+	.no-border-bottom {
+		border-bottom: none !important;
+	}
+
+	#print_view_container {
+		position: fixed;
+		z-index: 500000;
+		width: 100%;
+		height: 100%;
+		margin: auto;
+		background-color: rgb(254,254,254);
+		-webkit-print-color-adjust: exact;
+		left: 0;
+		top: 0;
+		display: none;
+	}
+
+	.print_view {
+		width: 650px;
+		margin: auto;
+		font-size: 11px;
+		border-collapse: collapse;
+		text-align: center;
+	}
+
+	.print_view td {
+		height: 16px;
+		width: 174px;
+		border-top: 1px solid;
+		border-right: 1px solid;
+		border-bottom: 1px solid;
+		border-left: 1px solid;
+		border-color: #000;
+	}
+	
+	#buddyTeacher {
+		font-size: 10px;
+	}
+	
+	#studentName {
+		font-size: 15px;
+	}
+	
+</style>
 
 
 <?php 
@@ -341,6 +436,20 @@ var post_id   = '<?php echo $post_id?>';
 		get_post_type_choices_by_ajax(post_type);
 	});
 
+	//set Print Schedule date
+	function setSchedDate(strDate, endDate) {
+		var mText = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", 
+		"SEP", "OCT", "NOV", "DEC"];
+		strDate = Date.parse(strDate);
+		strDate = new Date(strDate);
+		endDate = Date.parse(endDate);
+		endDate = new Date(endDate);
+	
+		$("#schedDate").text(mText[strDate.getMonth()] + " " + strDate.getDate() +
+		" TO " + endDate.getDate() + ", '" + endDate.getYear().toString().slice(-2) +
+		" WEEKLY SCHEDULE");
+	}
+
 	// Get Choices by ajax
 	function get_post_type_choices_by_ajax (post_type, target) {
 
@@ -358,6 +467,7 @@ var post_id   = '<?php echo $post_id?>';
 		}).done(function(data, status, xhr) {
 			if (data["status"] != "ok") { return; }
 			$(target).html("");
+			console.log(data["res"]);
 			for(key in data["res"]){
 				var selected = "";
 				if (key == post_id) {
@@ -392,7 +502,181 @@ var post_id   = '<?php echo $post_id?>';
 		divDom.draggable({ revert: "valid" });
 		$('#' + post_type +'_box_space').append(divDom);
 	}
+
+	/* 
+	* handling & processing for printing here
+	* by aaron
+	*/
 	
+	//get single day class schedule
+	function getDaySchedule() {
+		var sched = [], y = 0, x = 0, stop = false;
+		var cubeNum =  0, budteach = "";
+
+		//get schedule for one day
+		for (var date in class_sched) {
+			for (var time in class_sched[date]) {
+				var idArr = class_sched[date][time];
+				idArr["class-room"] = $("#"+idArr["class-room"]+" .block").text().match(/(.*[^\sx])/);
+				idArr["class-type"] = $("#"+idArr["class-type"]+" .block").text().match(/(.*[^\sx])/);
+				idArr["teacher"] = $("#"+idArr["teacher"]+" .block").text().match(/(.*[^\sx])/);
+				//console.log(y+": "+idArr);
+				//checks if data is not null && get data while removing the unecessary space and character
+				if (idArr["class-room"] != null) {
+					idArr["class-room"] = idArr["class-room"][0];
+				}
+				if (idArr["class-type"] != null) {
+					idArr["class-type"] = idArr["class-type"][0];
+				}
+				if (idArr["teacher"] != null) {
+					idArr["teacher"] = idArr["teacher"][0];
+				}
+				//check if current day schedule has class or not empty
+				if (idArr["class-room"] != null && idArr["class-room"].match(/[a-zA-Z]/) != null) {
+					stop = true;
+				}
+				//get cubicle number
+				if (idArr["class-room"] != null && idArr["class-room"].indexOf("Cubicle") > -1 && cubeNum == 0) {
+					cubeNum = idArr["class-room"].replace(/[a-zA-Z]*\s/,"");	
+				}
+				//get buddy teacher
+				if (idArr["class-type"] == "REVIEW" || idArr["class-type"] == "REVIEW MM") {
+					budteach = idArr["teacher"];
+				}
+				if (idArr["class-room"] != null) {
+					sched[y++] = idArr;
+				}
+			}
+			//if stop is true, it will stop looking for a class schedule
+			if (stop) {
+				break;
+			} else {
+				y = 0;
+				sched = new Array();
+			}
+		}
+
+		$("#cubicleNum").text(cubeNum);
+		$("#buddyTeacher").text(budteach);
+
+		return sched;
+	}
+
+	//handles the setting of data for printing
+	function setPrintContent(sched) {
+		//assigns value to print view table
+		var mmc = 0, gcc = 0, studentId = $("#choices_select").val();
+		var classStartDate = new Date($("#from").val());
+		var startDate = new Date(student_meta[studentId]['start-date']);
+		var endDate = new Date(student_meta[studentId]['end-date']);
+		var monthString = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+		var msDay =  86400000;
+
+		$("#stdStartDate").text(startDate.getDate() + " " + monthString[startDate.getMonth()] + 
+		" " + startDate.getFullYear().toString().slice(-2));
+		$("#stdEndDate").text(endDate.getDate() + " " + monthString[endDate.getMonth()] + 
+		" " + endDate.getFullYear().toString().slice(-2));
+
+		if ( (((classStartDate.getTime() - startDate.getTime()) / msDay) + startDate.getDay()) <= 7 ) {
+			$("#stdType").text("NEW STUDENT");
+		} else {
+			$("#stdType").text("OLD STUDENT");
+		}
+
+		for(var y=1; y<sched.length; y++) {
+			if (sched[y]["class-type"].indexOf(" GC") > -1) {
+				++gcc;
+			} else {
+				++mmc;
+			}
+			$("#class-"+(y+1)+"-type").text(sched[y]["class-type"]);
+			$("#class-"+(y+1)+"-teacher").text(sched[y]["teacher"]);
+			if (sched[y]["class-room"].indexOf("Cubicle") == -1) {
+				$("#class-"+(y+1)+"-gc-room").text(sched[y]["class-room"]);
+			}
+		}
+		var classCount = "<span class='rgb-red-txt'> "+mmc+" MM "+gcc+" GC </span> )";
+		var studName = $("#choices_select option:selected").text();
+		$("#studentName").text(studName+" ( ").append(classCount);
+	}
+
+	$("#printPreview").on("click", function() {
+		$("#search_form").hide();
+		$("#searchLabel").hide();
+		$("#regist_box").hide();
+		$(".wp-list-table").hide();
+		setSchedDate($("#from").val(), $("#to").val());
+		/*
+		*call function that gets single day class schedule
+		*assign data to new variable sched
+		*/
+		var sched = getDaySchedule();
+		//calls the handler for data assigning in print view
+		setPrintContent(sched);
+		
+		$("#print_view_container").css("display", "block");
+		//console.log(sched);
+// 		setTimeout(function() {
+// 			window.print()
+// 			$("#search_form").show();
+// 			$("#searchLabel").show();
+// 			$("#regist_box").show();
+// 			$(".wp-list-table").show();
+// 			$("#print_view_container").hide();
+// 		}, 300);
+	});
+
+	$("#printQueue").on('click', function () {
+		var tmpId, tmpMeta;
+	
+		if (localStorage.ids != 'undefined' && localStorage.userMeta != 'undefined') {
+			tmpId = JSON.parse(localStorage.ids);
+			tmpMeta = JSON.parse(localStorage.userMeta);
+
+			if (tmpId.length > 1) {
+				localStorage.ids = undefined;
+				localStorage.userMeta = undefined;
+				tmpId = [];
+				tmpId.push(class_sched);
+				localStorage.ids = JSON.stringify(tmpId);
+				tmpMeta = [];
+				tmpMeta.push(student_meta);
+				localStorage.userMeta = JSON.stringify(tmpMeta);
+			} else {
+				tmpId.push(class_sched);
+				localStorage.ids = JSON.stringify(tmpId);
+				tmpMeta.push(student_meta);
+				localStorage.userMeta = JSON.stringify(tmpMeta);
+			}
+		} else {
+			tmp = [];
+			tmp.push(class_sched);
+			localStorage.ids = JSON.stringify(tmp);
+			tmpMeta = [];
+			tmpMeta.push(student_meta);
+			localStorage.userMeta = JSON.stringify(tmpMeta);
+		}
+
+		if (localStorage.ids != 'undefined') {
+			console.log("localStorage.ids :");
+			console.log(JSON.parse(localStorage.ids));
+			console.log("localStorage.userMeta :");
+			console.log(JSON.parse(localStorage.userMeta));
+		}
+// 		if (tmp1.length == 2) {
+// 			localStorage.ids = undefined;
+// 		} 
+
+// 		if (localStorage.ids == undefined) {
+// 			localStorage.ids = JSON.stringify(sched);
+// 		} else {
+// 			var tmp = [];
+// 			tmp.push(JSON.parse(localStorage.ids));
+// 			tmp.push(class_sched);
+// 			localStorage.ids = JSON.stringify(tmp);
+// 		}
+	});
+
 });})(jQuery);
 </script>
 
@@ -417,10 +701,12 @@ var post_id   = '<?php echo $post_id?>';
 		
 		<input type="submit" value="更新" />
 		<input type="hidden" name="page" value="calendar" />
-	</form>
+</form>
 </div>
-<div>
+<div id="searchLabel">
 ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　　Now：[<b class="now_display"><span id="shown_target"></span></b>]
+<button id="printPreview"> Print </button>
+<button id="printQueue"> Add to Print Queue </button>
 </div>
 
 
@@ -450,8 +736,7 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 	</tr>
 </table>
 </div>
-
-
+<?php $class_time = array(); $data_id = array(); $y=0; $stime; $etime;?>
 <?php foreach ($cal_data as $week_key => $class_schedule_data) { ?>
 	<?php 
 	$week_stt_time = strtotime($week_key);
@@ -469,18 +754,27 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 			<?php }?>
 		</tr>
 		<?php foreach ($class_schedule_data as $class_schedule => $class_date_data) { ?>
+		<?php $class_time[] = $time = $mt_class_schedule[$class_schedule]; ?>
 		<tr>
 			<td>
 				<div id="row--<?php echo $week_key; ?>--<?php echo $class_schedule; ?>"  class="droppable" >
 				<?php
+					$stime = $mt_class_schedule[$class_schedule]["stt"];
+					$etime = $mt_class_schedule[$class_schedule]["end"];
 					echo $mt_class_schedule[$class_schedule]["post_title"] 
 					."<br/>  (" .$mt_class_schedule[$class_schedule]["stt"]
 					."〜  " .$mt_class_schedule[$class_schedule]["end"] . ")";
 				?>
 				</div>
 			</td>
-			<?php foreach ($class_date_data as $ymd => $class_data) { ?>
-				<?php $box_prefix = "{$class_schedule}--{$ymd}"; ?>
+			<?php foreach ($class_date_data as $ymd => $class_data) {
+				$box_prefix = "{$class_schedule}--{$ymd}";
+				//for printing
+				$ctime = "{$class_schedule}"; $cdate = "{$ymd}";
+				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room";
+				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type";
+				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher"; 
+			?>
 				<td>
 					<div id="<?php echo "{$box_prefix}--class_room"?>" class="droppable class_room">
 						<p>
@@ -527,10 +821,132 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 						</p>
 					</div>
 				</td>
+				<?php $y++;?>
 			<?php } ?>
 		</tr>
 		<?php } ?>
 	</table>
 <?php } ?>
+<!-- php code to get students meta values -->
+<?php
+$studentIdArr = get_users(array('role' => 'student', 'fields' => 'id'));
+$studentMetaArr = [];
+
+foreach ($studentIdArr as $id) {
+	$studentMetaArr[$id]["start-date"] = get_user_meta($id, "stt_date", true);
+	$studentMetaArr[$id]["end-date"] = get_user_meta($id, "end_date", true);
+}
+?>
+<!-- html code for printing display -->
+<div id="print_view_container">
+	<table class="print_view">
+		<tr>
+			<td id="schedDate"colspan="2" class="bold-txt no-border-bottom center-txt rgb-blue-txt"> </td>
+			<td class="no-border-bottom left-txt"> START: <span id="stdStartDate" class="rgb-blue-txt"></span> </td>
+			<td class="no-border-bottom left-txt bold-txt fnt-12-txt"> CUBICLE NO. </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="no-border-top no-border-bottom right-txt"> <span class="underline-txt"> Buddy Teacher: </span> </td>
+			<td class="no-border-top no-border-bottom left-txt"> <span id="stdType" class="rgb-red-txt">  </span> </td>
+			<td id="cubicleNum" rowspan="2" class="no-border-top no-border-bottom center-txt fnt-24-txt"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="no-border-top no-border-bottom right-txt"> 
+				<span id="buddyTeacher" class="rgb-red-txt fnt-8-txt bold-txt"> </span> 
+			</td>
+			<td class="no-border-top left-txt"> END: <span id="stdEndDate" class="rgb-blue-txt"> </span> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="no-border-top left-txt"> <span class="underline-txt"> Student: </span> </td>
+			<td colspan="2" class="rgb-blue-bg"> <?php echo $class_time[5]["stt"]." - ".$class_time[5]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="studentName" colspan="2" rowspan="2" class="bold-txt"> TAKURO </td>
+			<td id="class-6-type" class="class-6" colspan="2">  </td>
+		</tr>
+		<tr>
+			<td id="class-6-teacher" class="class-6"> </td>
+			<td id="class-6-gc-room" class="class-6"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="rgb-gray-bg"> <?php echo $class_time[0]["stt"]." - ".$class_time[0]["end"]; ?> - WORD BUCKET TEST </td>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+		</tr>
+		<tr class="rgb-blue-bg">
+			<td colspan="2"> <?php echo $class_time[1]["stt"]." - ".$class_time[1]["end"]; ?> </td>
+			<td colspan="2"> <?php echo $class_time[6]["stt"]." - ".$class_time[6]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="class-2-type" class="class-2" colspan="2"> </td>
+			<td id="class-7-type" class="class-7" colspan="2"> </td>
+		</tr>
+		<tr>
+			<td id="class-2-teacher" class="class-2"> </td>
+			<td id="class-2-gc-room" class="class-2"> </td>
+			<td id="class-7-teacher" class="class-7"> </td>
+			<td id="class-7-gc-room" class="class-7"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+		</tr>
+		<tr class="rgb-blue-bg">
+			<td colspan="2"> <?php echo $class_time[2]["stt"]." - ".$class_time[2]["end"]; ?> </td>
+			<td colspan="2"> <?php echo $class_time[7]["stt"]." - ".$class_time[7]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="class-3-type" class="class-3" colspan="2"> </td>
+			<td id="class-8-type" class="class-8" colspan="2"> </td>
+		</tr>
+		<tr>
+			<td id="class-3-teacher" class="class-3"> </td>
+			<td id="class-3-gc-room" class="class-3"> </td>
+			<td id="class-8-teacher" class="class-8"> </td>
+			<td id="class-8-gc-room" class="class-8"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+		</tr>
+
+		<tr class="rgb-blue-bg">
+			<td colspan="2"> <?php echo $class_time[3]["stt"]." - ".$class_time[3]["end"]; ?> </td>
+			<td colspan="2"> <?php echo $class_time[8]["stt"]." - ".$class_time[8]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="class-4-type" class="class-4" colspan="2"> </td>
+			<td id="class-9-type" class="class-9" colspan="2"> </td>
+		</tr>
+		<tr>
+			<td id="class-4-teacher" class="class-4"> </td>
+			<td id="class-4-gc-room" class="class-4"> </td>
+			<td id="class-9-teacher" class="class-9"> </td>
+			<td id="class-9-gc-room" class="class-9"> </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="rgb-red-txt"> Monday-Friday </td>
+			<td colspan="2" class="rgb-red-txt"> Monday-Thursday/GRADUATION-Friday </td>
+		</tr>
+		<tr class="rgb-blue-bg">
+			<td colspan="2"> <?php echo $class_time[4]["stt"]." - ".$class_time[4]["end"]; ?> </td>
+			<td colspan="2"> <?php echo $class_time[9]["stt"]." - ".$class_time[9]["end"]; ?> </td>
+		</tr>
+		<tr>
+			<td id="class-5-type" class="class-5" colspan="2"> </td>
+			<td id="class-10-type" class="class-10" colspan="2"> </td>
+		</tr>
+		<tr>
+			<td id="class-5-teacher" class="class-5"> </td>
+			<td id="class-5-gc-room" class="class-5"> </td>
+			<td id="class-10-teacher" class="class-10"> </td>
+			<td id="class-10-gc-room" class="class-10"> </td>
+		</tr>
+	</table>
+</div>
+<!-- expose php array to javascript -->
+<script>
+	var class_sched = <?php echo json_encode($data_id); ?>;
+	var student_meta = <?php echo json_encode($studentMetaArr)?>;
+</script>
 
 
