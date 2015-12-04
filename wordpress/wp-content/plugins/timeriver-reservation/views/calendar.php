@@ -56,9 +56,7 @@
 		margin: 5px;
 	}
 	
-</style>
-<!-- styling for printing by aaron-->
-<style type="text/css">
+	/* styling for printing by aaron */
 	.left-txt {
 		text-align: left;
 	}
@@ -131,10 +129,11 @@
 		font-size: 11px;
 		border-collapse: collapse;
 		text-align: center;
-		margin-bottom: 2px;
+		margin-bottom: 3px;
 	}
 
 	.print_view td {
+		white-space: nowrap;
 		height: 16px;
 		width: 174px;
 		border-top: 1px solid;
@@ -142,18 +141,18 @@
 		border-bottom: 1px solid;
 		border-left: 1px solid;
 		border-color: #000;
+		padding: 0 5px;
+		margin: 0;
 	}
 	
-	#buddyTeacher {
+	#buddyTeacher, #buddyTeacher-2 {
 		font-size: 10px;
 	}
 	
-	#studentName {
+	#studentName, #studentName-2 {
 		font-size: 15px;
 	}
-	
 </style>
-
 
 <?php 
 function json_safe_encode($data){
@@ -504,18 +503,25 @@ var post_id   = '<?php echo $post_id?>';
 		endDate = Date.parse(endDate);
 		endDate = new Date(endDate);
 		var secondData = "";
+		var nxtMonth = "";
 
 		if (booleanForSecondData == true) {
 			secondData = "-2";
 		}
 
+		if (strDate.getDate() > endDate.getDate()) {
+			nxtMonth = mText[strDate.getMonth() + 1];
+		}
+
 		$("#schedDate" + secondData).text(mText[strDate.getMonth()] + " " + strDate.getDate() +
-		" TO " + endDate.getDate() + ", '" + endDate.getYear().toString().slice(-2) +
+		" TO " + nxtMonth + " " + endDate.getDate() + ", '" + endDate.getYear().toString().slice(-2) +
 		" WEEKLY SCHEDULE");
 	}
 
 	//get single day class schedule
 	function getDaySchedule(classSched, booleanForSecondData) {
+		console.log("get day schedule: ");
+
 		var sched = [], y = 0, x = 0, stop = false;
 		var cubeNum =  0, budteach = "";
 
@@ -526,7 +532,7 @@ var post_id   = '<?php echo $post_id?>';
 				idArr["class-room"] = $("#"+idArr["class-room"]+" .block").text().match(/(.*[^\sx])/);
 				idArr["class-type"] = $("#"+idArr["class-type"]+" .block").text().match(/(.*[^\sx])/);
 				idArr["teacher"] = $("#"+idArr["teacher"]+" .block").text().match(/(.*[^\sx])/);
-				//console.log(y+": "+idArr);
+
 				//checks if data is not null && get data while removing the unecessary space and character
 				if (idArr["class-room"] != null) {
 					idArr["class-room"] = idArr["class-room"][0];
@@ -541,18 +547,25 @@ var post_id   = '<?php echo $post_id?>';
 				if (idArr["class-room"] != null && idArr["class-room"].match(/[a-zA-Z]/) != null) {
 					stop = true;
 				}
+
 				//get cubicle number
 				if (idArr["class-room"] != null && idArr["class-room"].indexOf("Cubicle") > -1 && cubeNum == 0) {
 					cubeNum = idArr["class-room"].replace(/[a-zA-Z]*\s/,"");	
 				}
 				//get buddy teacher
-				if (idArr["class-type"] == "REVIEW" || idArr["class-type"] == "REVIEW MM") {
-					budteach = idArr["teacher"];
+				var tmpStr = idArr["class-type"];
+				//idArr["class-type"] == "REVIEW" || idArr["class-type"] == "REVIEW MM"
+				if (tmpStr != null) {
+					if (tmpStr.toLowerCase().indexOf("review") > -1) {
+						budteach = idArr["teacher"];
+					}
 				}
-				if (idArr["class-room"] != null) {
+
+				if (idArr["class-room"] != null && idArr["class-type"] != null && idArr["teacher"] != null) {
 					sched[y++] = idArr;
 				}
 			}
+			console.log("stop: "+stop);
 			//if stop is true, it will stop looking for a class schedule
 			if (stop) {
 				break;
@@ -563,6 +576,8 @@ var post_id   = '<?php echo $post_id?>';
 		}
 
 		if (booleanForSecondData != true) {
+			console.log("get day schedule not que:");
+			console.log(sched);
 			$("#cubicleNum").text(cubeNum);
 			$("#buddyTeacher").text(budteach);
 		} else {
@@ -608,25 +623,43 @@ var post_id   = '<?php echo $post_id?>';
 			$("#stdType" + secondData).text("OLD STUDENT");
 		}
 
-		for(var y=1; y<sched.length; y++) {
-			if (sched[y]["class-type"].indexOf(" GC") > -1) {
+		var y = 1, add = 1;
+		if (sched[0] != null) {
+			y = 0;
+			add = 2;
+		}
+
+		while( y < sched.length ) {
+
+			if (sched[y]["class-type"] != null && sched[y]["class-type"].indexOf(" GC") > -1) {
 				++gcc;
 			} else {
 				++mmc;
 			}
-			$("#class-"+(y+1)+"-type" + secondData).text(sched[y]["class-type"]);
-			$("#class-"+(y+1)+"-teacher" + secondData).text(sched[y]["teacher"]);
-			if (sched[y]["class-room"].indexOf("Cubicle") == -1) {
-				$("#class-"+(y+1)+"-gc-room" + secondData).text(sched[y]["class-room"]);
+
+			if (sched[y]["class-type"] != null) {
+				$("#class-"+(y+add)+"-type" + secondData).text(sched[y]["class-type"]);
 			}
+
+			if (sched[y]["teacher"] != null) {
+				$("#class-"+(y+add)+"-teacher" + secondData).text(sched[y]["teacher"]);
+			}
+
+			if (sched[y]["class-room"] != null && sched[y]["class-room"].indexOf("Cubicle") == -1) {
+				$("#class-"+(y+add)+"-gc-room" + secondData).text(sched[y]["class-room"]);
+			}
+
+			y++;
 		}
+
+		var totalWeeks = ((endDate.getTime() - startDate.getTime()) / msDay) / 7;
 		var classCount = "<span class='rgb-red-txt'> "+mmc+" MM "+gcc+" GC </span> )";
 		if (booleanForSecondData != true) {
 			var studName = $("#choices_select option:selected").text();
-			$("#studentName").text(studName+" ( ").append(classCount);
+			$("#studentName").text(studName + " ( " + Math.round(totalWeeks) + " WKS.").append(classCount);
 		} else {
 			var studName = schedData["student_name"];
-			$("#studentName-2").text(studName+" ( ").append(classCount);
+			$("#studentName-2").text(studName + " ( " + Math.round(totalWeeks) + " WKS.").append(classCount);
 			$("#cubicleNum-2").text(schedData["cubicle_number"]);
 			$("#buddyTeacher-2").text(schedData["buddy_teacher"]);
 		}
@@ -642,7 +675,9 @@ var post_id   = '<?php echo $post_id?>';
 		*call function that gets single day class schedule
 		*assign data to new variable sched
 		*/
+
 		var sched = getDaySchedule(class_sched, false);
+
 		//calls the handler for data assigning in print view
 		setPrintContent(sched, false);
 
@@ -655,14 +690,14 @@ var post_id   = '<?php echo $post_id?>';
 
 		$("#print_view_container").css("display", "block");
 		//console.log(sched);
-// 		setTimeout(function() {
-// 			window.print()
-// 			$("#search_form").show();
-// 			$("#searchLabel").show();
-// 			$("#regist_box").show();
-// 			$(".wp-list-table").show();
-// 			$("#print_view_container").hide();
-// 		}, 300);
+		setTimeout(function() {
+			window.print()
+			$("#search_form").show();
+			$("#searchLabel").show();
+			$("#regist_box").show();
+			$(".wp-list-table").show();
+			$("#print_view_container").hide();
+		}, 300);
 	});
 
 	$("#printQueue").on('click', function () {
