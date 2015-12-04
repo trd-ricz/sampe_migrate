@@ -509,8 +509,10 @@ var post_id   = '<?php echo $post_id?>';
 			secondData = "-2";
 		}
 
-		if (strDate.getDate() > endDate.getDate()) {
+		if (strDate.getDate() > endDate.getDate() && strDate.getMonth() < 11) {
 			nxtMonth = mText[strDate.getMonth() + 1];
+		} else {
+			nxtMonth = mText[0];
 		}
 
 		$("#schedDate" + secondData).text(mText[strDate.getMonth()] + " " + strDate.getDate() +
