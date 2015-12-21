@@ -161,12 +161,13 @@
 	}
 
 	#teacherPrint td {
-		min-width: 55px;
+		max-width: 58px;
+		min-width: 58px;
 		text-align: left;
 		border: 1px solid #000;
 		padding: 0 1px;
 		margin: 0;
-		font-size: 11px;
+		font-size: 10px;
 	}
 	
 	.row-hide {
@@ -175,6 +176,11 @@
 
 	@media print {
 		#printNextPage {
+			display: none;
+		}
+	
+		#make_box--teacher {
+			z-index: 0;
 			display: none;
 		}
 	}
@@ -1149,10 +1155,7 @@ foreach ($studentIdArr as $id) {
 		</tr>
 	</table>
 </div>
-<?php 
-$teacherSchedule = array();
-$monthArr = array("January", "February", "March", "April", "May",
-"June", "July", "August", "September", "October", "November", "December");
+<?php
 $sttDate = $_REQUEST["stt"];
 $dateStt = date_create();
 $dateStt = strtotime($sttDate);
@@ -1161,12 +1164,10 @@ $endDate = $_REQUEST["end"];
 $dateEnd = date_create();
 $dateEnd = strtotime($endDate);
 
-$monthStt = date("n", $dateStt);
-$monthStt = $monthArr[$monthStt-1];
+$monthStt = date("F", $dateStt);
 $dayStt = date("d", $dateStt);
 
-$monthEnd = date("n", $dateEnd);
-$monthEnd = $monthArr[$monthEnd-1];
+$monthEnd = date("F", $dateEnd);;
 $dayEnd = date("d", $dateEnd);
 $year = date("Y", $dateEnd);
 
@@ -1178,76 +1179,85 @@ $args = array(
 	"posts_per_page" => 20000,
 	"order" => "post_date",
 	"order_by" => "DESC",
-	"post_type" => "reservation"
+	"post_type" => "reservation",
+	"post_status" => "publish"
 );
 
 //get reservation posts
 $posts = get_posts( $args );
 
-//initialize temporary array to hold post data
-$tmpArr = array();
+$scheduleArr = array();
 
+//get the teacher schedules from post
 foreach ($posts as $post) {
 	//get date from post title
+	$tmpArr = array();
 	$postDate = explode("_", $post->post_title)[0];
-	$teacherId = get_post_meta($post->ID, "teacher")[0][0];
+	$teacherCount = count( get_post_meta($post->ID, "teacher") );
 
 	//process posts that has teachers
-	if ( $postDate == $sttDate ) {
-		//get ids from post meta
-		$studentId = get_post_meta($post->ID, "student")[0][0];
-		$cschedId = get_post_meta($post->ID, "class_schedule")[0];
-		$croomId = get_post_meta($post->ID, "class_room")[0];
-		$ctypeId = get_post_meta($post->ID, "class_type")[0];
-	
-		//get student name
-		$tmpArr["student"] = get_user_by("id", $studentId)->user_login;
-		//get class schedule start time
-		$tmpArr["class_stt"] = get_post_meta($cschedId, "stt")[0];
-		//get teacher name
-		$teacherName = get_user_by("id", $teacherId)->user_login;
-	
-		//get class_room posts
-		$args["post_type"] = "class_room";
-		$tmpPosts = get_posts( $args );
-	
-		foreach ( $tmpPosts as $room ) {
-			if ( $room->ID == $croomId ) {
-				$tmpArr["class_room"] = $room->post_title;
-				break;
-			}
+	if ( $postDate == $sttDate && $teacherCount > 0 ) {
+		$tmp = explode("_", $post->post_title);
+		$teacher_name = $tmp[3];
+		$schedule_time = $tmp[1];
+		$student = array();
+		
+		//get students name
+		for ( $x = 4; $x < count( $tmp ); $x++ ) {
+			$student[] = $tmp[$x];
 		}
 	
-		//get class_type posts
+		//assign schedule to teacher & class time
+		$tmpArr["teacher_name"] = $teacher_name;
+		$tmpArr[$schedule_time] = array( "class_time" => $schedule_time, 
+		"room" => $tmp[2], "student" => $student);
+	
+		//get class type
+		$class_type_id = get_post_meta($post->ID, "class_type")[0];
 		$args["post_type"] = "class_type";
-		$tmpClassType = get_posts( $args );
+		$classtype_post = get_posts($args);
 	
-		//loop through class_type posts
-		foreach ( $tmpClassType as $classtype ) {
-			if ($classtype->ID == $ctypeId) {
-				$tmpArr["class_type"] = $classtype->post_title;
+		//get class type name
+		foreach ( $classtype_post as $ct_post ) {
+			if ( $ct_post->ID == $class_type_id ) {
+				if ( strpos($ct_post->post_title, " GC") > 0 ) {
+					$tmpArr["class_type"] = $ct_post->post_title;
+					$tmpArr["class_room"] = $tmp[2];
+				} else {
+					$tmpArr[$schedule_time]["class_type"] = $ct_post->post_title;
+					$tmpArr[$schedule_time]["class_room"] = $tmp[2];
+				}
 				break;
 			}
 		}
 	
-		//get class_type posts
-		$args["post_type"] = "class_schedule";
-		$tmpClassSched = get_posts( $args );
-		$tmpStt = 0;
-	
-		foreach ( $tmpClassSched as $sched ) {
-			if ( $sched->ID == $cschedId ) {
-				$tmpStt = $sched->post_title;
+		//check if teacher sched already exists
+		$exist = 0;
+		foreach ($scheduleArr as $key => $sched) {
+			$tmpTeacherName = $sched["teacher_name"];
+			$tmpClassTime = $sched[$schedule_time]["class_time"];
+		
+			/* checks if teacher has record & if class time schedule exist or not
+			 * condition: checks if teacher has record & if class time schedule does not exist
+			 * [true]: add schedule to existing teacher but with different time
+			 */
+			if ( $tmpTeacherName == $teacher_name ) {
+				$exist = 1;
+			
+				if ( $schedule_time != $tmpClassTime ) {
+					$scheduleArr[$key][$schedule_time] = $tmpArr[$schedule_time];
+				}
+			
 				break;
 			}
 		}
 	
-		$teacherSchedule[$teacherId]["teacher_name"] = $teacherName;
-		$teacherSchedule[$teacherId]["info"][$tmpStt] = $tmpArr;
+		//add teacher sched to array automatically if array is empty
+		if ( count( $scheduleArr ) == 0 || $exist == 0) {
+			$scheduleArr[] = $tmpArr;
+		}
 	}
 }
-//sort array in ascending order by key
-ksort( $teacherSchedule );
 
 $args = array(
 	"posts_per_page" => 20000,
@@ -1270,64 +1280,83 @@ foreach ( $tmpClassTime as $time ) {
 ?>
 
 <!-- teacher print view -->
+<?php 
+$rowCount = 0;
+$teacherList = get_users( array('role' => 'teacher') );
+?>
 <div id="teacher_printview">
 	<div style="text-align: center; font-size: 15px; padding: 5px 0;">
-		TEACHERS' SCHEDULE <?php echo strtoupper( $monthStt )." ".$dayStt." - ".$toMonth.$dayEnd.
+		TEACHERS' SCHEDULE <?php echo strtoupper( $monthStt )." ".$dayStt." - ".strtoupper( $toMonth ).$dayEnd.
 		", ".$year; ?> 
 	</div>
 	<table id="teacherPrint">
 		<tr>
 			<td> Name </td>
-			<?php foreach ($classTime as $time) {
-				echo "<td style='height: 18px;'>".$time['stt']." - ".$time['end']."</td>";
-				echo "<td style='text-align: center; height: 18px;'> class </td>";
-			} ?>
+			<?php foreach ( $classTime as $time ) { ?>
+				<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
+				<td style="text-align: center; height: 18px;"> class </td>
+			<?php } ?>
 		</tr>
-	
-		<?php 
-		$rowCount = 0;
-		$teacherList = get_users( array('role' => 'teacher') );
-		foreach ($teacherList as $teacher) {
-			if ( $rowCount < 15 ) {
-				echo "<tr class='row-show'>";
-			} else {
-				echo "<tr class='row-hide'>";
-			}
-		
-			$rowCount++;
-		
-			echo "<td>".$teacher->user_login."</td>";
-			foreach ($teacherSchedule as $sched) {
-				if ( $sched["teacher_name"] == $teacher->user_login ) {
-					for ( $x = 2; $x < 11; $x++ ) {
-						$studName = $sched["info"][$x]["student"];
-						$classroom = $sched["info"][$x]["class_room"];
-						$classroom = str_replace("Cubicle ", "#", $classroom);
-						$classroom = str_replace("RM ", "", $classroom);
-						echo "<td style='text-align: center; eight: 36px;'>".$studName." ".$classroom."</td>";
-						echo "<td style='text-align: center; height: 36px;'>".$sched["info"][$x]["class_type"]."</td>";
-					}
-					break;
-				}
-			}
-		
-			if ( $sched["teacher_name"] != $teacher->user_login ) {
-				for ( $x = 2; $x < 11; $x++ ) {
-					echo "<td style='height: 36px;'> </td>";
-					echo "<td style='text-align: center; height: 36px;'> </td>";
-				}
-			}
-			echo "</tr>";
-		} ?>
+		<?php foreach ( $teacherList as $teacher ) { ?>
+			<?php $display = true; ?>
+			<?php if ( $rowCount < 15 ) { ?>
+				<tr class="row-show">
+			<?php } else { ?>
+				<tr class="row-hide">
+			<?php } ?>
+			<?php foreach ( $scheduleArr as $sched ) { ?>
+				<?php if ( $teacher->user_login == $sched["teacher_name"] && $sched["class_type"] == "") { ?>
+					<?php $display = false; ?>
+					<td> <?php echo $sched["teacher_name"]; ?> </td> 
+					<?php for ( $x = 2; $x < 11; $x++ ) { ?>
+					<?php $room = $sched[$x]["class_room"]; 
+						$room = str_replace("cubicle ", " #", strtolower( $room )); 
+						$room = str_replace("rm", "", strtolower( $room )); 
+						$room = str_replace("# ", "#", $room); ?>
+					<td style="text-align: center;"> <?php echo $sched[$x]["student"][0].$room; ?> </td>
+					<td style="text-align: center;"> <?php echo $sched[$x]["class_type"]; ?> </td>
+					<?php } ?>
+					<?php break; ?>
+				<?php } elseif ( $teacher->user_login == $sched["teacher_name"] ) { ?>
+					<?php $display = false; break; ?>
+				<?php } ?>
+			<?php } ?>
+			<?php if ( $display ) { ?>
+				<td> <?php echo $teacher->user_login; ?> </td>
+				<?php for ( $x = 2; $x < 11; $x++ ) { ?>
+					<td> </td>
+					<td> </td>
+				<?php } ?>
+			<?php } ?>
+			<?php $rowCount++; ?>
+			</tr>
+		<?php } ?>
+		<?php foreach ( $scheduleArr as $sched ) { ?>
+			<tr class="row-hide">
+			<?php if ( $sched["class_type"] != "" ) { ?>
+				<td> <?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> </td> 
+				<?php for ( $x = 2; $x < 11; $x++ ) { ?>
+				<td colspan="2" style="text-align: center;"> 
+					<?php for ( $x2 = 0; $x2 < count($sched[$x]["student"]); $x2++ ) {
+						if ( $x2 > 0 ) { echo "; "; }
+						echo $sched[$x]["student"][$x2]; 
+					} ?> 
+				</td>
+				<?php } ?>
+			<?php } ?>
+			</tr>
+		<?php } ?>
 	</table>
 	<div style="text-align: right;">
 		<button id="printNextPage"> Print Next Page </button>
 	</div>
 </div>
+
+	<?php echo count($groupClass);?>
 <!-- expose php array to javascript -->
 <script>
-	var class_sched = <?php echo json_encode($data_id); ?>;
-	var student_meta = <?php echo json_encode($studentMetaArr)?>;
+	var class_sched = <?php echo json_encode($data_id); $data_id = null; ?>;
+	var student_meta = <?php echo json_encode($studentMetaArr); $studentMetaArr = null;?>;
 </script>
 
 
