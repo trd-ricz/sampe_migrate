@@ -173,6 +173,11 @@
 	.row-hide {
 		display: none;
 	}
+	
+	.widefat td,
+	.widefat th {
+		padding: 8px 0;
+	}
 
 	@media print {
 		#printNextPage {
@@ -255,7 +260,6 @@ var post_id   = '<?php echo $post_id?>';
 			var to_id   = $( this ).context.id;
 			var from_id = ui.draggable.context.id;
 			var change_target = to_id.split('--')[0];
-			
 			if (change_target == "row") {
 				update_box_row(from_id, to_id);
 			} else if (change_target == "col") {
@@ -281,27 +285,45 @@ var post_id   = '<?php echo $post_id?>';
 	// Update to Col
 	function update_box_col(from_id, to_id) {
 		var from_class_key = from_id.split('--')[0];
-		var ymd            = to_id.split('--')[1];
-		for ( var i=0; i < schedule_ids.length; i++ ) {
-			var to_id = schedule_ids[i] + '--' + ymd + '--' + from_class_key;
+		var time = to_id.split('--')[1];
+// 		var ymd            = to_id.split('--')[1];
+	
+		/* switch date & time  */
+		for ( var i=0; i < date_array.length; i++ ) {
+			console.log("schedule id: "+date_array[i]+"\n");
+			var to_id = time + '--' + date_array[i] + '--' + from_class_key;
 			update_box_single(from_id, to_id);
 		}
+	
+		/* original code*/
+// 		for ( var i=0; i < schedule_ids.length; i++ ) {
+// 			console.log("schedule id: "+schedule_ids[i]+"\n");
+// 			var to_id = schedule_ids[i] + '--' + ymd + '--' + from_class_key;
+// 			update_box_single(from_id, to_id);
+// 		}
 	}
 
 	// Update to Row
 	function update_box_row(from_id, to_id) {
 		var from_class_key = from_id.split('--')[0];
 		var ymd            = to_id.split('--')[1];
-		var schedule_id    = to_id.split('--')[2];
-		for ( var i=0; i < days_list[ymd].length; i++ ) {
-			var to_id = schedule_id + '--' + days_list[ymd][i] + '--' + from_class_key;
+// 		var schedule_id    = to_id.split('--')[2];
+
+		/*switch date & time*/
+		for ( var i=0; i < schedule_ids.length; i++ ) {
+			var to_id = schedule_ids[i] + '--' + ymd + '--' + from_class_key;
 			update_box_single(from_id, to_id);
 		}
+		
+		/*Original Code*/
+// 		for ( var i=0; i < days_list[ymd].length; i++ ) {
+// 			var to_id = schedule_id + '--' + days_list[ymd][i] + '--' + from_class_key;
+// 			update_box_single(from_id, to_id);
+// 		}
 	}
 	
 	// for class_schedule
 	function update_box_single(from_id, to_id) {
-
 		var fromDom = $("#" + from_id);
 		var toDom   = $("#" + to_id);
 
@@ -844,11 +866,15 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 	</tr>
 </table>
 </div>
-<?php $class_time = array(); $data_id = array(); $y=0; $stime; $etime;?>
+<?php $new_schedule = array(); $class_time = array(); $data_id = array(); 
+$date_arr = array(); $y=0; $stime; $etime; ?>
 <?php foreach ($cal_data as $week_key => $class_schedule_data) { ?>
 	<?php 
 	$week_stt_time = strtotime($week_key);
 	?>
+<!-- 	< ?php foreach ($class_schedule_data as $class_schedule => $class_date_data) {  -->
+<!-- 		echo $class_schedule.": </br>"; print_r($class_date_data); echo "</br>"; -->
+<!-- 	} ?> -->
 	<table class="wp-list-table widefat striped">
 		<tr>
 			<th rowspan="11">
@@ -856,83 +882,149 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 				<div id="row_ctl--<?php echo $week_key?>" class="droppable row_ctl_to">to</div>
 			</th>
 			<th>コマ</th>
-			<?php foreach ($week_title_key as $format => $whatday) { ?>
-				<?php $ymd = date("Y-m-d", strtotime($format, $week_stt_time)); ?>
-				<th><div id="col--<?php echo $ymd; ?>" class="droppable" ><?php echo $ymd . " " . $whatday; ?></div></th>
-			<?php }?>
+			<!-- display time / switch date time -->
+			<?php foreach ($class_schedule_data as $class_schedule => $class_date_data) { ?>
+				<th> 
+					<div id="col--<?php echo $class_schedule; ?>" class="droppable" >
+						<?php echo $mt_class_schedule[$class_schedule]["stt"]
+						."〜" .$mt_class_schedule[$class_schedule]["end"]; ?>
+					</div>
+				</th>
+			<?php } ?>
+			<!-- display date / original -->
+<!-- 			< ?php foreach ($week_title_key as $format => $whatday) { ?> -->
+<!-- 				< ?php $ymd = date("Y-m-d", strtotime($format, $week_stt_time)); ?> -->
+<!-- 				<th><div id="col--< ?php echo $ymd; ?>" class="droppable" >< ?php echo $ymd . " " . $whatday; ?></div></th> -->
+<!-- 			< ?php }?> -->
 		</tr>
-		<?php foreach ($class_schedule_data as $class_schedule => $class_date_data) { ?>
-		<?php $class_time[] = $time = $mt_class_schedule[$class_schedule]; ?>
+		<!-- re-order data / switch date & time -->
+		<?php foreach ($class_schedule_data as $class_schedule => $class_date_data) {
+			foreach ($class_date_data as $date => $data) {
+				$new_schedule[$date][$class_schedule] = $data;
+			}
+		} ?>
+	
+		<!-- display data / switch date & time -->	
+		<?php foreach ($new_schedule as $date_key => $schedule) { ?>
+		<?php $date_arr[] = $date_key; ?>
 		<tr>
 			<td>
-				<div id="row--<?php echo $week_key; ?>--<?php echo $class_schedule; ?>"  class="droppable" >
-				<?php
-					$stime = $mt_class_schedule[$class_schedule]["stt"];
-					$etime = $mt_class_schedule[$class_schedule]["end"];
-					echo $mt_class_schedule[$class_schedule]["post_title"] 
-					."<br/>  (" .$mt_class_schedule[$class_schedule]["stt"]
-					."〜  " .$mt_class_schedule[$class_schedule]["end"] . ")";
-				?>
+				<div id="row--<?php echo $date_key; ?>" class="droppable">
+					<?php echo $date_key; ?>
 				</div>
 			</td>
-			<?php foreach ($class_date_data as $ymd => $class_data) {
-				$box_prefix = "{$class_schedule}--{$ymd}";
-				//for printing
-				$ctime = "{$class_schedule}"; $cdate = "{$ymd}";
-				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room";
-				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type";
-				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher"; 
-			?>
+			<?php foreach ($schedule as $key_d => $d) { ?>
+			<?php $box_prefix = $key_d."--".$date_key; ?>
 				<td>
-					<div id="<?php echo "{$box_prefix}--class_room"?>" class="droppable class_room">
+					<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
 						<p>
-							<span class="block"><?php echo $mt_class_room[$class_data['class_room']]['post_title']; ?>
-								<?php if ($mt_class_room[$class_data['class_room']]['post_title']) {?>
-								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$class_data['class_room'];?>">x</a></span>
+							<span class="block"><?php echo $mt_class_room[$d['class_room']]['post_title']; ?>
+								<?php if ($mt_class_room[$d['class_room']]['post_title']) {?>
+								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$d['class_room'];?>">x</a></span>
 								<?php } ?>
 							</span>
 						</p>
 					</div>
-					<div id="<?php echo "{$box_prefix}--class_type"?>" class="droppable class_type">
+					<div id="<?php echo $box_prefix; ?>--class_type" class="droppable class_type">
 						<p>
-							<span class="block"><?php echo $mt_class_type[$class_data['class_type']]['post_title']; ?>
-								<?php if ($mt_class_type[$class_data['class_type']]['post_title']) {?>
+							<span class="block"><?php echo $mt_class_type[$d['class_type']]['post_title']; ?>
+								<?php if ($mt_class_type[$d['class_type']]['post_title']) {?>
 								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_type--".$class_data['class_type'];?>">x</a></span>
 								<?php } ?>
 							</span>
 						</p>
 					</div>
-					<div id="<?php echo "{$box_prefix}--teacher"?>" class="droppable teacher">
+					<div id="<?php echo $box_prefix; ?>--teacher" class="droppable teacher">
 						<p>
-						<?php 
-						foreach ((array)$class_data['teacher'] as $id) {
+						<?php
+						foreach ((array)$d['teacher'] as $id) { 
 							?>
 							<span class="block"><?php echo $mt_teacher[$id]['display_name']; ?>
 								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--teacher--".$id;?>">x</a></span>
 							</span>
-							<?php 
+							<?php
 						}
 						?>
 						</p>
 					</div>
-					<div id="<?php echo "{$box_prefix}--student"?>" class="droppable student">
-						<p>
-						<?php 
-						foreach ((array)$class_data['student'] as $id) {
-						?>
-							<span class="block"><?php echo $mt_student[$id]['display_name']; ?>
-								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--student--".$id;?>">x</a></span>
-							</span>
-							<?php 
-						}
-						?>
-						</p>
+					<div id="<?php echo $box_prefix; ?>--student" class="droppable student">
 					</div>
 				</td>
-				<?php $y++;?>
 			<?php } ?>
-		</tr>
+		</tr>	
 		<?php } ?>
+<!-- 		< ?php foreach ($class_schedule_data as $class_schedule => $class_date_data) { ?> -->
+<!-- 		< ?php $class_time[] = $time = $mt_class_schedule[$class_schedule]; ?> -->
+<!-- 		<tr> -->
+<!-- 			<td> -->
+<!-- 				<div id="row--< ?php echo $week_key; ?>--< ?php echo $class_schedule; ?>"  class="droppable" > -->
+<!-- 			< ?php -->
+<!-- 					$stime = $mt_class_schedule[$class_schedule]["stt"]; -->
+<!-- 					$etime = $mt_class_schedule[$class_schedule]["end"]; -->
+<!-- 					echo $mt_class_schedule[$class_schedule]["post_title"]  -->
+<!-- 					."<br/>  (" .$mt_class_schedule[$class_schedule]["stt"] -->
+<!-- 					."〜  " .$mt_class_schedule[$class_schedule]["end"] . ")"; -->
+<!-- 				?> -->
+<!-- 				</div> -->
+<!-- 			</td> -->
+<!-- 			< ?php foreach ($class_date_data as $ymd => $class_data) { -->
+<!-- 				$box_prefix = "{$class_schedule}--{$ymd}"; -->
+<!-- 				//for printing -->
+<!-- 				$ctime = "{$class_schedule}"; $cdate = "{$ymd}"; -->
+<!-- 				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room"; -->
+<!-- 				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type"; -->
+<!-- 				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher";  -->
+<!-- 			?> -->
+<!-- 				<td> -->
+<!-- 					<div id="< ?php echo "{$box_prefix}--class_room"?>" class="droppable class_room"> -->
+<!-- 						<p> -->
+<!-- 							<span class="block">< ?php echo $mt_class_room[$class_data['class_room']]['post_title']; ?> -->
+<!-- 								< ?php if ($mt_class_room[$class_data['class_room']]['post_title']) {?> -->
+<!-- 								<span><a class="box_del" id="< ?php echo "del--{$box_prefix}--class_room--".$class_data['class_room'];?>">x</a></span> -->
+<!-- 								< ?php } ?> -->
+<!-- 							</span> -->
+<!-- 						</p> -->
+<!-- 					</div> -->
+<!-- 					<div id="< ?php echo "{$box_prefix}--class_type"?>" class="droppable class_type"> -->
+<!-- 						<p> -->
+<!-- 							<span class="block">< ?php echo $mt_class_type[$class_data['class_type']]['post_title']; ?> -->
+<!-- 								< ?php if ($mt_class_type[$class_data['class_type']]['post_title']) {?> -->
+<!-- 								<span><a class="box_del" id="< ?php echo "del--{$box_prefix}--class_type--".$class_data['class_type'];?>">x</a></span> -->
+<!-- 								< ?php } ?> -->
+<!-- 							</span> -->
+<!-- 						</p> -->
+<!-- 					</div> -->
+<!-- 					<div id="< ?php echo "{$box_prefix}--teacher"?>" class="droppable teacher"> -->
+<!-- 						<p> -->
+<!-- 						< ?php  -->
+<!-- 						foreach ((array)$class_data['teacher'] as $id) { -->
+<!-- 							?> -->
+<!-- 							<span class="block">< ?php echo $mt_teacher[$id]['display_name']; ?> -->
+<!-- 								<span><a class="box_del" id="< ?php echo "del--{$box_prefix}--teacher--".$id;?>">x</a></span> -->
+<!-- 							</span> -->
+<!-- 							< ?php  -->
+<!-- 						} -->
+<!-- 						?> -->
+<!-- 						</p> -->
+<!-- 					</div> -->
+<!-- 					<div id="< ?php echo "{$box_prefix}--student"?>" class="droppable student"> -->
+<!-- 						<p> -->
+<!-- 						< ?php  -->
+<!-- 						foreach ((array)$class_data['student'] as $id) { -->
+<!-- 						?> -->
+<!-- 							<span class="block">< ?php echo $mt_student[$id]['display_name']; ?> -->
+<!-- 								<span><a class="box_del" id="< ?php echo "del--{$box_prefix}--student--".$id;?>">x</a></span> -->
+<!-- 							</span> -->
+<!-- 							< ?php  -->
+<!-- 						} -->
+<!-- 						?> -->
+<!-- 						</p> -->
+<!-- 					</div> -->
+<!-- 				</td> -->
+<!-- 				< ?php $y++;?> -->
+<!-- 			< ?php } ?> -->
+<!-- 		</tr> -->
+<!-- 		< ?php } ?> -->
 	</table>
 <?php } ?>
 <!-- php code to get students meta values -->
@@ -1357,6 +1449,7 @@ $teacherList = get_users( array('role' => 'teacher') );
 <script>
 	var class_sched = <?php echo json_encode($data_id); $data_id = null; ?>;
 	var student_meta = <?php echo json_encode($studentMetaArr); $studentMetaArr = null;?>;
+	var date_array = <?php echo json_encode($date_arr); $date_arr = null; ?>
 </script>
 
 
