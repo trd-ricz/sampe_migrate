@@ -872,9 +872,7 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 	<?php 
 	$week_stt_time = strtotime($week_key);
 	?>
-<!-- 	< ?php foreach ($class_schedule_data as $class_schedule => $class_date_data) {  -->
-<!-- 		echo $class_schedule.": </br>"; print_r($class_date_data); echo "</br>"; -->
-<!-- 	} ?> -->
+
 	<table class="wp-list-table widefat striped">
 		<tr>
 			<th rowspan="11">
@@ -891,14 +889,10 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 					</div>
 				</th>
 			<?php } ?>
-			<!-- display date / original -->
-<!-- 			< ?php foreach ($week_title_key as $format => $whatday) { ?> -->
-<!-- 				< ?php $ymd = date("Y-m-d", strtotime($format, $week_stt_time)); ?> -->
-<!-- 				<th><div id="col--< ?php echo $ymd; ?>" class="droppable" >< ?php echo $ymd . " " . $whatday; ?></div></th> -->
-<!-- 			< ?php }?> -->
 		</tr>
 		<!-- re-order data / switch date & time -->
 		<?php foreach ($class_schedule_data as $class_schedule => $class_date_data) {
+			$class_time[] = $time = $mt_class_schedule[$class_schedule];
 			foreach ($class_date_data as $date => $data) {
 				$new_schedule[$date][$class_schedule] = $data;
 			}
@@ -914,47 +908,53 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 				</div>
 			</td>
 			<?php foreach ($schedule as $key_d => $d) { ?>
-			<?php $box_prefix = $key_d."--".$date_key; ?>
-				<td>
-					<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
-						<p>
-							<span class="block"><?php echo $mt_class_room[$d['class_room']]['post_title']; ?>
-								<?php if ($mt_class_room[$d['class_room']]['post_title']) {?>
-								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$d['class_room'];?>">x</a></span>
-								<?php } ?>
-							</span>
-						</p>
-					</div>
-					<div id="<?php echo $box_prefix; ?>--class_type" class="droppable class_type">
-						<p>
-							<span class="block"><?php echo $mt_class_type[$d['class_type']]['post_title']; ?>
-								<?php if ($mt_class_type[$d['class_type']]['post_title']) {?>
-								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_type--".$class_data['class_type'];?>">x</a></span>
-								<?php } ?>
-							</span>
-						</p>
-					</div>
-					<div id="<?php echo $box_prefix; ?>--teacher" class="droppable teacher">
-						<p>
-						<?php
-						foreach ((array)$d['teacher'] as $id) { 
-							?>
-							<span class="block"><?php echo $mt_teacher[$id]['display_name']; ?>
-								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--teacher--".$id;?>">x</a></span>
-							</span>
-							<?php
-						}
+			<?php $box_prefix = $key_d."--".$date_key;
+				/* for printing */
+				$ctime = "{$key_d}"; $cdate = "{$date_key}";
+				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room";
+				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type";
+				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher"; 
+				$y++;
+			?>
+			<td>
+				<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
+					<p>
+						<span class="block"><?php echo $mt_class_room[$d['class_room']]['post_title']; ?>
+							<?php if ($mt_class_room[$d['class_room']]['post_title']) {?>
+							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$d['class_room'];?>">x</a></span>
+							<?php } ?>
+						</span>
+					</p>
+				</div>
+				<div id="<?php echo $box_prefix; ?>--class_type" class="droppable class_type">
+					<p>
+						<span class="block"><?php echo $mt_class_type[$d['class_type']]['post_title']; ?>
+							<?php if ($mt_class_type[$d['class_type']]['post_title']) {?>
+							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_type--".$class_data['class_type'];?>">x</a></span>
+							<?php } ?>
+						</span>
+					</p>
+				</div>
+				<div id="<?php echo $box_prefix; ?>--teacher" class="droppable teacher">
+					<p>
+					<?php
+					foreach ((array)$d['teacher'] as $id) { 
 						?>
-						</p>
-					</div>
-					<div id="<?php echo $box_prefix; ?>--student" class="droppable student">
-					</div>
-				</td>
+						<span class="block"><?php echo $mt_teacher[$id]['display_name']; ?>
+							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--teacher--".$id;?>">x</a></span>
+						</span>
+						<?php
+					}
+					?>
+					</p>
+				</div>
+				<div id="<?php echo $box_prefix; ?>--student" class="droppable student">
+				</div>
+			</td>
 			<?php } ?>
 		</tr>	
 		<?php } ?>
 <!-- 		< ?php foreach ($class_schedule_data as $class_schedule => $class_date_data) { ?> -->
-<!-- 		< ?php $class_time[] = $time = $mt_class_schedule[$class_schedule]; ?> -->
 <!-- 		<tr> -->
 <!-- 			<td> -->
 <!-- 				<div id="row--< ?php echo $week_key; ?>--< ?php echo $class_schedule; ?>"  class="droppable" > -->
