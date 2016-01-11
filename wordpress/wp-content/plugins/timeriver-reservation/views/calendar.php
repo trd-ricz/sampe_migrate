@@ -685,8 +685,8 @@ var post_id   = '<?php echo $post_id?>';
 			add = 2;
 		}
 
+		var tmpStrClass = "", classOccurence = 0;
 		while( y < sched.length ) {
-
 			if (sched[y]["class-type"] != null && sched[y]["class-type"].indexOf(" GC") > -1) {
 				++gcc;
 			} else {
@@ -949,82 +949,22 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 					</p>
 				</div>
 				<div id="<?php echo $box_prefix; ?>--student" class="droppable student">
+					<p>
+						<?php 
+						foreach ((array)$d['student'] as $id) {
+						?>
+							<span class="block"><?php echo $mt_student[$id]['display_name']; ?>
+								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--student--".$id;?>">x</a></span>
+							</span>
+							<?php 
+						}
+						?>
+					</p>
 				</div>
 			</td>
 			<?php } ?>
 		</tr>	
 		<?php } ?>
-<!-- 		< ?php foreach ($class_schedule_data as $class_schedule => $class_date_data) { ?> -->
-<!-- 		<tr> -->
-<!-- 			<td> -->
-<!-- 				<div id="row--< ?php echo $week_key; ?>--< ?php echo $class_schedule; ?>"  class="droppable" > -->
-<!-- 			< ?php -->
-<!-- 					$stime = $mt_class_schedule[$class_schedule]["stt"]; -->
-<!-- 					$etime = $mt_class_schedule[$class_schedule]["end"]; -->
-<!-- 					echo $mt_class_schedule[$class_schedule]["post_title"]  -->
-<!-- 					."<br/>  (" .$mt_class_schedule[$class_schedule]["stt"] -->
-<!-- 					."〜  " .$mt_class_schedule[$class_schedule]["end"] . ")"; -->
-<!-- 				?> -->
-<!-- 				</div> -->
-<!-- 			</td> -->
-<!-- 			< ?php foreach ($class_date_data as $ymd => $class_data) { -->
-<!-- 				$box_prefix = "{$class_schedule}--{$ymd}"; -->
-<!-- 				//for printing -->
-<!-- 				$ctime = "{$class_schedule}"; $cdate = "{$ymd}"; -->
-<!-- 				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room"; -->
-<!-- 				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type"; -->
-<!-- 				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher";  -->
-<!-- 			?> -->
-<!-- 				<td> -->
-<!-- 					<div id="< ?php echo "{$box_prefix}--class_room"?>" class="droppable class_room"> -->
-<!-- 						<p> -->
-<!-- 							<span class="block">< ?php echo $mt_class_room[$class_data['class_room']]['post_title']; ?> -->
-<!-- 								< ?php if ($mt_class_room[$class_data['class_room']]['post_title']) {?> -->
-<!-- 								<span><a class="box_del" id="< ?php echo "del--{$box_prefix}--class_room--".$class_data['class_room'];?>">x</a></span> -->
-<!-- 								< ?php } ?> -->
-<!-- 							</span> -->
-<!-- 						</p> -->
-<!-- 					</div> -->
-<!-- 					<div id="< ?php echo "{$box_prefix}--class_type"?>" class="droppable class_type"> -->
-<!-- 						<p> -->
-<!-- 							<span class="block">< ?php echo $mt_class_type[$class_data['class_type']]['post_title']; ?> -->
-<!-- 								< ?php if ($mt_class_type[$class_data['class_type']]['post_title']) {?> -->
-<!-- 								<span><a class="box_del" id="< ?php echo "del--{$box_prefix}--class_type--".$class_data['class_type'];?>">x</a></span> -->
-<!-- 								< ?php } ?> -->
-<!-- 							</span> -->
-<!-- 						</p> -->
-<!-- 					</div> -->
-<!-- 					<div id="< ?php echo "{$box_prefix}--teacher"?>" class="droppable teacher"> -->
-<!-- 						<p> -->
-<!-- 						< ?php  -->
-<!-- 						foreach ((array)$class_data['teacher'] as $id) { -->
-<!-- 							?> -->
-<!-- 							<span class="block">< ?php echo $mt_teacher[$id]['display_name']; ?> -->
-<!-- 								<span><a class="box_del" id="< ?php echo "del--{$box_prefix}--teacher--".$id;?>">x</a></span> -->
-<!-- 							</span> -->
-<!-- 							< ?php  -->
-<!-- 						} -->
-<!-- 						?> -->
-<!-- 						</p> -->
-<!-- 					</div> -->
-<!-- 					<div id="< ?php echo "{$box_prefix}--student"?>" class="droppable student"> -->
-<!-- 						<p> -->
-<!-- 						< ?php  -->
-<!-- 						foreach ((array)$class_data['student'] as $id) { -->
-<!-- 						?> -->
-<!-- 							<span class="block">< ?php echo $mt_student[$id]['display_name']; ?> -->
-<!-- 								<span><a class="box_del" id="< ?php echo "del--{$box_prefix}--student--".$id;?>">x</a></span> -->
-<!-- 							</span> -->
-<!-- 							< ?php  -->
-<!-- 						} -->
-<!-- 						?> -->
-<!-- 						</p> -->
-<!-- 					</div> -->
-<!-- 				</td> -->
-<!-- 				< ?php $y++;?> -->
-<!-- 			< ?php } ?> -->
-<!-- 		</tr> -->
-<!-- 		< ?php } ?> -->
 	</table>
 <?php } ?>
 <!-- php code to get students meta values -->
@@ -1247,6 +1187,7 @@ foreach ($studentIdArr as $id) {
 		</tr>
 	</table>
 </div>
+<!-- get teacher schedule data -->
 <?php
 $sttDate = $_REQUEST["stt"];
 $dateStt = date_create();
@@ -1383,7 +1324,7 @@ $teacherList = get_users( array('role' => 'teacher') );
 	</div>
 	<table id="teacherPrint">
 		<tr>
-			<td> Name </td>
+			<td style="padding-left: 5px;"> Name </td>
 			<?php foreach ( $classTime as $time ) { ?>
 				<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
 				<td style="text-align: center; height: 18px;"> class </td>
@@ -1399,7 +1340,7 @@ $teacherList = get_users( array('role' => 'teacher') );
 			<?php foreach ( $scheduleArr as $sched ) { ?>
 				<?php if ( $teacher->user_login == $sched["teacher_name"] && $sched["class_type"] == "") { ?>
 					<?php $display = false; ?>
-					<td> <?php echo $sched["teacher_name"]; ?> </td> 
+					<td style="padding-left: 5px;" > <?php echo $sched["teacher_name"]; ?> </td> 
 					<?php for ( $x = 2; $x < 11; $x++ ) { ?>
 					<?php $room = $sched[$x]["class_room"]; 
 						$room = str_replace("cubicle ", " #", strtolower( $room )); 
@@ -1414,7 +1355,7 @@ $teacherList = get_users( array('role' => 'teacher') );
 				<?php } ?>
 			<?php } ?>
 			<?php if ( $display ) { ?>
-				<td> <?php echo $teacher->user_login; ?> </td>
+				<td style="padding-left: 5px;"> <?php echo $teacher->user_login; ?> </td>
 				<?php for ( $x = 2; $x < 11; $x++ ) { ?>
 					<td> </td>
 					<td> </td>
@@ -1426,7 +1367,7 @@ $teacherList = get_users( array('role' => 'teacher') );
 		<?php foreach ( $scheduleArr as $sched ) { ?>
 			<tr class="row-hide">
 			<?php if ( $sched["class_type"] != "" ) { ?>
-				<td> <?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> </td> 
+				<td style="padding-left: 5px;"> <?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> </td> 
 				<?php for ( $x = 2; $x < 11; $x++ ) { ?>
 				<td colspan="2" style="text-align: center;"> 
 					<?php for ( $x2 = 0; $x2 < count($sched[$x]["student"]); $x2++ ) {
@@ -1444,7 +1385,6 @@ $teacherList = get_users( array('role' => 'teacher') );
 	</div>
 </div>
 
-	<?php echo count($groupClass);?>
 <!-- expose php array to javascript -->
 <script>
 	var class_sched = <?php echo json_encode($data_id); $data_id = null; ?>;
