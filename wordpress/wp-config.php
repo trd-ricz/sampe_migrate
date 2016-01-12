@@ -29,13 +29,13 @@ define('FS_METHOD', 'direct');
 
 // ** MySQL 設定 - この情報はホスティング先から入手してください。 ** //
 /** WordPress のためのデータベース名 */
-define('DB_NAME', 'firstenglish');
+define('DB_NAME', 'fsys');
 
 /** MySQL データベースのユーザー名 */
 define('DB_USER', 'root');
 
 /** MySQL データベースのパスワード */
-define('DB_PASSWORD', 'trscebu123');
+define('DB_PASSWORD', '');
 
 /** MySQL のホスト名 */
 define('DB_HOST', 'localhost');

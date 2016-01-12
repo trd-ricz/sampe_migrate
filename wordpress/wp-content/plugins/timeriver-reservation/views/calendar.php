@@ -216,6 +216,14 @@ var post_type = '<?php echo $post_type?>';
 // post_id
 var post_id   = '<?php echo $post_id?>';
 
+// tmpClassIds
+var tmpClassIds = "";
+
+//colToUpdate
+var colToUpdate = "";
+
+//allowClassInc
+var allowClassInc = true;
 
 (function($){$(function() {
 
@@ -287,12 +295,26 @@ var post_id   = '<?php echo $post_id?>';
 		var from_class_key = from_id.split('--')[0];
 		var time = to_id.split('--')[1];
 // 		var ymd            = to_id.split('--')[1];
-	
+
 		/* switch date & time  */
+		var index_exist = false;
 		for ( var i=0; i < date_array.length; i++ ) {
-			console.log("schedule id: "+date_array[i]+"\n");
 			var to_id = time + '--' + date_array[i] + '--' + from_class_key;
+			//check if class already exist
+			for (var index in incClassList) {
+				if (from_id.split("--")[1] == index) {
+					index_exist = true;
+					break;
+				}
+			}
+		
 			update_box_single(from_id, to_id);
+		}
+		if (!index_exist) {
+			incClassList[from_id.split("--")[1]] = 0;
+		} else {
+			++incClassList[from_id.split("--")[1]];
+			$(".increment-"+from_id.split("--")[1]).css("display", "inline");
 		}
 	
 		/* original code*/
@@ -314,7 +336,7 @@ var post_id   = '<?php echo $post_id?>';
 			var to_id = schedule_ids[i] + '--' + ymd + '--' + from_class_key;
 			update_box_single(from_id, to_id);
 		}
-		
+	
 		/*Original Code*/
 // 		for ( var i=0; i < days_list[ymd].length; i++ ) {
 // 			var to_id = schedule_id + '--' + days_list[ymd][i] + '--' + from_class_key;
@@ -326,14 +348,14 @@ var post_id   = '<?php echo $post_id?>';
 	function update_box_single(from_id, to_id) {
 		var fromDom = $("#" + from_id);
 		var toDom   = $("#" + to_id);
-
+	
 		var class_name_draggable = from_id.split( '--' )[0];
 		var class_name_droppable = to_id.split( '--' )[2];
 		if (class_name_draggable != class_name_droppable) { return; }
 
 		//console.log(fromDom[0].id.split( '_' ));
 		var class_schedule_pid = to_id.split( '--' )[0];
-		
+	
 		var ymd                = to_id.split( '--' )[1];
 		var key                = from_id.split( '--' )[0];
 		var val                = from_id.split( '--' )[1];
@@ -396,7 +418,22 @@ var post_id   = '<?php echo $post_id?>';
 			del_link.click(del_box);
 			var del_span = $('<span></span>');
 			del_span.append(del_link);
-			var titleDom = $('<span class="block">' + data["box_text"] + '</span>');
+			//for same class incrementation
+			var box_text = data["box_text"];
+			//checks if class id is already in incClassList
+			for (var index in incClassList) {
+				if (index == data["post_id"] && incClassList[index] > 0) {
+					//creates the span for increment number for class & display it
+					var spanIncNumber = '<span class="increment-'+data["post_id"]+'"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
+					break;
+				} else {
+					//create the span for increment number for class but hidden
+					var spanIncNumber = '<span class="increment-'+data["post_id"]+'" style="display: none;"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
+				}
+			}
+			
+			//end for same class incrementation
+			var titleDom = $('<span class="block">' + box_text + spanIncNumber +'</span>');
 			titleDom.append(del_span);
 			// if teacher or student
 			if (data["post_type"] == "class_room" 
@@ -410,8 +447,9 @@ var post_id   = '<?php echo $post_id?>';
 		} else if (data["status"] == "error") {
 			var statusDom = $('<span class="show_status">Ｘ '+ data["mess"] +'</span>');
 		}
-		
+	
 		toDom.find( "p" ).append(statusDom);
+	
 		statusDom.fadeOut(10000);
 	}
 	
@@ -807,6 +845,14 @@ var post_id   = '<?php echo $post_id?>';
 		window.print();
 	});
 
+	console.log("incClassList: ");
+	console.log(incClassList);
+	for (var index in incClassList) {
+		if (incClassList[index] > 0) {
+			$(".increment-"+index).css("display", "inline");
+		}
+	}
+
 });})(jQuery);
 </script>
 
@@ -866,8 +912,8 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 	</tr>
 </table>
 </div>
-<?php $new_schedule = array(); $class_time = array(); $data_id = array(); 
-$date_arr = array(); $y=0; $stime; $etime; ?>
+<?php $new_schedule = array(); $class_time = array(); $data_id = array(); $tmpClassList = array();
+$date_arr = array(); $incNumber = array(); $y=0; $stime; $etime; $allowAddClassList = 1; ?>
 <?php foreach ($cal_data as $week_key => $class_schedule_data) { ?>
 	<?php 
 	$week_stt_time = strtotime($week_key);
@@ -881,13 +927,17 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 			</th>
 			<th>コマ</th>
 			<!-- display time / switch date time -->
+			<?php $incCount = 1; ?>
 			<?php foreach ($class_schedule_data as $class_schedule => $class_date_data) { ?>
-				<th> 
-					<div id="col--<?php echo $class_schedule; ?>" class="droppable" >
-						<?php echo $mt_class_schedule[$class_schedule]["stt"]
-						."〜" .$mt_class_schedule[$class_schedule]["end"]; ?>
-					</div>
-				</th>
+				<?php if ($class_schedule != 11) {
+					$incNumber[$class_schedule] = $incCount++;
+				} ?>
+			<th> 
+				<div id="col--<?php echo $class_schedule; ?>" class="droppable" >
+					<?php echo $mt_class_schedule[$class_schedule]["stt"]
+					."〜" .$mt_class_schedule[$class_schedule]["end"]; ?>
+				</div>
+			</th>
 			<?php } ?>
 		</tr>
 		<!-- re-order data / switch date & time -->
@@ -901,6 +951,7 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 		<!-- display data / switch date & time -->	
 		<?php foreach ($new_schedule as $date_key => $schedule) { ?>
 		<?php $date_arr[] = $date_key; ?>
+		<?php if (count($tmpClassList) > 0) { $allowAddClassList = 0; } ?>
 		<tr>
 			<td>
 				<div id="row--<?php echo $date_key; ?>" class="droppable">
@@ -908,21 +959,21 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 				</div>
 			</td>
 			<?php foreach ($schedule as $key_d => $d) { ?>
-			<?php $box_prefix = $key_d."--".$date_key;
-				/* for printing */
-				$ctime = "{$key_d}"; $cdate = "{$date_key}";
-				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room";
-				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type";
-				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher"; 
-				$y++;
-			?>
+				<?php $index = 0; ?>
+				<?php $box_prefix = $key_d."--".$date_key; ?>
+				<?php /* for printing */ ?>
+				<?php $ctime = "{$key_d}"; $cdate = "{$date_key}"; ?>
+				<?php $data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room"; ?>
+				<?php $data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type"; ?>
+				<?php $data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher"; ?>
+				<?php $y++; ?>
 			<td>
 				<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
 					<p>
 						<span class="block"><?php echo $mt_class_room[$d['class_room']]['post_title']; ?>
-							<?php if ($mt_class_room[$d['class_room']]['post_title']) {?>
+						<?php if ($mt_class_room[$d['class_room']]['post_title']) {?>
 							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$d['class_room'];?>">x</a></span>
-							<?php } ?>
+						<?php } ?>
 						</span>
 					</p>
 				</div>
@@ -930,6 +981,18 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 					<p>
 						<span class="block"><?php echo $mt_class_type[$d['class_type']]['post_title']; ?>
 							<?php if ($mt_class_type[$d['class_type']]['post_title']) {?>
+								<?php if ($allowAddClassList == 1) { ?>
+									<?php $index = $d['class_type']; $index_exist = false; ?>
+									<?php foreach ($tmpClassList as $i => $i_val) {
+										if ($i == $index) {
+											$tmpClassList[$i] = ++$tmpClassList[$i];
+											$index_exist = true;
+											break;
+										}
+									} 
+									if ($index_exist == false) { $tmpClassList[$index] = 0; } ?>
+								<?php } ?>
+							<span class="increment-<?php echo $d['class_type']; ?>" style="display: none;"> <?php $incIndex = explode("--", $box_prefix)[0]; echo $incNumber[$incIndex]; ?> </span>
 							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_type--".$class_data['class_type'];?>">x</a></span>
 							<?php } ?>
 						</span>
@@ -967,6 +1030,7 @@ $date_arr = array(); $y=0; $stime; $etime; ?>
 		<?php } ?>
 	</table>
 <?php } ?>
+
 <!-- php code to get students meta values -->
 <?php
 $studentIdArr = get_users(array('role' => 'student', 'fields' => 'id'));
@@ -1385,11 +1449,13 @@ $teacherList = get_users( array('role' => 'teacher') );
 	</div>
 </div>
 
-<!-- expose php array to javascript -->
+<!-- expose php arrays to javascript -->
 <script>
 	var class_sched = <?php echo json_encode($data_id); $data_id = null; ?>;
 	var student_meta = <?php echo json_encode($studentMetaArr); $studentMetaArr = null;?>;
-	var date_array = <?php echo json_encode($date_arr); $date_arr = null; ?>
+	var date_array = <?php echo json_encode($date_arr); $date_arr = null; ?>;
+	var incClassList = <?php echo json_encode($tmpClassList); $tmpClassList = null; ?>;
+	var incNumber = <?php echo json_encode($incNumber); $incNumber = null; ?>;
 </script>
 
 
