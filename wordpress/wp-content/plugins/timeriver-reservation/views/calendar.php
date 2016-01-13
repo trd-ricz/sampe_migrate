@@ -298,25 +298,62 @@ var allowClassInc = true;
 
 		/* switch date & time  */
 		var index_exist = false;
+		var prev_class_id = 0;
+		var prev_class_id_exist = false;
+		var allowIncIfExist = true;
+		var allowDecrement = true;
 		for ( var i=0; i < date_array.length; i++ ) {
 			var to_id = time + '--' + date_array[i] + '--' + from_class_key;
-			//check if class already exist
+		
+			//decrease the count for class_type that exist on same day when replaced
+			var class_name = $("#"+to_id+" .block").text();
+			if (prev_class_id == 0 && class_name.indexOf("x") > -1) {
+				prev_class_id = $("#"+to_id+" .class-number").attr("class").split(" ")[1];
+			}
+		
+			//check if class already exist in schedule
 			for (var index in incClassList) {
+				//check if class already exist, to allow class count increment
 				if (from_id.split("--")[1] == index) {
 					index_exist = true;
-					break;
+				}
+			
+				//check if class exist; also check if class to replace is not the same class as existing;
+				if (prev_class_id == index && from_id.split("--")[1] == prev_class_id) {
+					//set flag for allow increment to false;
+					allowIncIfExist = false;
+				}
+			
+				//checks if class already exist; check if class will be replaced; checks if class count decrement is allowed
+				if (prev_class_id == index && from_id.split("--")[1] != prev_class_id && allowDecrement == true) {
+					//decrement class count
+					--incClassList[index];
+					//disable class count decrement
+					allowDecrement = false;
+				
+					if (incClassList[index] == 0) {
+						alert("."+prev_class_id);
+						$("."+prev_class_id).css("display", "none");
+					}
 				}
 			}
 		
 			update_box_single(from_id, to_id);
 		}
+	
+		//if class does not exist in schedule add to incClassList 
 		if (!index_exist) {
 			incClassList[from_id.split("--")[1]] = 0;
-		} else {
-			++incClassList[from_id.split("--")[1]];
-			$(".increment-"+from_id.split("--")[1]).css("display", "inline");
+		} else { //if class exist increment value to know how many times exist in schedule
+			if (allowIncIfExist) {
+				++incClassList[from_id.split("--")[1]];
+				//show class number
+				$("."+from_id.split("--")[1]).css("display", "inline");
+			}
 		}
 	
+		console.log("update_box_col incClassList: ");
+		console.log(incClassList);
 		/* original code*/
 // 		for ( var i=0; i < schedule_ids.length; i++ ) {
 // 			console.log("schedule id: "+schedule_ids[i]+"\n");
@@ -424,11 +461,11 @@ var allowClassInc = true;
 			for (var index in incClassList) {
 				if (index == data["post_id"] && incClassList[index] > 0) {
 					//creates the span for increment number for class & display it
-					var spanIncNumber = '<span class="increment-'+data["post_id"]+'"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
+					var spanIncNumber = '<span class="class-number '+data["post_id"]+'"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
 					break;
 				} else {
 					//create the span for increment number for class but hidden
-					var spanIncNumber = '<span class="increment-'+data["post_id"]+'" style="display: none;"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
+					var spanIncNumber = '<span class="class-number '+data["post_id"]+'" style="display: none;"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
 				}
 			}
 			
@@ -845,13 +882,14 @@ var allowClassInc = true;
 		window.print();
 	});
 
-	console.log("incClassList: ");
-	console.log(incClassList);
 	for (var index in incClassList) {
 		if (incClassList[index] > 0) {
-			$(".increment-"+index).css("display", "inline");
+			$("."+index).css("display", "inline");
 		}
 	}
+
+	console.log("on load incClassList: ");
+	console.log(incClassList);
 
 });})(jQuery);
 </script>
@@ -981,18 +1019,18 @@ $date_arr = array(); $incNumber = array(); $y=0; $stime; $etime; $allowAddClassL
 					<p>
 						<span class="block"><?php echo $mt_class_type[$d['class_type']]['post_title']; ?>
 							<?php if ($mt_class_type[$d['class_type']]['post_title']) {?>
-								<?php if ($allowAddClassList == 1) { ?>
-									<?php $index = $d['class_type']; $index_exist = false; ?>
-									<?php foreach ($tmpClassList as $i => $i_val) {
+								<?php if ($allowAddClassList == 1) {
+									$index = $d['class_type']; $index_exist = false;
+									foreach ($tmpClassList as $i => $i_val) {
 										if ($i == $index) {
 											$tmpClassList[$i] = ++$tmpClassList[$i];
 											$index_exist = true;
 											break;
 										}
 									} 
-									if ($index_exist == false) { $tmpClassList[$index] = 0; } ?>
-								<?php } ?>
-							<span class="increment-<?php echo $d['class_type']; ?>" style="display: none;"> <?php $incIndex = explode("--", $box_prefix)[0]; echo $incNumber[$incIndex]; ?> </span>
+									if ($index_exist == false) { $tmpClassList[$index] = 0; }
+								} ?>
+							<span class="class-number <?php echo $d['class_type']; ?>" style="display: none;"> <?php $incIndex = explode("--", $box_prefix)[0]; echo $incNumber[$incIndex]; ?> </span>
 							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_type--".$class_data['class_type'];?>">x</a></span>
 							<?php } ?>
 						</span>
