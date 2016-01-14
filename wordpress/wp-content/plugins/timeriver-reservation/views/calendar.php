@@ -111,10 +111,10 @@
 	}
 
 	#print_view_container, #teacher_printview {
-		position: fixed;
-		z-index: 500000;
+		position: relative;
+		/*z-index: 500000;*/
 		width: 100%;
-		height: 100%;
+		height: auto;
 		margin: auto;
 		background-color: rgb(254,254,254);
 		-webkit-print-color-adjust: exact;
@@ -169,18 +169,33 @@
 		margin: 0;
 		font-size: 10px;
 	}
-	
-	.row-hide {
-		display: none;
-	}
-	
+
 	.widefat td,
 	.widefat th {
 		padding: 8px 0;
 	}
 
+	#printFirstPage, 
+	#printSecondPage {
+		display: inline-block;
+	}
+
 	@media print {
-		#printNextPage {
+		#regist_box, 
+		#adminmenumain {
+			display: none !important;
+		}
+	
+		#wpcontent {
+			margin-left: 0 !important;
+			padding-left: 0 !important;
+		}
+	
+		html.wp-toolbar {
+			padding-top: 0 !important;
+		}
+	
+		#teacherPrintControls {
 			display: none;
 		}
 	
@@ -295,7 +310,7 @@ var allowClassInc = true;
 		var from_class_key = from_id.split('--')[0];
 		var time = to_id.split('--')[1];
 // 		var ymd            = to_id.split('--')[1];
-
+	
 		/* switch date & time  */
 		var index_exist = false;
 		var prev_class_id = 0;
@@ -306,54 +321,57 @@ var allowClassInc = true;
 			var to_id = time + '--' + date_array[i] + '--' + from_class_key;
 		
 			//decrease the count for class_type that exist on same day when replaced
-			var class_name = $("#"+to_id+" .block").text();
-			if (prev_class_id == 0 && class_name.indexOf("x") > -1) {
-				prev_class_id = $("#"+to_id+" .class-number").attr("class").split(" ")[1];
-			}
-		
-			//check if class already exist in schedule
-			for (var index in incClassList) {
-				//check if class already exist, to allow class count increment
-				if (from_id.split("--")[1] == index) {
-					index_exist = true;
+			if (from_id.split('--')[0] == "class_type") {
+				var class_name = $("#"+to_id+" .block").text();
+				if (prev_class_id == 0 && class_name.indexOf("x") > -1) {
+					prev_class_id = $("#"+to_id+" .class-number").attr("class").split(" ")[1];
 				}
 			
-				//check if class exist; also check if class to replace is not the same class as existing;
-				if (prev_class_id == index && from_id.split("--")[1] == prev_class_id) {
-					//set flag for allow increment to false;
-					allowIncIfExist = false;
-				}
-			
-				//checks if class already exist; check if class will be replaced; checks if class count decrement is allowed
-				if (prev_class_id == index && from_id.split("--")[1] != prev_class_id && allowDecrement == true) {
-					//decrement class count
-					--incClassList[index];
-					//disable class count decrement
-					allowDecrement = false;
+				//check if class already exist in schedule
+				for (var index in incClassList) {
+					//check if class already exist, to allow class count increment
+					if (from_id.split("--")[1] == index) {
+						index_exist = true;
+					}
 				
-					if (incClassList[index] == 0) {
-						alert("."+prev_class_id);
-						$("."+prev_class_id).css("display", "none");
+					//check if class exist; also check if class to replace is not the same class as existing;
+					if (prev_class_id == index && from_id.split("--")[1] == prev_class_id) {
+						//set flag for allow increment to false;
+						allowIncIfExist = false;
+					}
+				
+					//checks if class already exist; check if class will be replaced; checks if class count decrement is allowed
+					if (prev_class_id == index && from_id.split("--")[1] != prev_class_id && allowDecrement == true) {
+						//decrement class count
+						--incClassList[index];
+						//disable class count decrement
+						allowDecrement = false;
+					
+						//checks if previous class count == 0
+						if (incClassList[index] == 0) {
+							//hide class number of previous class
+							$("."+prev_class_id).css("display", "none");
+						}
 					}
 				}
 			}
 		
 			update_box_single(from_id, to_id);
 		}
-	
-		//if class does not exist in schedule add to incClassList 
-		if (!index_exist) {
-			incClassList[from_id.split("--")[1]] = 0;
-		} else { //if class exist increment value to know how many times exist in schedule
-			if (allowIncIfExist) {
-				++incClassList[from_id.split("--")[1]];
-				//show class number
-				$("."+from_id.split("--")[1]).css("display", "inline");
+
+		if (from_id.split('--')[0] == "class_type") {
+			//if class does not exist in schedule add to incClassList 
+			if (!index_exist) {
+				incClassList[from_id.split("--")[1]] = 0;
+			} else { //if class exist increment value to know how many times exist in schedule
+				if (allowIncIfExist) {
+					++incClassList[from_id.split("--")[1]];
+					//show class number
+					$("."+from_id.split("--")[1]).css("display", "inline");
+				}
 			}
 		}
 	
-		console.log("update_box_col incClassList: ");
-		console.log(incClassList);
 		/* original code*/
 // 		for ( var i=0; i < schedule_ids.length; i++ ) {
 // 			console.log("schedule id: "+schedule_ids[i]+"\n");
@@ -444,7 +462,8 @@ var allowClassInc = true;
 	*/
 	function update_box_info(data) {
 		console.log(data["to_id"]);
-		
+		console.log("update_box_info");
+		console.log(data);
 		var toDom = $("#" + data["to_id"]);
 		if (data["status"] == "ok") { 
 			// delete
@@ -457,20 +476,25 @@ var allowClassInc = true;
 			del_span.append(del_link);
 			//for same class incrementation
 			var box_text = data["box_text"];
-			//checks if class id is already in incClassList
-			for (var index in incClassList) {
-				if (index == data["post_id"] && incClassList[index] > 0) {
-					//creates the span for increment number for class & display it
-					var spanIncNumber = '<span class="class-number '+data["post_id"]+'"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
-					break;
-				} else {
-					//create the span for increment number for class but hidden
-					var spanIncNumber = '<span class="class-number '+data["post_id"]+'" style="display: none;"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
+			if (data["post_type"] == "class_type") {
+				//checks if class id is already in incClassList
+				for (var index in incClassList) {
+					if (index == data["post_id"] && incClassList[index] > 0) {
+						//creates the span for class number & display it
+						var spanIncNumber = '<span class="class-number '+data["post_id"]+'"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
+						break;
+					} else {
+						//create the span for class number but hidden
+						var spanIncNumber = '<span class="class-number '+data["post_id"]+'" style="display: none;"> '+incNumber[data["to_id"].split('--')[0]]+' </span>';
+					}
 				}
 			}
-			
 			//end for same class incrementation
-			var titleDom = $('<span class="block">' + box_text + spanIncNumber +'</span>');
+			if (data["post_type"] == "class_type") {
+				var titleDom = $('<span class="block">' + box_text + spanIncNumber +'</span>');
+			} else {
+				var titleDom = $('<span class="block">' + box_text +'</span>');
+			}
 			titleDom.append(del_span);
 			// if teacher or student
 			if (data["post_type"] == "class_room" 
@@ -759,30 +783,92 @@ var allowClassInc = true;
 			y = 0;
 			add = 2;
 		}
-
-		var tmpStrClass = "", classOccurence = 0;
+	
+		//check if class already added to repeated class list
+		function checkNumClassExist(array, val) {
+			var ret = false;
+			for (var index in array) {
+				if (array[index] == val) {
+					ret = true;
+					break;
+				}
+			}
+			return ret;
+		}
+	
+		//holds the name of classes on the schedule
+		var tmpStrClass = "";
+		//container for repeated class
+		var showNumClass = [];
 		while( y < sched.length ) {
 			if (sched[y]["class-type"] != null && sched[y]["class-type"].indexOf(" GC") > -1) {
 				++gcc;
 			} else {
 				++mmc;
 			}
-
+		
+			//handling for class type print display
 			if (sched[y]["class-type"] != null) {
-				$("#class-"+(y+add)+"-type" + secondData).text(sched[y]["class-type"]);
+				var tmpArr = sched[y]["class-type"].split(' ');
+				var tmpClassNumber = "", tmpName = "";
+				//retrieve class name & class number
+				for (var tmpx = 0; tmpx < tmpArr.length; tmpx++) {
+					if (tmpx != (tmpArr.length - 1)) {
+						tmpName += tmpArr[tmpx];
+					} else {
+						tmpClassNumber = tmpArr[tmpx];
+					}
+					if ((tmpx + 1) < (tmpArr.length - 1)) {
+						tmpName += " ";
+					}
+				}
+			
+				//remove tab spacing from class name
+				tmpName = tmpName.replace(/\t/g, "");
+				//create a span that will display the class number
+				var tmpSpan = '<span class="'+booleanForSecondData+"-"+tmpName.replace(" ", "_")+'" style="display: none;"> '+ tmpClassNumber +' </span>';
+				//set class name display
+				$("#class-"+(y+add)+"-type" + secondData).text(tmpName);
+				//add span for class number display
+				$("#class-"+(y+add)+"-type" + secondData).append(tmpSpan);
+			
+				//check if class is already added to class list for schedule
+				if (tmpStrClass.indexOf(tmpName.replace(" ", "-")) == -1) {
+					tmpStrClass += tmpName.replace(" ", "-") + "_";
+				} else {
+					//checks if class repeats
+					if (!checkNumClassExist(showNumClass, tmpName.replace(" ", "-"))) {
+						showNumClass.push(tmpName.replace(" ", "_"));
+					}
+				}
 			}
-
+		
+			//handling for teacher name print display
 			if (sched[y]["teacher"] != null) {
 				$("#class-"+(y+add)+"-teacher" + secondData).text(sched[y]["teacher"]);
 			}
-
+		
+			//handling for class room print display
 			if (sched[y]["class-room"] != null && sched[y]["class-room"].indexOf("Cubicle") == -1) {
 				$("#class-"+(y+add)+"-gc-room" + secondData).text(sched[y]["class-room"]);
 			}
-
+		
 			y++;
 		}
+	
+		//display class num for repeated class
+		for (var index in showNumClass) {
+			$("."+booleanForSecondData+"-"+showNumClass[index]).css("display", "inline");
+		}
 
+		if (!booleanForSecondData) {
+			console.log("for first print:");
+			console.log("showNumClass length: " + showNumClass.length);
+		} else {
+			console.log("for second print:");
+			console.log("showNumClass length: " + showNumClass.length);
+		}
+	
 		var totalWeeks = ((endDate.getTime() - startDate.getTime()) / msDay) / 7;
 		var classCount = "<span class='rgb-red-txt'> "+mmc+" MM "+gcc+" GC </span> )";
 		if (booleanForSecondData != true) {
@@ -866,20 +952,38 @@ var allowClassInc = true;
 		$("#print_view_container").hide();
 	
 		$("#teacher_printview").css("display", "block");
-		window.print();
 	
 		localStorage.print = "null";
-
-		//$("#printNextPage").css("display", "block");
 	
-		
+		//$("#printNextPage").css("display", "block");
 	}
 
-	$("#printNextPage").on('click', function() {
-		$(".row-hide").show();
-		$(".row-show").hide();
+	//teacher print
+	function printTeacher() {
+		setTimeout(function() { window.print(); }, 100);
+	}
 
-		window.print();
+	$("#printFirstPage").on('click', function() {
+		$(".row-hide").hide();
+		printTeacher(); 
+		setTimeout(function() { $(".row-hide").show(); }, 200);
+	});
+
+	$("#printSecondPage").on('click', function() {
+		$(".row-show").hide();
+		printTeacher(); 
+		setTimeout(function() { $(".row-show").show(); }, 200);
+	});
+
+	$("#closeTeacherSchedule").on('click', function() {
+		$("#search_form").show();
+		$("#searchLabel").show();
+		$("#regist_box").show();
+		$(".wp-list-table").show();
+		$("#print_view_container").hide();
+	
+		$("#teacher_printview").css("display", "none");
+		
 	});
 
 	for (var index in incClassList) {
@@ -887,9 +991,6 @@ var allowClassInc = true;
 			$("."+index).css("display", "inline");
 		}
 	}
-
-	console.log("on load incClassList: ");
-	console.log(incClassList);
 
 });})(jQuery);
 </script>
@@ -920,7 +1021,7 @@ var allowClassInc = true;
 ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　　Now：[<b class="now_display"><span id="shown_target"></span></b>]
 <button id="printPreview"> Print </button>
 <button id="printQueue"> Add to Print Queue </button>
-<button id="printTeacherSched"> Print Teacher Schedule </button>
+<button id="printTeacherSched"> Teacher Schedule </button>
 </div>
 
 
@@ -1482,8 +1583,11 @@ $teacherList = get_users( array('role' => 'teacher') );
 			</tr>
 		<?php } ?>
 	</table>
-	<div style="text-align: right;">
-		<button id="printNextPage"> Print Next Page </button>
+	<div id="teacherPrintControls" style="margin: 5px 5px; text-align: right;">
+		Print Page: 
+		<button id="printFirstPage" style="border: none;"> 1 </button>
+		<button id="printSecondPage" style="border: none;"> 2 </button>
+		<button id="closeTeacherSchedule"> Close </button>
 	</div>
 </div>
 
