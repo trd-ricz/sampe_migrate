@@ -169,6 +169,10 @@
 		margin: 0;
 		font-size: 10px;
 	}
+	
+	td.teacher-print {
+		cursor: pointer;
+	}
 
 	.widefat td,
 	.widefat th {
@@ -180,7 +184,30 @@
 		display: inline-block;
 	}
 
+	#colorSelection {
+		width: 180px;
+		height: 100px;
+		position: fixed;
+		background-color: tan;
+		margin: auto;
+		border: 1px solid;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: none;
+		padding: 5px;
+	}
+	
+	.focusin {
+		color: rgb(0, 217, 0);
+	}
+
 	@media print {
+		#colorSelection {
+			display: none;
+		}
+	
 		#regist_box, 
 		#adminmenumain {
 			display: none !important;
@@ -950,16 +977,15 @@ var allowClassInc = true;
 		$("#regist_box").hide();
 		$(".wp-list-table").hide();
 		$("#print_view_container").hide();
-	
 		$("#teacher_printview").css("display", "block");
 	
 		localStorage.print = "null";
-	
-		//$("#printNextPage").css("display", "block");
 	}
 
 	//teacher print
 	function printTeacher() {
+		$(item).removeClass("focusin");
+		$("#colorSelection").hide();
 		setTimeout(function() { window.print(); }, 100);
 	}
 
@@ -984,6 +1010,57 @@ var allowClassInc = true;
 	
 		$("#teacher_printview").css("display", "none");
 		
+	});
+
+	//color selection enable multiple select
+	$("#enableMultiSelect").val("disabled");
+	$("#enableMultiSelect").on('change', function() {
+		if ($("#enableMultiSelect").val() == "disabled") {
+			$("#enableMultiSelect").val("enabled");
+		} else {
+			$("#enableMultiSelect").val("disabled");
+			$(".teacher-print.focusin").removeClass("focusin");
+		}
+	});
+
+	var item = null;
+	//add click listener for teacher-print item
+	$(".teacher-print").on('click', function(e) {
+		//add highlight class
+		$(e.currentTarget).addClass("focusin");
+	
+		if (item != null && $("#enableMultiSelect").val() == "disabled") {
+			$(item).removeClass("focusin");
+		}
+	
+		item = e.currentTarget;
+		$("#colorSelection").show();
+	});
+
+	//enable color select drag
+	$("#colorSelection").draggable();
+
+	//setting text color
+	$("#text-color").on('change', function(e) {
+		if ($("#enableMultiSelect").val() == "disabled") {
+			$(item).css("color", $(this).val());
+		} else {
+			$(".teacher-print.focusin").css("color", $(this).val());
+		}
+	});
+
+	//setting background color
+	$("#bg-color").on('change', function(e) {
+		if ($("#enableMultiSelect").val() == "disabled") {
+			$(item).css("background-color", $(this).val());
+		} else {
+			$(".teacher-print.focusin").css("background-color", $(this).val());
+		}
+	});
+
+	$("#closeColorSlection").on('click', function() {
+		$("#colorSelection").hide();
+		$(".teacher-print.focusin").removeClass("focusin");
 	});
 
 	for (var index in incClassList) {
@@ -1540,17 +1617,20 @@ $teacherList = get_users( array('role' => 'teacher') );
 			<?php } else { ?>
 				<tr class="row-hide">
 			<?php } ?>
+			<!-- men to men class display -->
 			<?php foreach ( $scheduleArr as $sched ) { ?>
+				<!-- teacher vacant display -->
 				<?php if ( $teacher->user_login == $sched["teacher_name"] && $sched["class_type"] == "") { ?>
 					<?php $display = false; ?>
-					<td style="padding-left: 5px;" > <?php echo $sched["teacher_name"]; ?> </td> 
+						<td style="padding-left: 5px;" > <?php echo $sched["teacher_name"]; ?> </td> 
 					<?php for ( $x = 2; $x < 11; $x++ ) { ?>
-					<?php $room = $sched[$x]["class_room"]; 
+						<?php 
+						$room = $sched[$x]["class_room"]; 
 						$room = str_replace("cubicle ", " #", strtolower( $room )); 
 						$room = str_replace("rm", "", strtolower( $room )); 
 						$room = str_replace("# ", "#", $room); ?>
-					<td style="text-align: center;"> <?php echo $sched[$x]["student"][0].$room; ?> </td>
-					<td style="text-align: center;"> <?php echo $sched[$x]["class_type"]; ?> </td>
+						<td style="text-align: center;" class="teacher-print"> <?php echo $sched[$x]["student"][0].$room; ?> </td>
+						<td style="text-align: center;" class="teacher-print"> <?php echo $sched[$x]["class_type"]; ?> </td>
 					<?php } ?>
 					<?php break; ?>
 				<?php } elseif ( $teacher->user_login == $sched["teacher_name"] ) { ?>
@@ -1567,12 +1647,13 @@ $teacherList = get_users( array('role' => 'teacher') );
 			<?php $rowCount++; ?>
 			</tr>
 		<?php } ?>
+		<!-- group class display -->
 		<?php foreach ( $scheduleArr as $sched ) { ?>
 			<tr class="row-hide">
 			<?php if ( $sched["class_type"] != "" ) { ?>
-				<td style="padding-left: 5px;"> <?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> </td> 
+				<td style="padding-left: 5px;" class="teacher-print"> <?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> </td> 
 				<?php for ( $x = 2; $x < 11; $x++ ) { ?>
-				<td colspan="2" style="text-align: center;"> 
+				<td colspan="2" style="text-align: center;" class="teacher-print"> 
 					<?php for ( $x2 = 0; $x2 < count($sched[$x]["student"]); $x2++ ) {
 						if ( $x2 > 0 ) { echo "; "; }
 						echo $sched[$x]["student"][$x2]; 
@@ -1588,6 +1669,15 @@ $teacherList = get_users( array('role' => 'teacher') );
 		<button id="printFirstPage" style="border: none;"> 1 </button>
 		<button id="printSecondPage" style="border: none;"> 2 </button>
 		<button id="closeTeacherSchedule"> Close </button>
+	</div>
+</div>
+
+<div id="colorSelection" style="text-align: center">
+	<div style="font-size: 15px"> Select Color <span id="closeColorSlection" style="cursor: pointer; float: right; margin-right: 4px; margin-top: -2px;"> x </span> </div>
+	<div style="text-align: left; padding: 5px;">
+		<label style="display: inline-block; width: 100%;"> <input id="enableMultiSelect" type="checkbox" style="cursor: pointer;"/> Enable multiple select </label>
+		<label style="display: inline-block; width: 100%;"> <input id="text-color" type="color" style="cursor: pointer; width: 16px; height:16px; padding: 0; margin: 0 5px 0 0;"/> Text  </label>
+		<label style="display: inline-block; width: 100%;"> <input id="bg-color" type="color" style="cursor: pointer; width: 16px; height:16px; padding: 0; margin: 0 5px 0 0;"/> Background </label>
 	</div>
 </div>
 
