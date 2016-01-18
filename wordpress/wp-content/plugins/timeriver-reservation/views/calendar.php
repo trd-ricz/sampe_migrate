@@ -185,8 +185,8 @@
 	}
 
 	#colorSelection {
-		width: 180px;
-		height: 100px;
+		width: 150px;
+		height: 80px;
 		position: fixed;
 		background-color: tan;
 		margin: auto;
@@ -234,7 +234,7 @@
 </style>
 
 <?php 
-function json_safe_encode($data){
+function json_safe_encode($data) {
 	return json_encode($data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 }
 ?>
@@ -714,12 +714,13 @@ var allowClassInc = true;
 				idArr["class-room"] = $("#"+idArr["class-room"]+" .block").text().match(/(.*[^\sx])/);
 				idArr["class-type"] = $("#"+idArr["class-type"]+" .block").text().match(/(.*[^\sx])/);
 				idArr["teacher"] = $("#"+idArr["teacher"]+" .block").text().match(/(.*[^\sx])/);
-
+			
 				//checks if data is not null && get data while removing the unecessary space and character
 				if (idArr["class-room"] != null) {
 					idArr["class-room"] = idArr["class-room"][0];
 				}
 				if (idArr["class-type"] != null) {
+					console.log("classy-type: " + idArr["class-type"]);
 					idArr["class-type"] = idArr["class-type"][0];
 				}
 				if (idArr["teacher"] != null) {
@@ -745,9 +746,11 @@ var allowClassInc = true;
 
 				if (idArr["class-room"] != null && idArr["class-type"] != null && idArr["teacher"] != null) {
 					sched[y++] = idArr;
+				} else if (idArr["class-type"] == "SELF-STUDY") {
+					sched[y++] = idArr;
 				}
 			}
-			console.log("stop: "+stop);
+		
 			//if stop is true, it will stop looking for a class schedule
 			if (stop) {
 				break;
@@ -825,7 +828,7 @@ var allowClassInc = true;
 	
 		//holds the name of classes on the schedule
 		var tmpStrClass = "";
-		//container for repeated class
+		//array container for repeated class
 		var showNumClass = [];
 		while( y < sched.length ) {
 			if (sched[y]["class-type"] != null && sched[y]["class-type"].indexOf(" GC") > -1) {
@@ -833,7 +836,6 @@ var allowClassInc = true;
 			} else {
 				++mmc;
 			}
-		
 			//handling for class type print display
 			if (sched[y]["class-type"] != null) {
 				var tmpArr = sched[y]["class-type"].split(' ');
@@ -921,6 +923,7 @@ var allowClassInc = true;
 		*/
 
 		var sched = getDaySchedule(class_sched, false);
+		console.log("sched: " + sched);
 
 		//calls the handler for data assigning in print view
 		setPrintContent(sched, false);
@@ -980,11 +983,23 @@ var allowClassInc = true;
 		$("#teacher_printview").css("display", "block");
 	
 		localStorage.print = "null";
+	
+		for ( var forIndex in teacherPrintClassNumArr ) {
+			console.log(teacherPrintClassNumArr[forIndex] + ": " + $("."+teacherPrintClassNumArr[forIndex]).length);
+			if ( $("."+teacherPrintClassNumArr[forIndex]).length > 1 ) {
+				$("."+teacherPrintClassNumArr[forIndex]).css("display", "inline");
+			}
+		}
 	}
 
 	//teacher print
 	function printTeacher() {
-		$(item).removeClass("focusin");
+		var localx = 0, localItem;
+		while (localx < $(".teacher-print.focusin").length) {
+			localItem = $(".teacher-print.focusin")[localx];
+			$(localItem).removeClass("focusin"); 
+		}
+	
 		$("#colorSelection").hide();
 		setTimeout(function() { window.print(); }, 100);
 	}
@@ -1009,32 +1024,35 @@ var allowClassInc = true;
 		$("#print_view_container").hide();
 	
 		$("#teacher_printview").css("display", "none");
-		
 	});
 
-	//color selection enable multiple select
-	$("#enableMultiSelect").val("disabled");
-	$("#enableMultiSelect").on('change', function() {
-		if ($("#enableMultiSelect").val() == "disabled") {
-			$("#enableMultiSelect").val("enabled");
-		} else {
-			$("#enableMultiSelect").val("disabled");
-			$(".teacher-print.focusin").removeClass("focusin");
+	//select or deselect item in teacher schedule print
+	function selectDeselectItem(passitem) {
+		var exist = false, localx = 0;
+		//check if item clicked is already selected or not
+		while ( localx < $(".teacher-print.focusin").length ) {
+			if ($(".teacher-print.focusin")[localx] == passitem) {
+				passitem = $(".teacher-print.focusin")[localx];
+				$(passitem).removeClass("focusin");
+				exist = true;
+				break;
+			}
+			localx++;
 		}
-	});
+	
+		if (!exist) {
+			$(passitem).addClass("focusin");
+			$("#colorSelection").show();
+		}
 
-	var item = null;
+		if ($(".teacher-print.focusin").length == 0) {
+			$("#colorSelection").hide();
+		}
+	}
+	
 	//add click listener for teacher-print item
 	$(".teacher-print").on('click', function(e) {
-		//add highlight class
-		$(e.currentTarget).addClass("focusin");
-	
-		if (item != null && $("#enableMultiSelect").val() == "disabled") {
-			$(item).removeClass("focusin");
-		}
-	
-		item = e.currentTarget;
-		$("#colorSelection").show();
+		selectDeselectItem(e.currentTarget);
 	});
 
 	//enable color select drag
@@ -1042,20 +1060,12 @@ var allowClassInc = true;
 
 	//setting text color
 	$("#text-color").on('change', function(e) {
-		if ($("#enableMultiSelect").val() == "disabled") {
-			$(item).css("color", $(this).val());
-		} else {
-			$(".teacher-print.focusin").css("color", $(this).val());
-		}
+		$(".teacher-print.focusin").css("color", $(this).val());
 	});
 
 	//setting background color
 	$("#bg-color").on('change', function(e) {
-		if ($("#enableMultiSelect").val() == "disabled") {
-			$(item).css("background-color", $(this).val());
-		} else {
-			$(".teacher-print.focusin").css("background-color", $(this).val());
-		}
+		$(".teacher-print.focusin").css("background-color", $(this).val());
 	});
 
 	$("#closeColorSlection").on('click', function() {
@@ -1128,12 +1138,21 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 	</tr>
 </table>
 </div>
-<?php $new_schedule = array(); $class_time = array(); $data_id = array(); $tmpClassList = array();
-$date_arr = array(); $incNumber = array(); $y=0; $stime; $etime; $allowAddClassList = 1; ?>
-<?php foreach ($cal_data as $week_key => $class_schedule_data) { ?>
-	<?php 
-	$week_stt_time = strtotime($week_key);
-	?>
+<?php 
+$new_schedule = array(); 
+$class_time = array(); 
+$data_id = array(); 
+$tmpClassList = array();
+$date_arr = array(); 
+$incNumber = array(); 
+
+$y=0;
+$stime;
+$etime;
+$allowAddClassList = 1;
+
+foreach ($cal_data as $week_key => $class_schedule_data) {
+	$week_stt_time = strtotime($week_key); ?>
 
 	<table class="wp-list-table widefat striped">
 		<tr>
@@ -1143,9 +1162,10 @@ $date_arr = array(); $incNumber = array(); $y=0; $stime; $etime; $allowAddClassL
 			</th>
 			<th>コマ</th>
 			<!-- display time / switch date time -->
-			<?php $incCount = 1; ?>
-			<?php foreach ($class_schedule_data as $class_schedule => $class_date_data) { ?>
-				<?php if ($class_schedule != 11) {
+			<?php 
+			$incCount = 1;
+			foreach ( $class_schedule_data as $class_schedule => $class_date_data ) {
+				if ( $class_schedule != 11 ) {
 					$incNumber[$class_schedule] = $incCount++;
 				} ?>
 			<th> 
@@ -1154,70 +1174,83 @@ $date_arr = array(); $incNumber = array(); $y=0; $stime; $etime; $allowAddClassL
 					."〜" .$mt_class_schedule[$class_schedule]["end"]; ?>
 				</div>
 			</th>
-			<?php } ?>
+			<?php 
+			} ?>
 		</tr>
 		<!-- re-order data / switch date & time -->
-		<?php foreach ($class_schedule_data as $class_schedule => $class_date_data) {
+		<?php foreach ( $class_schedule_data as $class_schedule => $class_date_data ) {
 			$class_time[] = $time = $mt_class_schedule[$class_schedule];
-			foreach ($class_date_data as $date => $data) {
+		
+			foreach ( $class_date_data as $date => $data ) {
 				$new_schedule[$date][$class_schedule] = $data;
 			}
 		} ?>
 	
 		<!-- display data / switch date & time -->	
-		<?php foreach ($new_schedule as $date_key => $schedule) { ?>
-		<?php $date_arr[] = $date_key; ?>
-		<?php if (count($tmpClassList) > 0) { $allowAddClassList = 0; } ?>
+		<?php 
+		foreach ( $new_schedule as $date_key => $schedule ) {
+			$date_arr[] = $date_key;
+		
+			if ( count( $tmpClassList ) > 0 ) {
+				$allowAddClassList = 0; } ?>
 		<tr>
 			<td>
 				<div id="row--<?php echo $date_key; ?>" class="droppable">
 					<?php echo $date_key; ?>
 				</div>
 			</td>
-			<?php foreach ($schedule as $key_d => $d) { ?>
-				<?php $index = 0; ?>
-				<?php $box_prefix = $key_d."--".$date_key; ?>
-				<?php /* for printing */ ?>
-				<?php $ctime = "{$key_d}"; $cdate = "{$date_key}"; ?>
-				<?php $data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room"; ?>
-				<?php $data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type"; ?>
-				<?php $data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher"; ?>
-				<?php $y++; ?>
+			<?php foreach ( $schedule as $key_d => $d ) {
+				$index = 0;
+				$box_prefix = $key_d."--".$date_key;
+				/* for printing */
+				$ctime = "{$key_d}"; $cdate = "{$date_key}";
+				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room";
+				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type";
+				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher";
+				$y++; ?>
 			<td>
 				<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
 					<p>
-						<span class="block"><?php echo $mt_class_room[$d['class_room']]['post_title']; ?>
-						<?php if ($mt_class_room[$d['class_room']]['post_title']) {?>
-							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$d['class_room'];?>">x</a></span>
-						<?php } ?>
+						<span class="block">
+						<?php 
+						echo $mt_class_room[$d['class_room']]['post_title'];
+						if ( $mt_class_room[$d['class_room']]['post_title'] ) { ?>
+							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$d['class_room']; ?>">x</a></span>
+						<?php 
+						} ?>
 						</span>
 					</p>
 				</div>
 				<div id="<?php echo $box_prefix; ?>--class_type" class="droppable class_type">
 					<p>
-						<span class="block"><?php echo $mt_class_type[$d['class_type']]['post_title']; ?>
-							<?php if ($mt_class_type[$d['class_type']]['post_title']) {?>
-								<?php if ($allowAddClassList == 1) {
+						<span class="block">
+							<?php 
+							echo $mt_class_type[$d['class_type']]['post_title'];
+							if ( $mt_class_type[$d['class_type']]['post_title'] ) {
+								if ( $allowAddClassList == 1 ) {
 									$index = $d['class_type']; $index_exist = false;
-									foreach ($tmpClassList as $i => $i_val) {
-										if ($i == $index) {
+									foreach ( $tmpClassList as $i => $i_val ) {
+										if ( $i == $index ) {
 											$tmpClassList[$i] = ++$tmpClassList[$i];
 											$index_exist = true;
 											break;
 										}
 									} 
-									if ($index_exist == false) { $tmpClassList[$index] = 0; }
+									if ( $index_exist == false ) { 
+										$tmpClassList[$index] = 0; 
+									}
 								} ?>
 							<span class="class-number <?php echo $d['class_type']; ?>" style="display: none;"> <?php $incIndex = explode("--", $box_prefix)[0]; echo $incNumber[$incIndex]; ?> </span>
 							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_type--".$class_data['class_type'];?>">x</a></span>
-							<?php } ?>
+							<?php 
+							} ?>
 						</span>
 					</p>
 				</div>
 				<div id="<?php echo $box_prefix; ?>--teacher" class="droppable teacher">
 					<p>
 					<?php
-					foreach ((array)$d['teacher'] as $id) { 
+					foreach ( (array)$d['teacher'] as $id ) { 
 						?>
 						<span class="block"><?php echo $mt_teacher[$id]['display_name']; ?>
 							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--teacher--".$id;?>">x</a></span>
@@ -1230,14 +1263,12 @@ $date_arr = array(); $incNumber = array(); $y=0; $stime; $etime; $allowAddClassL
 				<div id="<?php echo $box_prefix; ?>--student" class="droppable student">
 					<p>
 						<?php 
-						foreach ((array)$d['student'] as $id) {
-						?>
+						foreach ( (array)$d['student'] as $id ) { ?>
 							<span class="block"><?php echo $mt_student[$id]['display_name']; ?>
 								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--student--".$id;?>">x</a></span>
 							</span>
-							<?php 
-						}
-						?>
+						<?php 
+						} ?>
 					</p>
 				</div>
 			</td>
@@ -1596,7 +1627,21 @@ foreach ( $tmpClassTime as $time ) {
 <?php 
 $rowCount = 0;
 $teacherList = get_users( array('role' => 'teacher') );
-?>
+$tmpStudClassArr = array(); 
+
+function numClassExist ($fArr, $fNumClass) {
+	$exist = false;
+
+	foreach ( $fArr as $fData ) {
+		if ( $fData == $fNumClass ) {
+			$exist = true;
+			break;
+		}
+	}
+	
+	return $exist;
+} ?>
+
 <div id="teacher_printview">
 	<div style="text-align: center; font-size: 15px; padding: 5px 0;">
 		TEACHERS' SCHEDULE <?php echo strtoupper( $monthStt )." ".$dayStt." - ".strtoupper( $toMonth ).$dayEnd.
@@ -1605,64 +1650,102 @@ $teacherList = get_users( array('role' => 'teacher') );
 	<table id="teacherPrint">
 		<tr>
 			<td style="padding-left: 5px;"> Name </td>
-			<?php foreach ( $classTime as $time ) { ?>
-				<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
-				<td style="text-align: center; height: 18px;"> class </td>
-			<?php } ?>
+			<?php 
+			foreach ( $classTime as $time ) { ?>
+			<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
+			<td style="text-align: center; height: 18px;"> class </td>
+			<?php 
+			} ?>
 		</tr>
-		<?php foreach ( $teacherList as $teacher ) { ?>
-			<?php $display = true; ?>
-			<?php if ( $rowCount < 15 ) { ?>
-				<tr class="row-show">
-			<?php } else { ?>
-				<tr class="row-hide">
-			<?php } ?>
+		<?php 
+		foreach ( $teacherList as $teacher ) {
+			$display = true; $rowClass = "row-show";
+		
+			if ( $rowCount > 14 ) {
+				$rowClass = "row-hide";
+			} ?>
+		
+		<tr class="<?php echo $rowClass; ?>">
 			<!-- men to men class display -->
-			<?php foreach ( $scheduleArr as $sched ) { ?>
-				<!-- teacher vacant display -->
-				<?php if ( $teacher->user_login == $sched["teacher_name"] && $sched["class_type"] == "") { ?>
-					<?php $display = false; ?>
-						<td style="padding-left: 5px;" > <?php echo $sched["teacher_name"]; ?> </td> 
-					<?php for ( $x = 2; $x < 11; $x++ ) { ?>
-						<?php 
+			<?php 
+			foreach ( $scheduleArr as $sched ) {
+				if ( $teacher->user_login == $sched["teacher_name"] && $sched["class_type"] == "") {
+					$display = false; ?>
+				
+			<td style="padding-left: 5px;" > <?php echo $sched["teacher_name"]; ?> </td> 
+					<?php 
+					for ( $x = 2; $x < 11; $x++ ) {
 						$room = $sched[$x]["class_room"]; 
 						$room = str_replace("cubicle ", " #", strtolower( $room )); 
 						$room = str_replace("rm", "", strtolower( $room )); 
-						$room = str_replace("# ", "#", $room); ?>
-						<td style="text-align: center;" class="teacher-print"> <?php echo $sched[$x]["student"][0].$room; ?> </td>
-						<td style="text-align: center;" class="teacher-print"> <?php echo $sched[$x]["class_type"]; ?> </td>
-					<?php } ?>
-					<?php break; ?>
-				<?php } elseif ( $teacher->user_login == $sched["teacher_name"] ) { ?>
-					<?php $display = false; break; ?>
-				<?php } ?>
-			<?php } ?>
-			<?php if ( $display ) { ?>
-				<td style="padding-left: 5px;"> <?php echo $teacher->user_login; ?> </td>
-				<?php for ( $x = 2; $x < 11; $x++ ) { ?>
-					<td> </td>
-					<td> </td>
-				<?php } ?>
-			<?php } ?>
-			<?php $rowCount++; ?>
-			</tr>
-		<?php } ?>
+						$room = str_replace("# ", "#", $room);
+						$numClass = "";
+					
+						if ( $sched[$x]["student"][0] != "" && $sched[$x]["class_type"] != "" ) {
+							$numClass = str_replace( " ", "_", $sched[$x]["student"][0] ) 
+							."--".str_replace( " ", "_", $sched[$x]["class_type"] );
+						
+							if ( strpos($numClass, ".") > -1 ) {
+								$numClass = str_replace(".", "", $numClass);
+							}
+						
+							if ( strpos($numClass, "/") > -1 ) {
+								$numClass = str_replace("/", "_", $numClass);
+							}
+						
+							//$numClass = $classNum.str_replace("/", "_", $sched[$x]["class_type"]);
+							if ( !numClassExist($tmpStudClassArr, $numClass) ) {
+								$tmpStudClassArr[] = $numClass;
+							}
+						}
+						?>
+			<td style="text-align: center;" class="teacher-print"> <?php echo $sched[$x]["student"][0].$room; ?> </td>
+			<td style="text-align: center;" class="teacher-print"> <?php echo $sched[$x]["class_type"]; ?>
+				<span style="display: none;" <?php if ($numClass != "") { echo "class='".$numClass."'"; } ?>> <?php echo $x-1 ?> </span>
+			</td>
+					<?php 
+					}
+					break;
+				} elseif ( $teacher->user_login == $sched["teacher_name"] ) {
+					$display = false; break;
+				}
+			} ?>
+			<?php 
+			if ( $display ) { ?>
+			<td style="padding-left: 5px;"> <?php echo $teacher->user_login; ?> </td>
+				<?php 
+				for ( $x = 2; $x < 11; $x++ ) { ?>
+			<td> </td>
+			<td> </td>
+				<?php 
+				}
+			}
+			$rowCount++; ?>
+		</tr>
+		<?php 
+		} ?>
 		<!-- group class display -->
-		<?php foreach ( $scheduleArr as $sched ) { ?>
-			<tr class="row-hide">
-			<?php if ( $sched["class_type"] != "" ) { ?>
-				<td style="padding-left: 5px;" class="teacher-print"> <?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> </td> 
-				<?php for ( $x = 2; $x < 11; $x++ ) { ?>
-				<td colspan="2" style="text-align: center;" class="teacher-print"> 
-					<?php for ( $x2 = 0; $x2 < count($sched[$x]["student"]); $x2++ ) {
+		<?php 
+		foreach ( $scheduleArr as $sched ) { ?>
+		<tr class="row-hide">
+			<?php 
+			if ( $sched["class_type"] != "" ) { ?>
+			<td style="padding-left: 5px;" class="teacher-print"> <?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> </td> 
+				<?php 
+				for ( $x = 2; $x < 11; $x++ ) { ?>
+			<td colspan="2" style="text-align: center;" class="teacher-print"> 
+					<?php 
+					for ( $x2 = 0; $x2 < count($sched[$x]["student"]); $x2++ ) {
 						if ( $x2 > 0 ) { echo "; "; }
 						echo $sched[$x]["student"][$x2]; 
 					} ?> 
 				</td>
-				<?php } ?>
-			<?php } ?>
-			</tr>
-		<?php } ?>
+				<?php 
+				}
+			} ?>
+		</tr>
+		<?php 
+		} ?>
 	</table>
 	<div id="teacherPrintControls" style="margin: 5px 5px; text-align: right;">
 		Print Page: 
@@ -1675,7 +1758,6 @@ $teacherList = get_users( array('role' => 'teacher') );
 <div id="colorSelection" style="text-align: center">
 	<div style="font-size: 15px"> Select Color <span id="closeColorSlection" style="cursor: pointer; float: right; margin-right: 4px; margin-top: -2px;"> x </span> </div>
 	<div style="text-align: left; padding: 5px;">
-		<label style="display: inline-block; width: 100%;"> <input id="enableMultiSelect" type="checkbox" style="cursor: pointer;"/> Enable multiple select </label>
 		<label style="display: inline-block; width: 100%;"> <input id="text-color" type="color" style="cursor: pointer; width: 16px; height:16px; padding: 0; margin: 0 5px 0 0;"/> Text  </label>
 		<label style="display: inline-block; width: 100%;"> <input id="bg-color" type="color" style="cursor: pointer; width: 16px; height:16px; padding: 0; margin: 0 5px 0 0;"/> Background </label>
 	</div>
@@ -1688,6 +1770,7 @@ $teacherList = get_users( array('role' => 'teacher') );
 	var date_array = <?php echo json_encode($date_arr); $date_arr = null; ?>;
 	var incClassList = <?php echo json_encode($tmpClassList); $tmpClassList = null; ?>;
 	var incNumber = <?php echo json_encode($incNumber); $incNumber = null; ?>;
+	var teacherPrintClassNumArr = <?php echo json_encode($tmpStudClassArr); $tmpStudClassArr = null; ?>;
 </script>
 
 
