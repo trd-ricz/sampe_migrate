@@ -161,13 +161,13 @@
 	}
 
 	#teacherPrint td {
-		max-width: 58px;
-		min-width: 58px;
+		min-width: 66px;
 		text-align: left;
 		border: 1px solid #000;
-		padding: 0 1px;
+		padding: 5px 2px;
 		margin: 0;
-		font-size: 10px;
+		font-size: 13px;
+		font-weight: bold;
 	}
 	
 	td.teacher-print {
@@ -703,10 +703,10 @@ var allowClassInc = true;
 	//get single day class schedule
 	function getDaySchedule(classSched, booleanForSecondData) {
 		console.log("get day schedule: ");
-
+	
 		var sched = [], y = 0, x = 0, stop = false;
-		var cubeNum =  0, budteach = "";
-
+		var cubeNum =  0, budteach = "", timeIndex = null;
+	
 		//get schedule for one day
 		for (var date in classSched) {
 			for (var time in classSched[date]) {
@@ -720,7 +720,6 @@ var allowClassInc = true;
 					idArr["class-room"] = idArr["class-room"][0];
 				}
 				if (idArr["class-type"] != null) {
-					console.log("classy-type: " + idArr["class-type"]);
 					idArr["class-type"] = idArr["class-type"][0];
 				}
 				if (idArr["teacher"] != null) {
@@ -730,10 +729,9 @@ var allowClassInc = true;
 				if (idArr["class-room"] != null && idArr["class-room"].match(/[a-zA-Z]/) != null) {
 					stop = true;
 				}
-
 				//get cubicle number
 				if (idArr["class-room"] != null && idArr["class-room"].indexOf("Cubicle") > -1 && cubeNum == 0) {
-					cubeNum = idArr["class-room"].replace(/[a-zA-Z]*\s/,"");	
+					cubeNum = idArr["class-room"].replace(/\t*(Cubicle\s)/,"");	
 				}
 				//get buddy teacher
 				var tmpStr = idArr["class-type"];
@@ -743,11 +741,22 @@ var allowClassInc = true;
 						budteach = idArr["teacher"];
 					}
 				}
-
+			
+				timeIndex = parseInt( time.split("-")[0] );
+				if ( timeIndex < 10 ) {
+					timeIndex += 1;
+				} else if ( (timeIndex % 10) == 0 ) {
+					timeIndex = timeIndex % 10;
+				} else if ( (timeIndex % 10) != 0 ) {
+					timeIndex = (timeIndex % 10) + 1;
+				} 
+					
 				if (idArr["class-room"] != null && idArr["class-type"] != null && idArr["teacher"] != null) {
-					sched[y++] = idArr;
-				} else if (idArr["class-type"] == "SELF-STUDY") {
-					sched[y++] = idArr;
+					//sched[y++] = idArr;
+					sched[timeIndex] = idArr;
+				} else if (idArr["class-type"] !=null && idArr["class-type"].indexOf("SELF-STUDY") != -1) {
+					//sched[y++] = idArr;
+					sched[timeIndex] = idArr;
 				}
 			}
 		
@@ -761,8 +770,6 @@ var allowClassInc = true;
 		}
 
 		if (booleanForSecondData != true) {
-			console.log("get day schedule not que:");
-			console.log(sched);
 			$("#cubicleNum").text(cubeNum);
 			$("#buddyTeacher").text(budteach);
 		} else {
@@ -777,6 +784,8 @@ var allowClassInc = true;
 
 	//handles the setting of data for printing
 	function setPrintContent(sched, booleanForSecondData) {
+		console.log("setPrintContent sched: ");
+		console.log(sched);
 		//assigns value to print view table
 		var mmc = 0, gcc = 0, studentId = $("#choices_select").val();
 		if (booleanForSecondData != true) {
@@ -830,7 +839,7 @@ var allowClassInc = true;
 		var tmpStrClass = "";
 		//array container for repeated class
 		var showNumClass = [];
-		while( y < sched.length ) {
+		for( var y in sched ) {
 			if (sched[y]["class-type"] != null && sched[y]["class-type"].indexOf(" GC") > -1) {
 				++gcc;
 			} else {
@@ -857,9 +866,9 @@ var allowClassInc = true;
 				//create a span that will display the class number
 				var tmpSpan = '<span class="'+booleanForSecondData+"-"+tmpName.replace(" ", "_")+'" style="display: none;"> '+ tmpClassNumber +' </span>';
 				//set class name display
-				$("#class-"+(y+add)+"-type" + secondData).text(tmpName);
+				$("#class-"+(y)+"-type" + secondData).text(tmpName);
 				//add span for class number display
-				$("#class-"+(y+add)+"-type" + secondData).append(tmpSpan);
+				$("#class-"+(y)+"-type" + secondData).append(tmpSpan);
 			
 				//check if class is already added to class list for schedule
 				if (tmpStrClass.indexOf(tmpName.replace(" ", "-")) == -1) {
@@ -874,28 +883,18 @@ var allowClassInc = true;
 		
 			//handling for teacher name print display
 			if (sched[y]["teacher"] != null) {
-				$("#class-"+(y+add)+"-teacher" + secondData).text(sched[y]["teacher"]);
+				$("#class-"+(y)+"-teacher" + secondData).text(sched[y]["teacher"]);
 			}
 		
 			//handling for class room print display
 			if (sched[y]["class-room"] != null && sched[y]["class-room"].indexOf("Cubicle") == -1) {
-				$("#class-"+(y+add)+"-gc-room" + secondData).text(sched[y]["class-room"]);
+				$("#class-"+(y)+"-gc-room" + secondData).text(sched[y]["class-room"]);
 			}
-		
-			y++;
 		}
 	
 		//display class num for repeated class
 		for (var index in showNumClass) {
 			$("."+booleanForSecondData+"-"+showNumClass[index]).css("display", "inline");
-		}
-
-		if (!booleanForSecondData) {
-			console.log("for first print:");
-			console.log("showNumClass length: " + showNumClass.length);
-		} else {
-			console.log("for second print:");
-			console.log("showNumClass length: " + showNumClass.length);
 		}
 	
 		var totalWeeks = ((endDate.getTime() - startDate.getTime()) / msDay) / 7;
@@ -921,13 +920,12 @@ var allowClassInc = true;
 		*call function that gets single day class schedule
 		*assign data to new variable sched
 		*/
-
+	
 		var sched = getDaySchedule(class_sched, false);
-		console.log("sched: " + sched);
-
+	
 		//calls the handler for data assigning in print view
 		setPrintContent(sched, false);
-
+	
 		if (localStorage.getItem("schedData") != null) {
 			var schedData = JSON.parse(localStorage.schedData);
 			//var sched = getDaySchedule(schedData["class"], true);
@@ -1643,7 +1641,7 @@ function numClassExist ($fArr, $fNumClass) {
 } ?>
 
 <div id="teacher_printview">
-	<div style="text-align: center; font-size: 15px; padding: 5px 0;">
+	<div style="text-align: center; font-size: 25px; font-weight: bold; padding: 15px 0;">
 		TEACHERS' SCHEDULE <?php echo strtoupper( $monthStt )." ".$dayStt." - ".strtoupper( $toMonth ).$dayEnd.
 		", ".$year; ?> 
 	</div>
@@ -1665,7 +1663,7 @@ function numClassExist ($fArr, $fNumClass) {
 				$rowClass = "row-hide";
 			} ?>
 		
-		<tr class="<?php echo $rowClass; ?>">
+		<tr class="teacher-data <?php echo $rowClass; ?>">
 			<!-- men to men class display -->
 			<?php 
 			foreach ( $scheduleArr as $sched ) {
@@ -1719,10 +1717,22 @@ function numClassExist ($fArr, $fNumClass) {
 			<td> </td>
 				<?php 
 				}
-			}
-			$rowCount++; ?>
+			} ?>
 		</tr>
-		<?php 
+			<?php 
+			if ($rowCount != 0 && ($rowCount % 4) == 0) { ?>
+		<tr class="<?php echo $rowClass; ?>">
+			<td style="padding-left: 5px;"> Name </td>
+				<?php 
+				foreach ( $classTime as $time ) { ?>
+			<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
+			<td style="text-align: center; height: 18px;"> class </td>
+				<?php 
+				} ?>
+		</tr>
+			<?php 
+			}
+			$rowCount++;
 		} ?>
 		<!-- group class display -->
 		<?php 
