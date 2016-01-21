@@ -237,7 +237,11 @@
 function json_safe_encode($data) {
 	return json_encode($data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 }
+
+$prevMonday = strtotime("last monday", strtotime("monday this week"));
+$prevMonday = date("Y-m-d", $prevMonday);
 ?>
+
 <script>
 
 /*
@@ -266,6 +270,9 @@ var colToUpdate = "";
 
 //allowClassInc
 var allowClassInc = true;
+
+//previous monday date
+var previousMonday = <?php echo json_encode($prevMonday); $prevMonday = null; ?>;
 
 (function($){$(function() {
 
@@ -337,7 +344,8 @@ var allowClassInc = true;
 		var from_class_key = from_id.split('--')[0];
 		var time = to_id.split('--')[1];
 // 		var ymd            = to_id.split('--')[1];
-	
+		console.log("update box col: ");
+		console.log(from_id+" : "+to_id);
 		/* switch date & time  */
 		var index_exist = false;
 		var prev_class_id = 0;
@@ -488,9 +496,8 @@ var allowClassInc = true;
 	*  update box info
 	*/
 	function update_box_info(data) {
-		console.log(data["to_id"]);
 		console.log("update_box_info");
-		console.log(data);
+		//console.log(data["to_id"]);
 		var toDom = $("#" + data["to_id"]);
 		if (data["status"] == "ok") { 
 			// delete
@@ -634,6 +641,7 @@ var allowClassInc = true;
 			if (data["status"] != "ok") { return; }
 			$(target).html("");
 			console.log(data["res"]);
+		
 			for(key in data["res"]){
 				var selected = "";
 				if (key == post_id) {
@@ -642,13 +650,24 @@ var allowClassInc = true;
 						$("#shown_target").html(data["res"][key]["display_name"]);
 					}
 				}
-				var option = $('<option value="' + key + '" ' + selected + '>' + data["res"][key]["display_name"] + '</option>');
+			
+				var option = $('<option value="' + key + '" ' + selected + '>' + data["res"][key]["display_name"].toUpperCase() + '</option>');
 				$(target).append(option);
 			}
 		}).fail(function(xhr, status, error) {
 			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
 		}).always(function(arg1, status, arg2) {
 		});
+	}
+
+	//check if options needs to be sorted
+	function changePos(txt1, txt2) {
+		var change = false;
+		if (txt1 > txt2) {
+			change = true;
+		}
+	
+		return change;
 	}
 
 	// make regst_box
@@ -1077,8 +1096,193 @@ var allowClassInc = true;
 		}
 	}
 
+	/* for copy & paste of schedule */
+
+	//make from_id for copy function
+	function make_from_id(str, type) {
+		console.log("getId("+str+","+type+")"); 
+	
+		var localid = "";
+	
+		if (type == "class_room") {
+			var roomList = $("#class_room_select option");
+		
+			for (var add in roomList) {
+				var room = roomList[add];
+				var roomTxt = $(room).text();
+				roomTxt = roomTxt.replace(/\sx/, "").trim();
+			
+				if ( roomTxt == str ) {
+					localid = $(room).val();
+					break;
+				}
+			}
+		
+		} else if (type == "class_type") {
+			var classList = $("#class_type_select option");
+		
+			for (var add in classList) {
+				var classType = classList[add];
+				var classTxt = $(classType).text();
+				classTxt = classTxt.replace(/\sx/, "").trim();
+				
+				if ( classTxt == str ) {
+					localid = $(classType).val();
+					break;
+				}
+			}
+		
+		} else if (type == "teacher") {
+			var teacherList = $("#teacher_select option");
+		
+			for (var add in teacherList) {
+				var teacher = teacherList[add];
+				var teacherTxt = $(teacher).text();
+				teacherTxt = teacherTxt.replace(/\sx/, "").trim();
+			
+				if ( teacherTxt == str ) {
+					localid = $(teacher).val();
+					break;
+				}
+			}
+		}
+	
+		if (localid != "") {
+			localid = type + "--" + localid;
+		}
+	
+		return localid;
+	}
+
+	//copy schedule
+	$("#copySchedule").on('click', function() {
+		var tmpsched = JSON.stringify(class_sched);
+		tmpsched = JSON.parse(tmpsched);
+	
+		for (var fdate in tmpsched) {
+			for (var ftime in tmpsched[fdate]) {
+				var classroom = "#"+tmpsched[fdate][ftime]["class-room"]+" .block";
+				var classtype = "#"+tmpsched[fdate][ftime]["class-type"]+" .block";
+				var teacher = "#"+tmpsched[fdate][ftime]["teacher"]+" .block";
+			
+				/* 
+				* 1-1: get classrom text from html element *
+				* 1-2: remove not needed characters * 
+				*/
+			
+				// 1-1
+				classroom = $(classroom).text();
+				// 1-2
+				classroom = classroom.replace(/\sx/, "").trim();
+				// 1-1
+				classtype = $(classtype).text();
+				// 1-2
+				classtype = classtype.replace(/\s\d/, "").replace(/\sx/, "").trim();
+				// 1-1
+				teacher = $(teacher).text();
+				// 1-2
+				teacher = teacher.replace(/\sx/, "").trim();
+			
+				/* 
+				* 2-1: check if classroom, classtype and teacher not empty; *
+				* 2-2: call function make_from_id to create from_id for classroom, classtype & teacher
+				*/
+			
+				if (classroom != "") {
+					classroom = make_from_id(classroom, "class_room");
+					classroom = classroom + " col--"+ftime.split("-")[1];
+				}
+			
+				if (classtype != "") {
+					classtype = make_from_id(classtype, "class_type");
+					classtype = classtype + " col--"+ftime.split("-")[1];
+				}
+			
+				if (teacher != "") {
+					teacher = make_from_id(teacher, "teacher");
+					teacher = teacher + " col--"+ftime.split("-")[1];
+				}
+			
+				tmpsched[fdate][ftime]["class-room"] = classroom;
+				tmpsched[fdate][ftime]["class-type"] = classtype;
+				tmpsched[fdate][ftime]["teacher"] = teacher;
+			}
+		}
+	
+		console.log("class_sched:");
+		console.log(class_sched);
+		localStorage.setItem("scheduleCopy", JSON.stringify(tmpsched));
+		console.log("scheduleCopy: ");
+		var tmp = localStorage.getItem("scheduleCopy");
+		console.log(JSON.parse(tmp));
+	});
+
+	//paste schedule
+	$("#pasteSchedule").on('click', function() {
+		console.log("pasteSchedule");
+		var localProcessCount = 0;
+		var tmpSched = localStorage.getItem("scheduleCopy");
+		tmpSched = JSON.parse(tmpSched);
+	
+		for (var fDate in tmpSched) {
+			for (var fTime in tmpSched[fDate]) {
+				var localSched = tmpSched[fDate][fTime];
+				var localFromId = "", localToId = "";
+				var localClassroom = localSched["class-room"];
+				var localClassType = localSched["class-type"];
+				var localTeacher = localSched["teacher"]; 
+			
+				console.log(localSched);
+				console.log(localClassroom + ", " + localClassType + "," + localTeacher);
+				if ( localClassroom != "" && localClassroom != undefined) {
+					console.log("localClassroom");
+					var localArray = localClassroom.split(" ");
+					localFromId = localArray[0];
+					localToId = localArray[1];
+					update_box_col(localFromId, localToId);
+					++localProcessCount;
+				}
+			
+				if (localClassType != "" && localClassType != undefined) {
+					console.log("localType");
+					var localArray = localClassType.split(" ");
+					localFromId = localArray[0];
+					localToId = localArray[1];
+					update_box_col(localFromId, localToId);
+					++localProcessCount;
+				}
+			
+// 				if (localTeacher != "" && localTeacher != undefined) {
+// 					console.log("localTeacher");
+// 					var localArray = localTeacher.split(" ");
+// 					localFromId = localArray[0];
+// 					localToId = localArray[1];
+// 					update_box_col(localFromId, localToId);
+// 					++localProcessCount;
+// 				}
+			}
+		
+			if (localProcessCount > 2) {
+				break;
+			}
+		}
+	});
+
+	if ( $("#post_type_select").val().toLowerCase() != "student" ) {
+		$("#printPreview").css("display", "none");
+		$("#printQueue").css("display", "none");
+		$("#copySchedule").css("display", "none");
+		$("#pasteSchedule").css("display", "none");
+	} else {
+		$("#printPreview").css("display", "inline-block");
+		$("#printQueue").css("display", "inline-block");
+		$("#copySchedule").css("display", "inline-block");
+		$("#pasteSchedule").css("display", "inline-block");
+	}
+
 });})(jQuery);
 </script>
+
 
 <div id="search_form">
 	<form action="" method="get">
@@ -1107,6 +1311,8 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 <button id="printPreview"> Print </button>
 <button id="printQueue"> Add to Print Queue </button>
 <button id="printTeacherSched"> Teacher Schedule </button>
+<button id="copySchedule"> Copy Schedule </button>
+<button id="pasteSchedule"> Paste Schedule </button>
 </div>
 
 
@@ -1136,7 +1342,7 @@ ViewType：[<b class="now_display"><?php echo $p_typ_list[$post_type];?></b>]　
 	</tr>
 </table>
 </div>
-<?php 
+<?php
 $new_schedule = array(); 
 $class_time = array(); 
 $data_id = array(); 
@@ -1205,13 +1411,14 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room";
 				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type";
 				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher";
-				$y++; ?>
+				if ($y < 10) { $y++; } else { $y=0; }
+				 ?>
 			<td>
 				<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
 					<p>
 						<span class="block">
 						<?php 
-						echo $mt_class_room[$d['class_room']]['post_title'];
+						echo strtoupper($mt_class_room[$d['class_room']]['post_title']);
 						if ( $mt_class_room[$d['class_room']]['post_title'] ) { ?>
 							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$d['class_room']; ?>">x</a></span>
 						<?php 
@@ -1223,7 +1430,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 					<p>
 						<span class="block">
 							<?php 
-							echo $mt_class_type[$d['class_type']]['post_title'];
+							echo strtoupper($mt_class_type[$d['class_type']]['post_title']);
 							if ( $mt_class_type[$d['class_type']]['post_title'] ) {
 								if ( $allowAddClassList == 1 ) {
 									$index = $d['class_type']; $index_exist = false;
@@ -1250,7 +1457,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 					<?php
 					foreach ( (array)$d['teacher'] as $id ) { 
 						?>
-						<span class="block"><?php echo $mt_teacher[$id]['display_name']; ?>
+						<span class="block"><?php echo strtoupper($mt_teacher[$id]['display_name']); ?>
 							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--teacher--".$id;?>">x</a></span>
 						</span>
 						<?php
@@ -1262,7 +1469,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 					<p>
 						<?php 
 						foreach ( (array)$d['student'] as $id ) { ?>
-							<span class="block"><?php echo $mt_student[$id]['display_name']; ?>
+							<span class="block"><?php echo strtoupper($mt_student[$id]['display_name']); ?>
 								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--student--".$id;?>">x</a></span>
 							</span>
 						<?php 
@@ -1284,8 +1491,8 @@ $studentMetaArr = [];
 foreach ($studentIdArr as $id) {
 	$studentMetaArr[$id]["start-date"] = get_user_meta($id, "stt_date", true);
 	$studentMetaArr[$id]["end-date"] = get_user_meta($id, "end_date", true);
-}
-?>
+
+} ?>
 <!-- html code for printing display -->
 <div id="print_view_container">
 	<table class="print_view">
