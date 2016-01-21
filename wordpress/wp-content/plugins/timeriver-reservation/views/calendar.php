@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<!-- link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" -->
+<link rel="stylesheet" href="<?php echo plugins_url(); ?>/timeriver-reservation/assets/jquery-ui/jquery-ui.css">
 <style>
 	.draggable { width: 100px; height: 20px; padding: 0em; float: left; margin: 10px; }
 	.draggable p { margin: 0px; }
