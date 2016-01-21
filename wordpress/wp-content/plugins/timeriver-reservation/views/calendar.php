@@ -1232,6 +1232,7 @@ var previousMonday = <?php echo json_encode($prevMonday); $prevMonday = null; ?>
 				var localClassType = localSched["class-type"];
 				var localTeacher = localSched["teacher"]; 
 			
+				console.log("pasteSchedule localSched: ");
 				console.log(localSched);
 				console.log(localClassroom + ", " + localClassType + "," + localTeacher);
 				if ( localClassroom != "" && localClassroom != undefined) {
@@ -1252,14 +1253,14 @@ var previousMonday = <?php echo json_encode($prevMonday); $prevMonday = null; ?>
 					++localProcessCount;
 				}
 			
-// 				if (localTeacher != "" && localTeacher != undefined) {
-// 					console.log("localTeacher");
-// 					var localArray = localTeacher.split(" ");
-// 					localFromId = localArray[0];
-// 					localToId = localArray[1];
-// 					update_box_col(localFromId, localToId);
-// 					++localProcessCount;
-// 				}
+				if (localTeacher != "" && localTeacher != undefined) {
+					console.log("localTeacher");
+					var localArray = localTeacher.split(" ");
+					localFromId = localArray[0];
+					localToId = localArray[1];
+					update_box_col(localFromId, localToId);
+					++localProcessCount;
+				}
 			}
 		
 			if (localProcessCount > 2) {
