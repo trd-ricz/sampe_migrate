@@ -238,9 +238,6 @@
 function json_safe_encode($data) {
 	return json_encode($data, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 }
-
-$prevMonday = strtotime("last monday", strtotime("monday this week"));
-$prevMonday = date("Y-m-d", $prevMonday);
 ?>
 
 <script>
@@ -271,9 +268,6 @@ var colToUpdate = "";
 
 //allowClassInc
 var allowClassInc = true;
-
-//previous monday date
-var previousMonday = <?php echo json_encode($prevMonday); $prevMonday = null; ?>;
 
 (function($){$(function() {
 
@@ -1088,6 +1082,7 @@ var previousMonday = <?php echo json_encode($prevMonday); $prevMonday = null; ?>
 
 	$("#closeColorSlection").on('click', function() {
 		$("#colorSelection").hide();
+		$("#bg-color").val("#000");
 		$(".teacher-print.focusin").removeClass("focusin");
 	});
 
@@ -1285,7 +1280,6 @@ var previousMonday = <?php echo json_encode($prevMonday); $prevMonday = null; ?>
 });})(jQuery);
 </script>
 
-
 <div id="search_form">
 	<form action="" method="get">
 		　＃DATE：
@@ -1384,13 +1378,15 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 			} ?>
 		</tr>
 		<!-- re-order data / switch date & time -->
-		<?php foreach ( $class_schedule_data as $class_schedule => $class_date_data ) {
+		<?php
+		foreach ( $class_schedule_data as $class_schedule => $class_date_data ) {
 			$class_time[] = $time = $mt_class_schedule[$class_schedule];
 		
 			foreach ( $class_date_data as $date => $data ) {
 				$new_schedule[$date][$class_schedule] = $data;
 			}
-		} ?>
+		}
+		?>
 	
 		<!-- display data / switch date & time -->	
 		<?php 
@@ -1398,7 +1394,9 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 			$date_arr[] = $date_key;
 		
 			if ( count( $tmpClassList ) > 0 ) {
-				$allowAddClassList = 0; } ?>
+				$allowAddClassList = 0; 
+			} 
+		?>
 		<tr>
 			<td>
 				<div id="row--<?php echo $date_key; ?>" class="droppable">
@@ -1487,14 +1485,116 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 
 <!-- php code to get students meta values -->
 <?php
-$studentIdArr = get_users(array('role' => 'student', 'fields' => 'id'));
+$studArgs = array('role' => 'student', 'fields' => array('ID', 'user_login'));
+$studentIdArr = get_users( $studArgs );
 $studentMetaArr = [];
+$oldStudent = false;
+$oldStudentSched = [];
+$globalStudentName = "";
 
-foreach ($studentIdArr as $id) {
-	$studentMetaArr[$id]["start-date"] = get_user_meta($id, "stt_date", true);
-	$studentMetaArr[$id]["end-date"] = get_user_meta($id, "end_date", true);
+foreach ($studentIdArr as $fStudent) {
+	if ($post_id == $fStudent->ID) {
+		global $globalStudentName;
+		$globalStudentName = $fStudent->user_login;
+	}
 
-} ?>
+	$studentMetaArr[$fStudent->ID]["start-date"] = get_user_meta($fStudent->ID, "stt_date", true);
+	$studentMetaArr[$fStudent->ID]["end-date"] = get_user_meta($fStudent->ID, "end_date", true);
+}
+
+//process for old student check
+$studentType = checkStudentType($studentMetaArr[$post_id]["start-date"], $_REQUEST["stt"]);
+
+if ($post_id != "" && $studentType == "old") {
+	global $oldStudent;
+	$oldStudent = true;
+	getOldStudentSchedule();
+}
+
+//check if student is old or new
+function checkStudentType($fStudentStartDate, $fScheduleStartDate) {
+	$localType = "new";
+	$localMondayStudentStartDate = strtotime( "monday this week", strtotime($fStudentStartDate) );
+	$localMondayScheduleStartDate = strtotime( "monday this week", strtotime($fScheduleStartDate) );
+
+	$localMondayStudentStartDate = date("Y-m-d", $localMondayStudentStartDate);
+	$localMondayScheduleStartDate = date("Y-m-d", $localMondayScheduleStartDate);
+
+	$fDateDiff = date_diff(date_create($localMondayScheduleStartDate) , date_create($localMondayStudentStartDate))->format("%a");
+
+	if ($fDateDiff >= 7) {
+		$localType = "old";
+	}
+
+	return $localType;
+}
+
+function getOldStudentSchedule() {
+	global $globalStudentName;
+	$localSchedule = [];
+	$localDateQuery = createDateQuery();
+	$localPostArgs = array(
+		'posts_per_page' => -1,
+		'post_type' => 'reservation',
+		'date_query' => $localDateQuery
+	);
+
+	$localReservationPost = get_posts($localPostArgs);
+
+	foreach ($localReservationPost as $fReservationPost) {
+		$fScheduleInfoArray = explode('_', strtoupper($fReservationPost->post_title));
+		$fHasStudent = strpos(strtoupper($fReservationPost->post_title), strtoupper($globalStudentName));
+	
+		if (count($fScheduleInfoArray) >= 5 && $fHasStudent > -1 && $fScheduleInfoArray[2] != "" && $fScheduleInfoArray[3] != "") {
+			$localScheduleTime = get_post_meta($fReservationPost->ID, 'class_schedule');
+			$localClassId = get_post_meta($fReservationPost->ID, 'class_type')[0];
+			$localTimeIndex = ($fScheduleInfoArray[1]-1)."-".$localScheduleTime[0];
+			$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['class-room'] = $fScheduleInfoArray[2];
+			$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['teacher'] = $fScheduleInfoArray[3];
+			$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['student'] = $fScheduleInfoArray[4];
+			$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['class-type'] = getClassTypeName($localClassId);
+		}
+	}
+
+	$localSchedule = sortSchedule($localSchedule);
+	foreach ($localSchedule as $fIndex=>$fArr) {
+		$localSchedule[$fIndex] = sortSchedule($localSchedule[$fIndex]);
+	}
+}
+
+function getClassTypeName($pId) {
+	$localClassName = "";
+
+	$post = get_post($pId);
+	$localClassName = $post->post_title;
+
+	return $localClassName;
+}
+
+function sortSchedule($pSchedule) {
+	ksort($pSchedule);
+
+	return $pSchedule;
+}
+
+function createDateQuery() {
+	$localDateQuery = [];
+	$localAfterDate = "";
+	$localBeforeDate = "";
+
+	$localAfterDate = date_sub( date_create($_REQUEST['stt']), date_interval_create_from_date_string("1 week") );
+	$localBeforeDate = date_sub( date_create($_REQUEST['end']), date_interval_create_from_date_string("1 week") );
+
+	$localAfterDate = date_sub( $localAfterDate, date_interval_create_from_date_string("1 day") );
+	$localBeforeDate = date_add( $localBeforeDate, date_interval_create_from_date_string("1 day") );
+
+	$localDateQuery["after"] = date_format($localAfterDate, "Y-m-d");
+	$localDateQuery["before"] = date_format($localBeforeDate, "Y-m-d");
+
+	return $localDateQuery;
+}
+?>
+
 <!-- html code for printing display -->
 <div id="print_view_container">
 	<table class="print_view">
@@ -1828,10 +1928,8 @@ foreach ( $tmpClassTime as $time ) {
 		$classTime[$time->ID] = $tmpArr;
 	}
 }
-?>
 
-<!-- teacher print view -->
-<?php 
+/* teacher print view */ 
 $rowCount = 0;
 $teacherList = get_users( array('role' => 'teacher') );
 $tmpStudClassArr = array(); 
@@ -1984,12 +2082,18 @@ function numClassExist ($fArr, $fNumClass) {
 
 <!-- expose php arrays to javascript -->
 <script>
+	//for student print
 	var class_sched = <?php echo json_encode($data_id); $data_id = null; ?>;
+	//for student print
 	var student_meta = <?php echo json_encode($studentMetaArr); $studentMetaArr = null;?>;
 	var date_array = <?php echo json_encode($date_arr); $date_arr = null; ?>;
+	//for schedule
 	var incClassList = <?php echo json_encode($tmpClassList); $tmpClassList = null; ?>;
 	var incNumber = <?php echo json_encode($incNumber); $incNumber = null; ?>;
+	//for teachers print
 	var teacherPrintClassNumArr = <?php echo json_encode($tmpStudClassArr); $tmpStudClassArr = null; ?>;
+	//old student or new student identifier
+	var oldStudent = <?php echo json_encode($oldStudent); $oldStudent = null; ?>;
 </script>
 
 
