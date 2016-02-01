@@ -167,11 +167,11 @@
 		border: 1px solid #000;
 		padding: 5px 2px;
 		margin: 0;
-		font-size: 13px;
+		font-size: 11px;
 		font-weight: bold;
 	}
 	
-	td.teacher-print {
+	td.teacher-print, span.teacher-print {
 		cursor: pointer;
 	}
 
@@ -180,8 +180,8 @@
 		padding: 8px 0;
 	}
 
-	#printFirstPage, 
-	#printSecondPage {
+	.printFirstPage, 
+	.printSecondPage {
 		display: inline-block;
 	}
 
@@ -203,6 +203,10 @@
 	.focusin {
 		color: rgb(0, 217, 0);
 	}
+	
+	.new-student {
+		color: rgb(255, 0, 0);
+	}
 
 	@media print {
 		#colorSelection {
@@ -223,12 +227,16 @@
 			padding-top: 0 !important;
 		}
 	
-		#teacherPrintControls {
+		.teacherPrintControls {
 			display: none;
 		}
 	
 		#make_box--teacher {
 			z-index: 0;
+			display: none;
+		}
+	
+		#hideShowGraduate {
 			display: none;
 		}
 	}
@@ -268,6 +276,8 @@ var colToUpdate = "";
 
 //allowClassInc
 var allowClassInc = true;
+
+var oldSchedule;
 
 (function($){$(function() {
 
@@ -520,9 +530,9 @@ var allowClassInc = true;
 			}
 			//end for same class incrementation
 			if (data["post_type"] == "class_type") {
-				var titleDom = $('<span class="block">' + box_text + spanIncNumber +'</span>');
+				var titleDom = $('<span class="block">' + box_text.toUpperCase() + spanIncNumber +'</span>');
 			} else {
-				var titleDom = $('<span class="block">' + box_text +'</span>');
+				var titleDom = $('<span class="block">' + box_text.toUpperCase() +'</span>');
 			}
 			titleDom.append(del_span);
 			// if teacher or student
@@ -1016,19 +1026,19 @@ var allowClassInc = true;
 		setTimeout(function() { window.print(); }, 100);
 	}
 
-	$("#printFirstPage").on('click', function() {
+	$(".printFirstPage").on('click', function() {
 		$(".row-hide").hide();
 		printTeacher(); 
 		setTimeout(function() { $(".row-hide").show(); }, 200);
 	});
 
-	$("#printSecondPage").on('click', function() {
+	$(".printSecondPage").on('click', function() {
 		$(".row-show").hide();
 		printTeacher(); 
 		setTimeout(function() { $(".row-show").show(); }, 200);
 	});
 
-	$("#closeTeacherSchedule").on('click', function() {
+	$(".closeTeacherSchedule").on('click', function() {
 		$("#search_form").show();
 		$("#searchLabel").show();
 		$("#regist_box").show();
@@ -1150,10 +1160,10 @@ var allowClassInc = true;
 		return localid;
 	}
 
-	//copy schedule
-	$("#copySchedule").on('click', function() {
-		var tmpsched = JSON.stringify(class_sched);
-		tmpsched = JSON.parse(tmpsched);
+	function convertDataToIds(srcData) {
+		console.log("convertDataToIds");
+		console.log(srcData);
+		var tmpsched = srcData;
 	
 		for (var fdate in tmpsched) {
 			for (var ftime in tmpsched[fdate]) {
@@ -1205,20 +1215,14 @@ var allowClassInc = true;
 			}
 		}
 	
-		console.log("class_sched:");
-		console.log(class_sched);
-		localStorage.setItem("scheduleCopy", JSON.stringify(tmpsched));
-		console.log("scheduleCopy: ");
-		var tmp = localStorage.getItem("scheduleCopy");
-		console.log(JSON.parse(tmp));
-	});
+		return tmpsched;
+	}
 
-	//paste schedule
-	$("#pasteSchedule").on('click', function() {
-		console.log("pasteSchedule");
+	function convertToData(src) {
+		console.log("convert to data");
+		console.log(src);
 		var localProcessCount = 0;
-		var tmpSched = localStorage.getItem("scheduleCopy");
-		tmpSched = JSON.parse(tmpSched);
+		var tmpSched = src;
 	
 		for (var fDate in tmpSched) {
 			for (var fTime in tmpSched[fDate]) {
@@ -1263,6 +1267,31 @@ var allowClassInc = true;
 				break;
 			}
 		}
+		
+	}
+
+	//copy schedule
+	$("#copySchedule").on('click', function() {
+		var tmpsched = JSON.stringify(class_sched);
+		tmpsched = JSON.parse(tmpsched);
+	
+		var dataIds = convertDataToIds(tmpsched);
+		localStorage.setItem("scheduleCopy", JSON.stringify(dataIds));
+	
+		console.log("class_sched:");
+		console.log(class_sched);
+		console.log("scheduleCopy: ");
+		var tmp = localStorage.getItem("scheduleCopy");
+		console.log(JSON.parse(tmp));
+	});
+
+	//paste schedule
+	$("#pasteSchedule").on('click', function() {
+		console.log("pasteSchedule");
+	
+		var tmpSched = localStorage.getItem("scheduleCopy");
+		tmpSched = JSON.parse(tmpSched);
+		convertToData(tmpSched);	
 	});
 
 	if ( $("#post_type_select").val().toLowerCase() != "student" ) {
@@ -1276,6 +1305,22 @@ var allowClassInc = true;
 		$("#copySchedule").css("display", "inline-block");
 		$("#pasteSchedule").css("display", "inline-block");
 	}
+
+	//alert(oldStudent+" && "+currentScheduleEmpty);
+	if (oldStudent && currentScheduleEmpty) {
+		console.log("auto load schedule");
+		convertToData(oldSchedule);
+	}
+
+	$(".hideShowGraduate").on("change", function(e) {
+		if ($(e.target).attr("checked") == "checked") {
+			$(".hideShowGraduate").attr("checked", $(e.target).prop("checked"));
+			$(".graduating").hide();
+		} else {
+			$(".graduating").show();
+			$(".hideShowGraduate").attr("checked", $(e.target).prop("checked"));
+		}
+	});
 
 });})(jQuery);
 </script>
@@ -1346,7 +1391,6 @@ $tmpClassList = array();
 $date_arr = array(); 
 $incNumber = array(); 
 
-$y=0;
 $stime;
 $etime;
 $allowAddClassList = 1;
@@ -1403,7 +1447,9 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 					<?php echo $date_key; ?>
 				</div>
 			</td>
-			<?php foreach ( $schedule as $key_d => $d ) {
+			<?php
+			$y = 0;
+			foreach ( $schedule as $key_d => $d ) {
 				$index = 0;
 				$box_prefix = $key_d."--".$date_key;
 				/* for printing */
@@ -1411,8 +1457,13 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room";
 				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type";
 				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher";
-				if ($y < 10) { $y++; } else { $y=0; }
-				 ?>
+			
+				if ($y < 10) {
+					$y++; 
+				} else {
+					$y=0;
+				}
+			?>
 			<td>
 				<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
 					<p>
@@ -1477,9 +1528,13 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 					</p>
 				</div>
 			</td>
-			<?php } ?>
+			<?php 
+			}
+			?>
 		</tr>	
-		<?php } ?>
+		<?php 
+		}
+		?>
 	</table>
 <?php } ?>
 
@@ -1487,10 +1542,11 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 <?php
 $studArgs = array('role' => 'student', 'fields' => array('ID', 'user_login'));
 $studentIdArr = get_users( $studArgs );
-$studentMetaArr = [];
+$studentMetaArr = array();
 $oldStudent = false;
-$oldStudentSched = [];
+$oldStudentSched = array();
 $globalStudentName = "";
+$globalCurrentScheduleEmpty = true;
 
 foreach ($studentIdArr as $fStudent) {
 	if ($post_id == $fStudent->ID) {
@@ -1508,6 +1564,7 @@ $studentType = checkStudentType($studentMetaArr[$post_id]["start-date"], $_REQUE
 if ($post_id != "" && $studentType == "old") {
 	global $oldStudent;
 	$oldStudent = true;
+	currentScheduleEmpty();
 	getOldStudentSchedule();
 }
 
@@ -1529,39 +1586,84 @@ function checkStudentType($fStudentStartDate, $fScheduleStartDate) {
 	return $localType;
 }
 
-function getOldStudentSchedule() {
+function currentScheduleEmpty() {
+	$localScheduleEmpty = true;
+	$localCurrentDateQuery = createDateQuery($_REQUEST['stt'], true);
+
+	global $wpdb;
 	global $globalStudentName;
-	$localSchedule = [];
-	$localDateQuery = createDateQuery();
-	$localPostArgs = array(
-		'posts_per_page' => -1,
-		'post_type' => 'reservation',
-		'date_query' => $localDateQuery
-	);
-
-	$localReservationPost = get_posts($localPostArgs);
-
-	foreach ($localReservationPost as $fReservationPost) {
-		$fScheduleInfoArray = explode('_', strtoupper($fReservationPost->post_title));
-		$fHasStudent = strpos(strtoupper($fReservationPost->post_title), strtoupper($globalStudentName));
+	//loop through the date and make database query for schedule
+	foreach ($localCurrentDateQuery as $fDate) {
+		$localQuery = "SELECT *FROM wp_posts WHERE post_type = 'reservation' AND post_status = 'publish' AND post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."%'";
+		$localReservationPost = $wpdb->get_results($localQuery, OBJECT);
 	
-		if (count($fScheduleInfoArray) >= 5 && $fHasStudent > -1 && $fScheduleInfoArray[2] != "" && $fScheduleInfoArray[3] != "") {
-			$localScheduleTime = get_post_meta($fReservationPost->ID, 'class_schedule');
-			$localClassId = get_post_meta($fReservationPost->ID, 'class_type')[0];
-			$localTimeIndex = ($fScheduleInfoArray[1]-1)."-".$localScheduleTime[0];
-			$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['class-room'] = $fScheduleInfoArray[2];
-			$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['teacher'] = $fScheduleInfoArray[3];
-			$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['student'] = $fScheduleInfoArray[4];
-			$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['class-type'] = getClassTypeName($localClassId);
+		// check if schedule retrieve for date is not empty & save value to variable
+		$localScheduleEmpty = scheduleEmpty($localReservationPost);
+	
+		// check schedule if not empty; stop the loop if not empty
+		if ($localScheduleEmpty == false) {
+			break;
 		}
 	}
 
-	$localSchedule = sortSchedule($localSchedule);
-	foreach ($localSchedule as $fIndex=>$fArr) {
-		$localSchedule[$fIndex] = sortSchedule($localSchedule[$fIndex]);
+	global $globalCurrentScheduleEmpty;
+	$globalCurrentScheduleEmpty = $localScheduleEmpty;
+}
+
+//get old student schedule
+function getOldStudentSchedule() {
+	global $globalStudentName;
+	global $oldStudentSched;
+	global $wpdb;
+	$localSchedule = [];
+	//get dates of schedule
+	$localDateQuery = createDateQuery($_REQUEST['stt'], false);
+	$localScheduleEmpty = 1;
+
+	//loop through the date and make database query for schedule
+	foreach ($localDateQuery as $fDate) {
+		$localQuery = "SELECT *FROM wp_posts WHERE post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."%'";
+		$localReservationPost = $wpdb->get_results($localQuery, OBJECT);
+	
+		// check if schedule retrieve for date is not empty & save value to variable
+		$localScheduleEmpty = scheduleEmpty($localReservationPost);
+	
+		// check schedule if not empty; stop the loop if not empty
+		if ($localScheduleEmpty == false) {
+			break;
+		}
+	}
+
+	//check if schedule is not empty; 
+	if ($localScheduleEmpty == false) {
+		//process the schedule if not empty. create id references for schedule data
+		foreach ($localReservationPost as $fReservationPost) {
+			$fScheduleInfoArray = explode('_', strtoupper($fReservationPost->post_title));
+			$fHasStudent = strpos(strtoupper($fReservationPost->post_title), strtoupper($globalStudentName));
+		
+			if (count($fScheduleInfoArray) >= 5 && $fHasStudent > -1 && $fScheduleInfoArray[2] != "" && $fScheduleInfoArray[3] != "") {
+				$localScheduleId = get_post_meta($fReservationPost->ID, 'class_schedule')[0];
+				$localClassId = get_post_meta($fReservationPost->ID, 'class_type')[0];
+				$localTeacherId = get_post_meta($fReservationPost->ID, 'teacher')[0][0];
+				$localClassroomId = get_post_meta($fReservationPost->ID, 'class_room')[0];
+				$localTimeIndex = ($fScheduleInfoArray[1]-1)."-".$localScheduleId;
+			
+				$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['class-room'] = "class_room--".$localClassroomId." col--".$localScheduleId;
+				$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['teacher'] = "teacher--".$localTeacherId." col--".$localScheduleId;
+				$localSchedule[$fScheduleInfoArray[0]][$localTimeIndex]['class-type'] = "class_type--".$localClassId." col--".$localScheduleId;
+			}
+		}
+	
+		$localSchedule = sortSchedule($localSchedule);
+		foreach ($localSchedule as $fIndex=>$fArr) {
+			$localSchedule[$fIndex] = sortSchedule($localSchedule[$fIndex]);
+		}
+	
+		$oldStudentSched = $localSchedule;
 	}
 }
 
+// class name using id
 function getClassTypeName($pId) {
 	$localClassName = "";
 
@@ -1571,27 +1673,54 @@ function getClassTypeName($pId) {
 	return $localClassName;
 }
 
+// sort schedule by array key
 function sortSchedule($pSchedule) {
 	ksort($pSchedule);
 
 	return $pSchedule;
 }
 
-function createDateQuery() {
+// create date query basis
+function createDateQuery($pStartDate, $forToday) {
 	$localDateQuery = [];
-	$localAfterDate = "";
-	$localBeforeDate = "";
+	$localStartDate = "";
 
-	$localAfterDate = date_sub( date_create($_REQUEST['stt']), date_interval_create_from_date_string("1 week") );
-	$localBeforeDate = date_sub( date_create($_REQUEST['end']), date_interval_create_from_date_string("1 week") );
+	if ($forToday == false) {
+		$localStartDate = date_sub( date_create($pStartDate), date_interval_create_from_date_string("1 week") );
+	} else {
+		$localStartDate = date_create($pStartDate);
+	}
+	$localStartDate = date_format($localStartDate, "Y-m-d");
+	$localDateQuery[] = $localStartDate;
 
-	$localAfterDate = date_sub( $localAfterDate, date_interval_create_from_date_string("1 day") );
-	$localBeforeDate = date_add( $localBeforeDate, date_interval_create_from_date_string("1 day") );
-
-	$localDateQuery["after"] = date_format($localAfterDate, "Y-m-d");
-	$localDateQuery["before"] = date_format($localBeforeDate, "Y-m-d");
+	for ($localIndex=1; $localIndex < 5; $localIndex++) {
+		$localStr = $localIndex." day";
+	
+		$fDate = date_add( date_create($localStartDate), date_interval_create_from_date_string($localStr) );
+		$fDate = date_format($fDate, "Y-m-d");
+		
+		$localDateQuery[] = $fDate;
+	}
 
 	return $localDateQuery;
+}
+
+//check if schedule of date is not empty
+function scheduleEmpty($pSchedule) {
+	global $globalStudentName;
+	$empty = true;
+
+	foreach ($pSchedule as $fSchedule) {
+		$fScheduleInfoArray = explode('_', strtoupper($fSchedule->post_title));
+		$fHasStudent = strpos(strtoupper($fSchedule->post_title), strtoupper($globalStudentName));
+	
+		if (count($fScheduleInfoArray) >= 5 && $fHasStudent > -1 && $fScheduleInfoArray[2] != "" && $fScheduleInfoArray[3] != "") {
+			$empty = false;
+			break;
+		}
+	}
+
+	return $empty;
 }
 ?>
 
@@ -1827,7 +1956,7 @@ if ($dayStt > $dayEnd) {
 }
 
 $args = array(
-	"posts_per_page" => 20000,
+	"posts_per_page" => -1,
 	"order" => "post_date",
 	"order_by" => "DESC",
 	"post_type" => "reservation",
@@ -1852,7 +1981,8 @@ foreach ($posts as $post) {
 		$teacher_name = $tmp[3];
 		$schedule_time = $tmp[1];
 		$student = array();
-		
+		$studentIds = get_post_meta($post->ID, "student")[0];
+	
 		//get students name
 		for ( $x = 4; $x < count( $tmp ); $x++ ) {
 			$student[] = $tmp[$x];
@@ -1861,7 +1991,7 @@ foreach ($posts as $post) {
 		//assign schedule to teacher & class time
 		$tmpArr["teacher_name"] = $teacher_name;
 		$tmpArr[$schedule_time] = array( "class_time" => $schedule_time, 
-		"room" => $tmp[2], "student" => $student);
+		"room" => $tmp[2], "student" => $student, "student_ids" => $studentIds);
 	
 		//get class type
 		$class_type_id = get_post_meta($post->ID, "class_type")[0];
@@ -1888,14 +2018,12 @@ foreach ($posts as $post) {
 			$tmpTeacherName = $sched["teacher_name"];
 			$tmpClassTime = $sched[$schedule_time]["class_time"];
 		
-			/* checks if teacher has record & if class time schedule exist or not
-			 * condition: checks if teacher has record & if class time schedule does not exist
-			 * [true]: add schedule to existing teacher but with different time
-			 */
+			/* checks if teacher has record & if class time schedule exist or not */
 			if ( $tmpTeacherName == $teacher_name ) {
 				$exist = 1;
 			
 				if ( $schedule_time != $tmpClassTime ) {
+					$scheuleArr[$key]["post_id"] = $post->ID;
 					$scheduleArr[$key][$schedule_time] = $tmpArr[$schedule_time];
 				}
 			
@@ -1905,22 +2033,30 @@ foreach ($posts as $post) {
 	
 		//add teacher sched to array automatically if array is empty
 		if ( count( $scheduleArr ) == 0 || $exist == 0) {
+			$tmpArr["post_id"] = $post->ID;
 			$scheduleArr[] = $tmpArr;
 		}
 	}
 }
 
+/* Get Class/Time Schedule */
+
+//create query argument for get_posts
 $args = array(
-	"posts_per_page" => 20000,
+	"posts_per_page" => -1,
 	"order" => "post_title",
 	"order_by" => "ASC",
 	"post_type" => "class_schedule"
 );
 
+//declare array to hold class/time schedule
 $classTime = array();
+//get the class/time schedule
 $tmpClassTime = get_posts( $args );
 
+//filter class/time schedule
 foreach ( $tmpClassTime as $time ) {
+	//check if class/time schedule is not 7:50 ~ 8:00
 	if ($time->ID != 11) {
 		$tmpArr = array();
 		$tmpArr["stt"] = get_post_meta($time->ID, "stt")[0];
@@ -1945,22 +2081,59 @@ function numClassExist ($fArr, $fNumClass) {
 	}
 	
 	return $exist;
-} ?>
+}
+
+// echo "scheduleArr: </br></br>";
+// foreach ($scheduleArr as $fIndex => $fSchedule) {
+// 	echo $fIndex.": </br>";
+// 	print_r($fSchedule);
+// 	echo "</br></br>";
+// }
+
+function addGraduatingClass($pStudentId, $pStudentMetaArr) {
+	$localStudentId = $pStudentId;
+
+	foreach ($pStudentMetaArr as $fStudentId => $fStudentMeta) {
+		if ($fStudentId == $localStudentId && $_REQUEST["end"] == $fStudentMeta["end-date"]) {
+			echo " graduating";
+		}
+	}
+}
+
+function addNewStudentClass($pStudentId, $pStudentMetaArr) {
+	$localStudentId = $pStudentId;
+
+	foreach ($pStudentMetaArr as $fStudentId => $fStudentMeta) {
+		if ($fStudentId == $localStudentId && $_REQUEST["stt"] == $fStudentMeta["start-date"]) {
+			echo " new-student";
+		}
+	}
+}
+?>
 
 <div id="teacher_printview">
 	<div style="text-align: center; font-size: 25px; font-weight: bold; padding: 15px 0;">
-		TEACHERS' SCHEDULE <?php echo strtoupper( $monthStt )." ".$dayStt." - ".strtoupper( $toMonth ).$dayEnd.
-		", ".$year; ?> 
+		TEACHERS' SCHEDULE <?php echo strtoupper( $monthStt )." ".$dayStt." - "
+		.strtoupper( $toMonth ).$dayEnd.", ".$year; ?>
+	</div>
+	<div class="teacherPrintControls" style="margin: 5px 5px; text-align: right;">
+		<span> <input class="hideShowGraduate" type="checkbox" /> <label> Hide graduating students </label> </span>
+		Print Page: 
+		<button class="printFirstPage" style="border: none;"> 1 </button>
+		<button class="printSecondPage" style="border: none;"> 2 </button>
+		<button class="closeTeacherSchedule"> Close </button>
 	</div>
 	<table id="teacherPrint">
 		<tr>
 			<td style="padding-left: 5px;"> Name </td>
-			<?php 
-			foreach ( $classTime as $time ) { ?>
+		<?php 
+		foreach ( $classTime as $time ) { 
+		?>
 			<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
 			<td style="text-align: center; height: 18px;"> class </td>
-			<?php 
-			} ?>
+		<?php 
+		} 
+		?>
 		</tr>
 		<?php 
 		foreach ( $teacherList as $teacher ) {
@@ -1975,10 +2148,15 @@ function numClassExist ($fArr, $fNumClass) {
 			<?php 
 			foreach ( $scheduleArr as $sched ) {
 				if ( $teacher->user_login == $sched["teacher_name"] && $sched["class_type"] == "") {
-					$display = false; ?>
-				
-			<td style="padding-left: 5px;" > <?php echo $sched["teacher_name"]; ?> </td> 
+					$display = false;
+				?>
+			<td style="padding-left: 5px;"> 
+				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>"> 
+					<?php echo $sched["teacher_name"]; ?> 
+				</span>
+			</td> 
 					<?php 
+					//process class location name; remove text & keep number
 					for ( $x = 2; $x < 11; $x++ ) {
 						$room = $sched[$x]["class_room"]; 
 						$room = str_replace("cubicle ", " #", strtolower( $room )); 
@@ -2003,10 +2181,21 @@ function numClassExist ($fArr, $fNumClass) {
 								$tmpStudClassArr[] = $numClass;
 							}
 						}
-						?>
-			<td style="text-align: center;" class="teacher-print"> <?php echo $sched[$x]["student"][0].$room; ?> </td>
-			<td style="text-align: center;" class="teacher-print"> <?php echo $sched[$x]["class_type"]; ?>
-				<span style="display: none;" <?php if ($numClass != "") { echo "class='".$numClass."'"; } ?>> <?php echo $x-1 ?> </span>
+					?>
+					
+			<td style="text-align: center;" class="teacher-print"> 
+				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?><?php echo addNewStudentClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
+						<?php echo strtoupper($sched[$x]["student"][0])?>
+				</span>
+				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
+						<?php echo $room; ?> 
+				</span>
+			</td>
+			<td style="text-align: center;" class="teacher-print">
+				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
+						<?php echo $sched[$x]["class_type"]; ?>
+					<span style="display: none;" <?php if ($numClass != "") { echo "class='".$numClass."'"; } ?>> <?php echo $x-1 ?> </span>
+				</span>
 			</td>
 					<?php 
 					}
@@ -2014,28 +2203,35 @@ function numClassExist ($fArr, $fNumClass) {
 				} elseif ( $teacher->user_login == $sched["teacher_name"] ) {
 					$display = false; break;
 				}
-			} ?>
+			} 
+			?>
 			<?php 
-			if ( $display ) { ?>
+			if ( $display ) { 
+			?>
 			<td style="padding-left: 5px;"> <?php echo $teacher->user_login; ?> </td>
 				<?php 
-				for ( $x = 2; $x < 11; $x++ ) { ?>
+				for ( $x = 2; $x < 11; $x++ ) { 
+				?>
 			<td> </td>
 			<td> </td>
 				<?php 
 				}
-			} ?>
+			} 
+			?>
 		</tr>
 			<?php 
-			if ($rowCount != 0 && ($rowCount % 4) == 0) { ?>
+			if ($rowCount != 0 && ($rowCount % 4) == 0) { 
+			?>
 		<tr class="<?php echo $rowClass; ?>">
 			<td style="padding-left: 5px;"> Name </td>
 				<?php 
-				foreach ( $classTime as $time ) { ?>
+				foreach ( $classTime as $time ) { 
+				?>
 			<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
 			<td style="text-align: center; height: 18px;"> class </td>
 				<?php 
-				} ?>
+				} 
+				?>
 		</tr>
 			<?php 
 			}
@@ -2047,16 +2243,26 @@ function numClassExist ($fArr, $fNumClass) {
 		<tr class="row-hide">
 			<?php 
 			if ( $sched["class_type"] != "" ) { ?>
-			<td style="padding-left: 5px;" class="teacher-print"> <?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> </td> 
+			<td style="padding-left: 5px;" class="teacher-print"> 
+				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
+					<?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> 
+				</span> 
+			</td> 
 				<?php 
 				for ( $x = 2; $x < 11; $x++ ) { ?>
-			<td colspan="2" style="text-align: center;" class="teacher-print"> 
+			<td colspan="2" style="text-align: center;" > 
 					<?php 
 					for ( $x2 = 0; $x2 < count($sched[$x]["student"]); $x2++ ) {
-						if ( $x2 > 0 ) { echo "; "; }
-						echo $sched[$x]["student"][$x2]; 
-					} ?> 
-				</td>
+						$localSeparator = "";
+						if ( $x2 > 0 ) { $localSeparator = "; "; } 
+					?>
+				<span class="teacher-print<?php echo addGraduatingClass($sched[$x]["student_ids"][$x2], $studentMetaArr); ?><?php echo addNewStudentClass($sched[$x]["student_ids"][$x2], $studentMetaArr); ?>">
+					<?php echo strtoupper($sched[$x]["student"][$x2]).$localSeparator; ?>
+				</span> 
+					<?php 
+					} 
+					?> 
+			</td>
 				<?php 
 				}
 			} ?>
@@ -2064,11 +2270,12 @@ function numClassExist ($fArr, $fNumClass) {
 		<?php 
 		} ?>
 	</table>
-	<div id="teacherPrintControls" style="margin: 5px 5px; text-align: right;">
+	<div class="teacherPrintControls" style="margin: 5px 5px; text-align: right;">
+	<span> <input class="hideShowGraduate" type="checkbox" /> <label> Hide graduating students </label> </span>
 		Print Page: 
-		<button id="printFirstPage" style="border: none;"> 1 </button>
-		<button id="printSecondPage" style="border: none;"> 2 </button>
-		<button id="closeTeacherSchedule"> Close </button>
+		<button class="printFirstPage" style="border: none;"> 1 </button>
+		<button class="printSecondPage" style="border: none;"> 2 </button>
+		<button class="closeTeacherSchedule"> Close </button>
 	</div>
 </div>
 
@@ -2094,6 +2301,13 @@ function numClassExist ($fArr, $fNumClass) {
 	var teacherPrintClassNumArr = <?php echo json_encode($tmpStudClassArr); $tmpStudClassArr = null; ?>;
 	//old student or new student identifier
 	var oldStudent = <?php echo json_encode($oldStudent); $oldStudent = null; ?>;
+	oldSchedule = <?php global $oldStudentSched; echo json_encode($oldStudentSched); $oldStudentSched = null; ?>;
+	console.log("end of file: ");
+	console.log(oldSchedule);
+	var currentScheduleEmpty = <?php global $globalCurrentScheduleEmpty; 
+		echo json_encode($globalCurrentScheduleEmpty); 
+		$globalCurrentScheduleEmpty = null; 
+		?>;
 </script>
 
 
