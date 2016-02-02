@@ -1594,7 +1594,7 @@ function currentScheduleEmpty() {
 	global $globalStudentName;
 	//loop through the date and make database query for schedule
 	foreach ($localCurrentDateQuery as $fDate) {
-		$localQuery = "SELECT *FROM wp_posts WHERE post_type = 'reservation' AND post_status = 'publish' AND post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."%'";
+		$localQuery = "SELECT *FROM wp_posts WHERE post_type = 'reservation' AND post_status = 'publish' AND post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."'";
 		$localReservationPost = $wpdb->get_results($localQuery, OBJECT);
 	
 		// check if schedule retrieve for date is not empty & save value to variable
@@ -1622,7 +1622,7 @@ function getOldStudentSchedule() {
 
 	//loop through the date and make database query for schedule
 	foreach ($localDateQuery as $fDate) {
-		$localQuery = "SELECT *FROM wp_posts WHERE post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."%'";
+		$localQuery = "SELECT *FROM wp_posts WHERE post_type = 'reservation' AND post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."' AND post_status = 'publish'";
 		$localReservationPost = $wpdb->get_results($localQuery, OBJECT);
 	
 		// check if schedule retrieve for date is not empty & save value to variable
