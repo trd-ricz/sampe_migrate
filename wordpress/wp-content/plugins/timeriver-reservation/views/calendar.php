@@ -281,7 +281,6 @@ var oldSchedule;
 
 (function($){$(function() {
 
-
 	$(window).load(function(){
 
 		// only student can regst and delete
@@ -438,9 +437,11 @@ var oldSchedule;
 // 			update_box_single(from_id, to_id);
 // 		}
 	}
-	
+
+	var forBulkSchedule = false;
 	// for class_schedule
 	function update_box_single(from_id, to_id) {
+		console.log(from_id+":"+to_id);
 		var fromDom = $("#" + from_id);
 		var toDom   = $("#" + to_id);
 	
@@ -450,10 +451,10 @@ var oldSchedule;
 
 		//console.log(fromDom[0].id.split( '_' ));
 		var class_schedule_pid = to_id.split( '--' )[0];
-	
 		var ymd                = to_id.split( '--' )[1];
 		var key                = from_id.split( '--' )[0];
 		var val                = from_id.split( '--' )[1];
+
 		var arg = "?action=update_reservation";
 			arg += "&ymd=" + ymd;
 			arg += "&class_schedule_pid=" + class_schedule_pid;
@@ -465,12 +466,44 @@ var oldSchedule;
 			dataType: 'json'
 		}).done(function(data, status, xhr) {
 			update_box_info(data);
+		
+// 			if ( !oldStudent ) {
+				if (weekSchedEndDate == ymd) {
+// 					console.log("last of week schedule");
+					createBulkSched(from_id, to_id, ymd);
+				} else if ( new Date(ymd) > new Date(weekSchedEndDate) ) {
+					if (new Date(ymd) <= new Date(student_meta[post_id]['end-date'])) {
+// 						console.log("for bulk scheduling");
+						createBulkSched(from_id, to_id, ymd);
+					}
+				}
+// 			}
 		}).fail(function(xhr, status, error) {
 			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
 		}).always(function(arg1, status, arg2) {
 		});
 	}
 
+	function createBulkSched(from_id, to_id, ymd) {
+// 		console.log("bulk sched");
+		var date = new Date(ymd);
+		date = date.setDate(date.getDate() + 1);
+		date = new Date(date);
+		var strMonth = date.getMonth()+1;
+		var strDate = date.getDate();
+	
+		if (strMonth < 10) { strMonth = "0"+strMonth;}
+		if(strDate < 10 ) { strDate = "0"+strDate; };
+	
+		var strDate = date.getFullYear()+"-"+strMonth+"-"+strDate;
+		var newToId = to_id.split('--')[0]+"--"+strDate+"--"+to_id.split('--')[2];
+
+// 		console.log("newToId: "+newToId);
+		if ( new Date(strDate) <= new Date(studentEndDate) ) {
+			update_box_single(from_id, newToId);
+		}
+	}
+  
 	/*
 	*
 	*/
@@ -537,13 +570,15 @@ var oldSchedule;
 			titleDom.append(del_span);
 			// if teacher or student
 			if (data["post_type"] == "class_room" 
-				|| data["post_type"] == "class_type" ) {
+				|| data["post_type"] == "class_type" 
+				|| data["post_type"] == "teacher") {
 				toDom.find( "p" ).html('');
 			}
+		
 			toDom.find( "p" ).append(titleDom);
-			var statusDom = $('<span class="show_status">◯ 更新</span>');
+			var statusDom = $('<span class="show_status">◯ 更新 (success)</span>');
 		} else if (data["status"] == "duplicate") {
-			var statusDom = $('<span class="show_status">Ｘ 重複</span>');
+			var statusDom = $('<span class="show_status">Ｘ 重複 (conflict)</span>');
 		} else if (data["status"] == "error") {
 			var statusDom = $('<span class="show_status">Ｘ '+ data["mess"] +'</span>');
 		}
@@ -735,9 +770,9 @@ var oldSchedule;
 		for (var date in classSched) {
 			for (var time in classSched[date]) {
 				var idArr = classSched[date][time];
-				idArr["class-room"] = $("#"+idArr["class-room"]+" .block").text().match(/(.*[^\sx])/);
-				idArr["class-type"] = $("#"+idArr["class-type"]+" .block").text().match(/(.*[^\sx])/);
-				idArr["teacher"] = $("#"+idArr["teacher"]+" .block").text().match(/(.*[^\sx])/);
+				idArr["class-room"] = $("#"+idArr["class-room"]+" .block").text().trim().match(/(.*[^\sx])/);
+				idArr["class-type"] = $("#"+idArr["class-type"]+" .block").text().trim().match(/(.*[^\sx])/);
+				idArr["teacher"] = $("#"+idArr["teacher"]+" .block").text().trim().match(/(.*[^\sx])/);
 			
 				//checks if data is not null && get data while removing the unecessary space and character
 				if (idArr["class-room"] != null) {
@@ -754,8 +789,8 @@ var oldSchedule;
 					stop = true;
 				}
 				//get cubicle number
-				if (idArr["class-room"] != null && idArr["class-room"].indexOf("Cubicle") > -1 && cubeNum == 0) {
-					cubeNum = idArr["class-room"].replace(/\t*(Cubicle\s)/,"");	
+				if (idArr["class-room"] != null && idArr["class-room"].toLowerCase().indexOf("cubicle") > -1 && cubeNum == 0) {
+					cubeNum = idArr["class-room"].toLowerCase().trim().replace(/(cubicle\s)/,"");	
 				}
 				//get buddy teacher
 				var tmpStr = idArr["class-type"];
@@ -798,7 +833,7 @@ var oldSchedule;
 			$("#buddyTeacher").text(budteach);
 		} else {
 			var tmpObj = {};
-			tmpObj["cubicle_number"] = cubeNum;
+			tmpObj["cubicle_number"] = cubeNum.replace(/([a-zA-Z]*\s)/, "");
 			tmpObj["buddy_teacher"] = budteach;
 			localStorage.tmpObj = JSON.stringify(tmpObj);
 		}
@@ -812,7 +847,8 @@ var oldSchedule;
 		console.log(sched);
 		//assigns value to print view table
 		var mmc = 0, gcc = 0, studentId = $("#choices_select").val();
-		if (booleanForSecondData != true) {
+	
+		if (booleanForSecondData != true && (typeof student_meta[studentId]['start-date']) != 'undefined' && (typeof student_meta[studentId]['end-date']) != 'undefined') {
 			var classStartDate = new Date($("#from").val());
 			var startDate = new Date(student_meta[studentId]['start-date']);
 			var endDate = new Date(student_meta[studentId]['end-date']);
@@ -864,13 +900,13 @@ var oldSchedule;
 		//array container for repeated class
 		var showNumClass = [];
 		for( var y in sched ) {
-			if (sched[y]["class-type"] != null && sched[y]["class-type"].indexOf(" GC") > -1) {
+			if (sched[y] != null && sched[y]["class-type"] != null && sched[y]["class-type"].indexOf(" GC") > -1) {
 				++gcc;
 			} else {
 				++mmc;
 			}
 			//handling for class type print display
-			if (sched[y]["class-type"] != null) {
+			if (sched[y] != null && sched[y]["class-type"] != null) {
 				var tmpArr = sched[y]["class-type"].split(' ');
 				var tmpClassNumber = "", tmpName = "";
 				//retrieve class name & class number
@@ -906,12 +942,12 @@ var oldSchedule;
 			}
 		
 			//handling for teacher name print display
-			if (sched[y]["teacher"] != null) {
+			if (sched[y] != null && sched[y]["teacher"] != null) {
 				$("#class-"+(y)+"-teacher" + secondData).text(sched[y]["teacher"]);
 			}
 		
 			//handling for class room print display
-			if (sched[y]["class-room"] != null && sched[y]["class-room"].indexOf("Cubicle") == -1) {
+			if (sched[y] != null && sched[y]["class-room"] != null && sched[y]["class-room"].toLowerCase().indexOf("cubicle") == -1) {
 				$("#class-"+(y)+"-gc-room" + secondData).text(sched[y]["class-room"]);
 			}
 		}
@@ -925,6 +961,7 @@ var oldSchedule;
 		var classCount = "<span class='rgb-red-txt'> "+mmc+" MM "+gcc+" GC </span> )";
 		if (booleanForSecondData != true) {
 			var studName = $("#choices_select option:selected").text();
+			//$("#cubicleNum").text(schedData["cubicle_number"]);
 			$("#studentName").text(studName + " ( " + Math.round(totalWeeks) + " WKS.").append(classCount);
 		} else {
 			var studName = schedData["student_name"];
@@ -1309,7 +1346,7 @@ var oldSchedule;
 	//alert(oldStudent+" && "+currentScheduleEmpty);
 	if (oldStudent && currentScheduleEmpty) {
 		console.log("auto load schedule");
-		convertToData(oldSchedule);
+		//convertToData(oldSchedule);
 	}
 
 	$(".hideShowGraduate").on("change", function(e) {
@@ -1393,6 +1430,7 @@ $incNumber = array();
 
 $stime;
 $etime;
+$weekSchedEndDate = "";
 $allowAddClassList = 1;
 
 foreach ($cal_data as $week_key => $class_schedule_data) {
@@ -1423,11 +1461,13 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 		</tr>
 		<!-- re-order data / switch date & time -->
 		<?php
-		foreach ( $class_schedule_data as $class_schedule => $class_date_data ) {
-			$class_time[] = $time = $mt_class_schedule[$class_schedule];
-		
-			foreach ( $class_date_data as $date => $data ) {
-				$new_schedule[$date][$class_schedule] = $data;
+		if (count($new_schedule) == 0) {
+			foreach ( $class_schedule_data as $class_schedule => $class_date_data ) {
+				$class_time[] = $time = $mt_class_schedule[$class_schedule];
+			
+				foreach ( $class_date_data as $date => $data ) {
+					$new_schedule[$date][$class_schedule] = $data;
+				}
 			}
 		}
 		?>
@@ -1704,6 +1744,8 @@ function createDateQuery($pStartDate, $forToday) {
 
 	return $localDateQuery;
 }
+
+
 
 //check if schedule of date is not empty
 function scheduleEmpty($pSchedule) {
@@ -2254,7 +2296,7 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 					<?php 
 					for ( $x2 = 0; $x2 < count($sched[$x]["student"]); $x2++ ) {
 						$localSeparator = "";
-						if ( $x2 > 0 ) { $localSeparator = "; "; } 
+						if ( count($sched[$x]["student"]) > 1 ) { $localSeparator = "; "; } 
 					?>
 				<span class="teacher-print<?php echo addGraduatingClass($sched[$x]["student_ids"][$x2], $studentMetaArr); ?><?php echo addNewStudentClass($sched[$x]["student_ids"][$x2], $studentMetaArr); ?>">
 					<?php echo strtoupper($sched[$x]["student"][$x2]).$localSeparator; ?>
@@ -2293,6 +2335,8 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 	var class_sched = <?php echo json_encode($data_id); $data_id = null; ?>;
 	//for student print
 	var student_meta = <?php echo json_encode($studentMetaArr); $studentMetaArr = null;?>;
+	var studentEndDate = student_meta[post_id]['end-date'];
+	var weekSchedEndDate = <?php echo json_encode( end($date_arr) ); ?>;
 	var date_array = <?php echo json_encode($date_arr); $date_arr = null; ?>;
 	//for schedule
 	var incClassList = <?php echo json_encode($tmpClassList); $tmpClassList = null; ?>;
@@ -2302,8 +2346,6 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 	//old student or new student identifier
 	var oldStudent = <?php echo json_encode($oldStudent); $oldStudent = null; ?>;
 	oldSchedule = <?php global $oldStudentSched; echo json_encode($oldStudentSched); $oldStudentSched = null; ?>;
-	console.log("end of file: ");
-	console.log(oldSchedule);
 	var currentScheduleEmpty = <?php global $globalCurrentScheduleEmpty; 
 		echo json_encode($globalCurrentScheduleEmpty); 
 		$globalCurrentScheduleEmpty = null; 
