@@ -204,8 +204,12 @@
 		color: rgb(0, 217, 0);
 	}
 	
-	.new-student {
+	.new-student-gc {
 		color: rgb(255, 0, 0);
+	}
+	
+	.new-student-mm {
+		background-color: rgb(255, 255, 0);
 	}
 
 	@media print {
@@ -1355,7 +1359,7 @@ var oldSchedule;
 	//alert(oldStudent+" && "+currentScheduleEmpty);
 	if (oldStudent && currentScheduleEmpty) {
 		console.log("auto load schedule");
-		//convertToData(oldSchedule);
+		convertToData(oldSchedule);
 	}
 
 	$(".hideShowGraduate").on("change", function(e) {
@@ -2234,8 +2238,8 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 						}
 					?>
 					
-			<td style="text-align: center;" class="teacher-print"> 
-				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?><?php echo addNewStudentClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
+			<td style="text-align: center;" class="teacher-print<?php echo addNewStudentClass($sched[$x]["student_ids"][0], $studentMetaArr)."-mm"; ?>"> 
+				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
 						<?php echo strtoupper($sched[$x]["student"][0])?>
 				</span>
 				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
@@ -2307,7 +2311,7 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 						$localSeparator = "";
 						if ( count($sched[$x]["student"]) > 1 ) { $localSeparator = "; "; } 
 					?>
-				<span class="teacher-print<?php echo addGraduatingClass($sched[$x]["student_ids"][$x2], $studentMetaArr); ?><?php echo addNewStudentClass($sched[$x]["student_ids"][$x2], $studentMetaArr); ?>">
+				<span class="teacher-print<?php echo addGraduatingClass($sched[$x]["student_ids"][$x2], $studentMetaArr); ?><?php echo addNewStudentClass($sched[$x]["student_ids"][$x2], $studentMetaArr)."-gc"; ?>">
 					<?php echo strtoupper($sched[$x]["student"][$x2]).$localSeparator; ?>
 				</span> 
 					<?php 
