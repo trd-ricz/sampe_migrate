@@ -467,16 +467,17 @@ var oldSchedule;
 		}).done(function(data, status, xhr) {
 			update_box_info(data);
 		
+		/* for bulk registration code */
 // 			if ( !oldStudent ) {
-				if (weekSchedEndDate == ymd) {
+// 				if (weekSchedEndDate == ymd) {
 // 					console.log("last of week schedule");
-					createBulkSched(from_id, to_id, ymd);
-				} else if ( new Date(ymd) > new Date(weekSchedEndDate) ) {
-					if (new Date(ymd) <= new Date(student_meta[post_id]['end-date'])) {
+// 					createBulkSched(from_id, to_id, ymd);
+// 				} else if ( new Date(ymd) > new Date(weekSchedEndDate) ) {
+// 					if (new Date(ymd) <= new Date(student_meta[post_id]['end-date'])) {
 // 						console.log("for bulk scheduling");
-						createBulkSched(from_id, to_id, ymd);
-					}
-				}
+// 						createBulkSched(from_id, to_id, ymd);
+// 					}
+// 				}
 // 			}
 		}).fail(function(xhr, status, error) {
 			alert("通信エラーが発生しました。しばらく経って再度処理を行ってください。");
@@ -486,6 +487,8 @@ var oldSchedule;
 
 	function createBulkSched(from_id, to_id, ymd) {
 // 		console.log("bulk sched");
+		var fourthWeekDate = new Date(weekSchedEndDate);
+		fourthWeekDate = fourthWeekDate.setDate(fourthWeekDate.getDate() + 28);
 		var date = new Date(ymd);
 		date = date.setDate(date.getDate() + 1);
 		date = new Date(date);
@@ -499,8 +502,14 @@ var oldSchedule;
 		var newToId = to_id.split('--')[0]+"--"+strDate+"--"+to_id.split('--')[2];
 
 // 		console.log("newToId: "+newToId);
-		if ( new Date(strDate) <= new Date(studentEndDate) ) {
+		if (new Date(studentEndDate) < new Date(fourthWeekDate)) {
+			fourthWeekDate = studentEndDate;
+		}
+		console.log('to_id: '+to_id);
+		if ( new Date(strDate) <= new Date(fourthWeekDate) ) {
 			update_box_single(from_id, newToId);
+		} else {
+			alert("time: "+to_id.split("--")[0]+"\ndate: "+to_id.split("--")[1]+"\ntype: "+to_id.split("--")[2]+"\nstatus: done!");
 		}
 	}
   
