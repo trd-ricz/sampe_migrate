@@ -550,6 +550,7 @@ var oldSchedule;
 		console.log("update_box_info");
 		//console.log(data["to_id"]);
 		var toDom = $("#" + data["to_id"]);
+	
 		if (data["status"] == "ok") { 
 			// delete
 			var box_id = 'del--' + data["to_id"] + '--' + data["post_id"];
@@ -576,9 +577,9 @@ var oldSchedule;
 			}
 			//end for same class incrementation
 			if (data["post_type"] == "class_type") {
-				var titleDom = $('<span class="block">' + box_text.toUpperCase() + spanIncNumber +'</span>');
+				var titleDom = $('<span class="block col-'+toDom.attr("id").split('--')[0]+'">' + box_text.toUpperCase() + spanIncNumber +'</span>');
 			} else {
-				var titleDom = $('<span class="block">' + box_text.toUpperCase() +'</span>');
+				var titleDom = $('<span class="block col-'+toDom.attr("id").split('--')[0]+'">' + box_text.toUpperCase() +'</span>');
 			}
 			titleDom.append(del_span);
 			// if teacher or student
@@ -1356,12 +1357,6 @@ var oldSchedule;
 		$("#pasteSchedule").css("display", "inline-block");
 	}
 
-	//alert(oldStudent+" && "+currentScheduleEmpty);
-	if (oldStudent && currentScheduleEmpty) {
-		console.log("auto load schedule");
-		convertToData(oldSchedule);
-	}
-
 	$(".hideShowGraduate").on("change", function(e) {
 		if ($(e.target).attr("checked") == "checked") {
 			$(".hideShowGraduate").attr("checked", $(e.target).prop("checked"));
@@ -1371,6 +1366,22 @@ var oldSchedule;
 			$(".hideShowGraduate").attr("checked", $(e.target).prop("checked"));
 		}
 	});
+
+	$(".del-col").on("click", function(e) {
+		var elementId = $(this).attr("id");
+		var element = "."+elementId.split("-")[1]+"-"+elementId.split("-")[2]+" span a";
+		var elementObj = $(element);
+	
+		for (var x = 0; x < elementObj.size(); x++) {
+			$( elementObj[x] ).trigger("click");
+		}
+	});
+
+	//alert(oldStudent+" && "+currentScheduleEmpty);
+	if (oldStudent && currentScheduleEmpty) {
+		console.log("auto load schedule");
+		convertToData(oldSchedule);
+	}
 
 });})(jQuery);
 </script>
@@ -1467,6 +1478,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 				<div id="col--<?php echo $class_schedule; ?>" class="droppable" >
 					<?php echo $mt_class_schedule[$class_schedule]["stt"]
 					."〜" .$mt_class_schedule[$class_schedule]["end"]; ?>
+					<span id="del-col-<?php echo $class_schedule?>" class="del-col" style="color: red; cursor: pointer;"> x </span>
 				</div>
 			</th>
 			<?php 
@@ -1520,7 +1532,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 			<td>
 				<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
 					<p>
-						<span class="block">
+						<span class="block <?php echo "col-".$key_d; ?>">
 						<?php 
 						echo strtoupper($mt_class_room[$d['class_room']]['post_title']);
 						if ( $mt_class_room[$d['class_room']]['post_title'] ) { ?>
@@ -1532,7 +1544,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 				</div>
 				<div id="<?php echo $box_prefix; ?>--class_type" class="droppable class_type">
 					<p>
-						<span class="block">
+						<span class="block <?php echo "col-".$key_d; ?>">
 							<?php 
 							echo strtoupper($mt_class_type[$d['class_type']]['post_title']);
 							if ( $mt_class_type[$d['class_type']]['post_title'] ) {
@@ -1561,7 +1573,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 					<?php
 					foreach ( (array)$d['teacher'] as $id ) { 
 						?>
-						<span class="block"><?php echo strtoupper($mt_teacher[$id]['display_name']); ?>
+						<span class="block <?php echo "col-".$key_d; ?>"><?php echo strtoupper($mt_teacher[$id]['display_name']); ?>
 							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--teacher--".$id;?>">x</a></span>
 						</span>
 						<?php
@@ -1573,7 +1585,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 					<p>
 						<?php 
 						foreach ( (array)$d['student'] as $id ) { ?>
-							<span class="block"><?php echo strtoupper($mt_student[$id]['display_name']); ?>
+							<span class="block <?php echo "col-".$key_d; ?>"><?php echo strtoupper($mt_student[$id]['display_name']); ?>
 								<span><a class="box_del" id="<?php echo "del--{$box_prefix}--student--".$id;?>">x</a></span>
 							</span>
 						<?php 
@@ -2348,7 +2360,9 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 	var class_sched = <?php echo json_encode($data_id); $data_id = null; ?>;
 	//for student print
 	var student_meta = <?php echo json_encode($studentMetaArr); $studentMetaArr = null;?>;
-	var studentEndDate = student_meta[post_id]['end-date'];
+	if (typeof student_meta[post_id] != "undefined") {
+		var studentEndDate = student_meta[post_id]['end-date'];
+	}
 	var weekSchedEndDate = <?php echo json_encode( end($date_arr) ); ?>;
 	var date_array = <?php echo json_encode($date_arr); $date_arr = null; ?>;
 	//for schedule
