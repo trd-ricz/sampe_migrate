@@ -1,3 +1,4 @@
+<?php //echo phpinfo();?>
 <!-- link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" -->
 <link rel="stylesheet" href="<?php echo plugins_url(); ?>/timeriver-reservation/assets/jquery-ui/jquery-ui.css">
 <style>
@@ -764,7 +765,7 @@ var oldSchedule;
 
 		if (strDate.getDate() > endDate.getDate() && strDate.getMonth() < 11) {
 			nxtMonth = mText[strDate.getMonth() + 1];
-		} else {
+		} else if (strDate.getDate() > endDate.getDate() && strDate.getMonth() > 10) {
 			nxtMonth = mText[0];
 		}
 
@@ -916,7 +917,8 @@ var oldSchedule;
 		for( var y in sched ) {
 			if (sched[y] != null && sched[y]["class-type"] != null && sched[y]["class-type"].indexOf(" GC") > -1) {
 				++gcc;
-			} else {
+			} else if (sched[y] != null && sched[y]["class-type"] != null 
+				&& sched[y]["class-type"].toUpperCase().indexOf(" MM") > -1) {
 				++mmc;
 			}
 			//handling for class type print display
