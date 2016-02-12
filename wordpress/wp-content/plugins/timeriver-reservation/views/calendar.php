@@ -1,6 +1,6 @@
 <?php //echo phpinfo();?>
 <!-- link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" -->
-<link rel="stylesheet" href="<?php echo plugins_url(); ?>/timeriver-reservation/assets/jquery-ui/jquery-ui.css">
+<!-- link rel="stylesheet" href="<?php echo plugins_url(); ?>/timeriver-reservation/assets/jquery-ui/jquery-ui.css" -->
 <style>
 	.draggable { width: 100px; height: 20px; padding: 0em; float: left; margin: 10px; }
 	.draggable p { margin: 0px; }
@@ -213,6 +213,12 @@
 		background-color: rgb(255, 255, 0);
 	}
 
+	.loading {
+		background-repeat: no-repeat;
+		background-position: right;
+		background-image: url(/wp-content/plugins/timeriver-reservation/assets/images/ajax-loader.gif);
+	}
+
 	@media print {
 		#colorSelection {
 			display: none;
@@ -245,6 +251,7 @@
 			display: none;
 		}
 	}
+	
 </style>
 
 <?php 
@@ -284,10 +291,12 @@ var allowClassInc = true;
 
 var oldSchedule;
 
+//var siteUrl = "<?php echo get_site_url(); ?>";
+
 (function($){$(function() {
 
 	$(window).load(function(){
-
+	
 		// only student can regst and delete
 		if (post_type == "student") {
 			$("#regist_box").show();
@@ -298,7 +307,7 @@ var oldSchedule;
 		}
 	
 		$("#post_type_select").trigger("change");
-
+	
 		get_post_type_choices_by_ajax("class_room", "#class_room_select");
 		get_post_type_choices_by_ajax("class_type", "#class_type_select");
 		get_post_type_choices_by_ajax("teacher",    "#teacher_select");
@@ -355,6 +364,7 @@ var oldSchedule;
 // 		var ymd            = to_id.split('--')[1];
 		console.log("update box col: ");
 		console.log(from_id+" : "+to_id);
+
 		/* switch date & time  */
 		var index_exist = false;
 		var prev_class_id = 0;
@@ -446,6 +456,7 @@ var oldSchedule;
 	var forBulkSchedule = false;
 	// for class_schedule
 	function update_box_single(from_id, to_id) {
+		console.log('update_box_single');
 		console.log(from_id+":"+to_id);
 		var fromDom = $("#" + from_id);
 		var toDom   = $("#" + to_id);
@@ -467,6 +478,8 @@ var oldSchedule;
 			arg += "&" + key + "=" + val;
 			console.log(arg);
 		$.ajax({
+			beforeSend: function() { $("#" + to_id + " p").addClass('loading'); },
+			complete: function() { $("#" + to_id + " p").removeClass('loading'); },
 			url: "/wp-admin/admin-ajax.php" + arg,
 			dataType: 'json'
 		}).done(function(data, status, xhr) {
@@ -2209,9 +2222,14 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 	foreach ($pStudentMetaArr as $fStudentId => $fStudentMeta) {
 		//checks if student id in meta is the same as passed student id
 		//checks if student meta start date is the same, as current schedule start date ($_REQUEST["stt"])
-		if ($fStudentId == $pStudentId && $_REQUEST["stt"] == $fStudentMeta["start-date"]) {
-			//return new-student class name
-			echo " new-student";
+		if ($fStudentId == $pStudentId) {
+			$localStudentStt = strtotime("monday this week", strtotime($fStudentMeta["start-date"]));
+		
+			if ($_REQUEST["stt"] == date("Y-m-d", $localStudentStt)) {
+				//return new-student class name
+				echo " new-student";
+				break;
+			}
 		}
 	}
 }
