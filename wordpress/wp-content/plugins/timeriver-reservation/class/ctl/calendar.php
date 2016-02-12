@@ -7,7 +7,7 @@ class Trr_Ctl_Calendar {
 	
 	public static $select_type_list = array(
 		"student"    => "Student",
-		"teacher"    => "Ceacher",
+		"teacher"    => "Teacher",
 		"class_room" => "Room",
 	);
 	
