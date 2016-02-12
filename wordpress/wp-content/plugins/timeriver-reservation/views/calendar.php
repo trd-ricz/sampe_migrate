@@ -862,36 +862,44 @@ var oldSchedule;
 		console.log(sched);
 		//assigns value to print view table
 		var mmc = 0, gcc = 0, studentId = $("#choices_select").val();
+		var classStartDate = new Date($("#from").val());
 	
-		if (booleanForSecondData != true && (typeof student_meta[studentId]['start-date']) != 'undefined' && (typeof student_meta[studentId]['end-date']) != 'undefined') {
-			var classStartDate = new Date($("#from").val());
+		if (booleanForSecondData != true 
+		&& (typeof student_meta[studentId]['start-date']) != 'undefined' 
+		&& (typeof student_meta[studentId]['end-date']) != 'undefined') {
+		
 			var startDate = new Date(student_meta[studentId]['start-date']);
 			var endDate = new Date(student_meta[studentId]['end-date']);
+		
 		} else {
 			var schedData = JSON.parse(localStorage.schedData);
-			var classStartDate = new Date();
 			var startDate = new Date(schedData["meta"]['start-date']);
 			var endDate = new Date(schedData["meta"]['end-date']);
 		}
+	
 		var monthString = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 		var msDay =  86400000;
 		var secondData = "";
-
+	
 		if (booleanForSecondData) {
 			secondData = "-2";
 		}
-
+	
 		$("#stdStartDate" + secondData).text(startDate.getDate() + " " + monthString[startDate.getMonth()] + 
 		" " + startDate.getFullYear().toString().slice(-2));
 		$("#stdEndDate" + secondData).text(endDate.getDate() + " " + monthString[endDate.getMonth()] + 
 		" " + endDate.getFullYear().toString().slice(-2));
-
+	
+// 		if (booleanForSecondData) {
+			alert(classStartDate + " : " + startDate);
+// 		}
+	
 		if ( (((classStartDate.getTime() - startDate.getTime()) / msDay) + startDate.getDay()) <= 7 ) {
 			$("#stdType" + secondData).text("NEW STUDENT");
 		} else {
 			$("#stdType" + secondData).text("OLD STUDENT");
 		}
-
+	
 		var y = 1, add = 1;
 		if (sched[0] != null) {
 			y = 0;
@@ -1628,6 +1636,7 @@ foreach ($studentIdArr as $fStudent) {
 //process for old student check
 $studentType = checkStudentType($studentMetaArr[$post_id]["start-date"], $_REQUEST["stt"]);
 
+
 if ($post_id != "" && $studentType == "old") {
 	global $oldStudent;
 	$oldStudent = true;
@@ -1653,6 +1662,7 @@ function checkStudentType($fStudentStartDate, $fScheduleStartDate) {
 	return $localType;
 }
 
+//checks if current schedule is empty
 function currentScheduleEmpty() {
 	$localScheduleEmpty = true;
 	$localCurrentDateQuery = createDateQuery($_REQUEST['stt'], true);
@@ -1730,7 +1740,7 @@ function getOldStudentSchedule() {
 	}
 }
 
-// class name using id
+// get class name using id
 function getClassTypeName($pId) {
 	$localClassName = "";
 
@@ -1765,13 +1775,12 @@ function createDateQuery($pStartDate, $forToday) {
 	
 		$fDate = date_add( date_create($localStartDate), date_interval_create_from_date_string($localStr) );
 		$fDate = date_format($fDate, "Y-m-d");
-		
+	
 		$localDateQuery[] = $fDate;
 	}
 
 	return $localDateQuery;
 }
-
 
 
 //check if schedule of date is not empty
@@ -1793,7 +1802,7 @@ function scheduleEmpty($pSchedule) {
 }
 ?>
 
-<!-- html code for printing display -->
+<!-- html code for student schedule printing -->
 <div id="print_view_container">
 	<table class="print_view">
 		<tr>
@@ -2108,7 +2117,7 @@ foreach ($posts as $post) {
 	}
 }
 
-/* Get Class/Time Schedule */
+/* for Class/Time Schedule */
 
 //create query argument for get_posts
 $args = array(
@@ -2134,16 +2143,39 @@ foreach ( $tmpClassTime as $time ) {
 	}
 }
 
-/* teacher print view */ 
+/* for teacher print */ 
 $rowCount = 0;
+global $wpdb;
 $teacherList = get_users( array('role' => 'teacher') );
-$tmpStudClassArr = array(); 
+$tmpStudClassArr = array();
 
-function numClassExist ($fArr, $fNumClass) {
+/* for teacher print */
+
+//remove not-working teachers from list
+function filterTeachersList($teacherList) {
+	$localThisWeekFriday = $_REQUEST['end'];
+
+	//loop through teacher list
+	foreach ($teacherList as $key => $fTeacher) {
+		//get teacher end date
+		$fTeacherEndDate = get_user_meta($fTeacher -> ID)['end_date'][0];
+	
+		//check if this week friday date is greater than teacher end date
+		if ( strtotime($localThisWeekFriday) > strtotime($fTeacherEndDate) ) {
+			//remove teacher from list
+			unset($GLOBALS['teacherList'][$key]);
+		}
+	}
+}
+
+//call function that filters teacher list
+filterTeachersList($teacherList);
+
+function numClassExist ($pArr, $pNumClass) {
 	$exist = false;
 
-	foreach ( $fArr as $fData ) {
-		if ( $fData == $fNumClass ) {
+	foreach ( $pArr as $fData ) {
+		if ( $fData == $pNumClass ) {
 			$exist = true;
 			break;
 		}
@@ -2152,34 +2184,40 @@ function numClassExist ($fArr, $fNumClass) {
 	return $exist;
 }
 
-// echo "scheduleArr: </br></br>";
-// foreach ($scheduleArr as $fIndex => $fSchedule) {
-// 	echo $fIndex.": </br>";
-// 	print_r($fSchedule);
-// 	echo "</br></br>";
-// }
+/* for teacher print */
 
+//add graduating class to element if student is graduating
+//recieves a student id, and the student meta array of start-date and end-date
 function addGraduatingClass($pStudentId, $pStudentMetaArr) {
-	$localStudentId = $pStudentId;
-
+	//loops through the student meta  stt_date && end_date array
 	foreach ($pStudentMetaArr as $fStudentId => $fStudentMeta) {
-		if ($fStudentId == $localStudentId && $_REQUEST["end"] == $fStudentMeta["end-date"]) {
+		//checks if student id in meta is the same as passed student id
+		//checks if student meta end date is the same, as current schedule end date
+		if ($fStudentId == $pStudentId && $_REQUEST["end"] == $fStudentMeta["end-date"]) {
+			//return the graduating class name
 			echo " graduating";
 		}
 	}
 }
 
-function addNewStudentClass($pStudentId, $pStudentMetaArr) {
-	$localStudentId = $pStudentId;
+/* for teacher print */
 
+//adds a new-student class if student is new
+//recieves a student id, and the student meta array of start-date and end-date
+function addNewStudentClass($pStudentId, $pStudentMetaArr) {
+	//loops through the student meta array
 	foreach ($pStudentMetaArr as $fStudentId => $fStudentMeta) {
-		if ($fStudentId == $localStudentId && $_REQUEST["stt"] == $fStudentMeta["start-date"]) {
+		//checks if student id in meta is the same as passed student id
+		//checks if student meta start date is the same, as current schedule start date ($_REQUEST["stt"])
+		if ($fStudentId == $pStudentId && $_REQUEST["stt"] == $fStudentMeta["start-date"]) {
+			//return new-student class name
 			echo " new-student";
 		}
 	}
 }
 ?>
 
+<!-- html code for teacher schedule print view -->
 <div id="teacher_printview">
 	<div style="text-align: center; font-size: 25px; font-weight: bold; padding: 15px 0;">
 		TEACHERS' SCHEDULE <?php echo strtoupper( $monthStt )." ".$dayStt." - "
@@ -2245,7 +2283,6 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 								$numClass = str_replace("/", "_", $numClass);
 							}
 						
-							//$numClass = $classNum.str_replace("/", "_", $sched[$x]["class_type"]);
 							if ( !numClassExist($tmpStudClassArr, $numClass) ) {
 								$tmpStudClassArr[] = $numClass;
 							}
