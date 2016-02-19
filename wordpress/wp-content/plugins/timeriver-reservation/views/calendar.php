@@ -1,6 +1,6 @@
 <?php //echo phpinfo();?>
 <!-- link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" -->
-<!-- link rel="stylesheet" href="<?php echo plugins_url(); ?>/timeriver-reservation/assets/jquery-ui/jquery-ui.css" -->
+<link rel="stylesheet" href="<?php echo plugins_url(); ?>/timeriver-reservation/assets/jquery-ui/jquery-ui.css">
 <style>
 	.draggable { width: 100px; height: 20px; padding: 0em; float: left; margin: 10px; }
 	.draggable p { margin: 0px; }
@@ -146,7 +146,7 @@
 		padding: 0 5px;
 		margin: 0;
 	}
-	
+
 	#buddyTeacher, #buddyTeacher-2 {
 		font-size: 10px;
 	}
@@ -154,15 +154,15 @@
 	#studentName, #studentName-2 {
 		font-size: 15px;
 	}
-	
-	#teacherPrint {
+
+	.teacherPrint {
 		width: 100%;
 		height: auto;
 		padding: 0;
 		border-collapse: collapse !important;
 	}
 
-	#teacherPrint td {
+	.teacherPrint td {
 		min-width: 66px;
 		text-align: left;
 		border: 1px solid #000;
@@ -171,7 +171,7 @@
 		font-size: 11px;
 		font-weight: bold;
 	}
-	
+
 	td.teacher-print, span.teacher-print {
 		cursor: pointer;
 	}
@@ -200,31 +200,50 @@
 		display: none;
 		padding: 5px;
 	}
-	
+
 	.focusin {
 		color: rgb(0, 217, 0);
 	}
-	
+
 	.new-student-gc {
 		color: rgb(255, 0, 0);
 	}
-	
-	.new-student-mm {
+
+	.new-student {
 		background-color: rgb(255, 255, 0);
 	}
 
-	.loading {
-		background-repeat: no-repeat;
-		background-position: right;
-		background-image: url(/wp-content/plugins/timeriver-reservation/assets/images/ajax-loader.gif);
+	.teacherPrint {
+		page-break-inside: avoid;
+		page-break-before: auto;
+		page-break-after: auto;
 	}
 
+	.page-break {
+		display: none;
+		border: none;
+		height: 0;
+	}
+
+/* 	.loading { */
+/* 		background-repeat: no-repeat; */
+/* 		background-position: right; */
+/* 		background-image: url(/wp-content/plugins/timeriver-reservation/assets/images/ajax-loader.gif); */
+/* 	} */
+
 	@media print {
+		.page-break {
+			display: block;
+		}
+	
+		.hide-on-print {
+			display: none !important;
+		}
+	
 		#colorSelection {
 			display: none;
 		}
 	
-		#regist_box, 
 		#adminmenumain {
 			display: none !important;
 		}
@@ -239,7 +258,7 @@
 		}
 	
 		.teacherPrintControls {
-			display: none;
+			display: none !important;
 		}
 	
 		#make_box--teacher {
@@ -478,8 +497,8 @@ var oldSchedule;
 			arg += "&" + key + "=" + val;
 			console.log(arg);
 		$.ajax({
-			beforeSend: function() { $("#" + to_id + " p").addClass('loading'); },
-			complete: function() { $("#" + to_id + " p").removeClass('loading'); },
+// 			beforeSend: function() { $("#" + to_id + " p").addClass('loading'); },
+// 			complete: function() { $("#" + to_id + " p").removeClass('loading'); },
 			url: "/wp-admin/admin-ajax.php" + arg,
 			dataType: 'json'
 		}).done(function(data, status, xhr) {
@@ -996,6 +1015,7 @@ var oldSchedule;
 	
 		var totalWeeks = ((endDate.getTime() - startDate.getTime()) / msDay) / 7;
 		var classCount = "<span class='rgb-red-txt'> "+mmc+" MM "+gcc+" GC </span> )";
+	
 		if (booleanForSecondData != true) {
 			var studName = $("#choices_select option:selected").text();
 			//$("#cubicleNum").text(schedData["cubicle_number"]);
@@ -1073,13 +1093,18 @@ var oldSchedule;
 	if ( localStorage.print == "teacher" ) {
 		$("#search_form").hide();
 		$("#searchLabel").hide();
-		$("#regist_box").hide();
+		$("#regist_box").addClass("hide-on-print");
+		$("#wpadminbar").addClass("hide-on-print");
+		$("#adminmenumain").addClass("hide-on-print");
+		$(".teacherPrintControls").addClass("hide-on-print");
 		$(".wp-list-table").hide();
 		$("#print_view_container").hide();
 		$("#teacher_printview").css("display", "block");
 	
 		localStorage.print = "null";
 	
+		/* teacher print / displays number for class i.e. IT MM 5 */
+		/* applicable only if class is taken by same student multiple times in a day */
 		for ( var forIndex in teacherPrintClassNumArr ) {
 			console.log(teacherPrintClassNumArr[forIndex] + ": " + $("."+teacherPrintClassNumArr[forIndex]).length);
 			if ( $("."+teacherPrintClassNumArr[forIndex]).length > 1 ) {
@@ -1118,6 +1143,7 @@ var oldSchedule;
 		$("#regist_box").show();
 		$(".wp-list-table").show();
 		$("#print_view_container").hide();
+		$("#colorSelection").hide();
 	
 		$("#teacher_printview").css("display", "none");
 	});
@@ -1166,6 +1192,7 @@ var oldSchedule;
 
 	$("#closeColorSlection").on('click', function() {
 		$("#colorSelection").hide();
+		$("#text-color").val("#000");
 		$("#bg-color").val("#000");
 		$(".teacher-print.focusin").removeClass("focusin");
 	});
@@ -1509,7 +1536,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 		</tr>
 		<!-- re-order data / switch date & time -->
 		<?php
-		if (count($new_schedule) == 0) {
+		//if (count($new_schedule) == 0) {
 			foreach ( $class_schedule_data as $class_schedule => $class_date_data ) {
 				$class_time[] = $time = $mt_class_schedule[$class_schedule];
 			
@@ -1517,7 +1544,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 					$new_schedule[$date][$class_schedule] = $data;
 				}
 			}
-		}
+		//}
 		?>
 	
 		<!-- display data / switch date & time -->	
@@ -2081,8 +2108,8 @@ foreach ($posts as $post) {
 	
 		//assign schedule to teacher & class time
 		$tmpArr["teacher_name"] = $teacher_name;
-		$tmpArr[$schedule_time] = array( "class_time" => $schedule_time, 
-		"room" => $tmp[2], "student" => $student, "student_ids" => $studentIds);
+		$tmpArr["schedule"][$schedule_time] = array( "class_time" => $schedule_time,
+		"student" => $student, "student_ids" => $studentIds);
 	
 		//get class type
 		$class_type_id = get_post_meta($post->ID, "class_type")[0];
@@ -2092,13 +2119,9 @@ foreach ($posts as $post) {
 		//get class type name
 		foreach ( $classtype_post as $ct_post ) {
 			if ( $ct_post->ID == $class_type_id ) {
-				if ( strpos($ct_post->post_title, " GC") > 0 ) {
-					$tmpArr["class_type"] = $ct_post->post_title;
-					$tmpArr["class_room"] = $tmp[2];
-				} else {
-					$tmpArr[$schedule_time]["class_type"] = $ct_post->post_title;
-					$tmpArr[$schedule_time]["class_room"] = $tmp[2];
-				}
+				$tmpArr["schedule"][$schedule_time]["class_type"] = $ct_post->post_title;
+				$tmpArr["schedule"][$schedule_time]["class_room"] = $tmp[2];
+			
 				break;
 			}
 		}
@@ -2107,7 +2130,7 @@ foreach ($posts as $post) {
 		$exist = 0;
 		foreach ($scheduleArr as $key => $sched) {
 			$tmpTeacherName = $sched["teacher_name"];
-			$tmpClassTime = $sched[$schedule_time]["class_time"];
+			$tmpClassTime = $sched["schedule"][$schedule_time]["class_time"];
 		
 			/* checks if teacher has record & if class time schedule exist or not */
 			if ( $tmpTeacherName == $teacher_name ) {
@@ -2115,7 +2138,7 @@ foreach ($posts as $post) {
 			
 				if ( $schedule_time != $tmpClassTime ) {
 					$scheuleArr[$key]["post_id"] = $post->ID;
-					$scheduleArr[$key][$schedule_time] = $tmpArr[$schedule_time];
+					$scheduleArr[$key]["schedule"][$schedule_time] = $tmpArr["schedule"][$schedule_time];
 				}
 			
 				break;
@@ -2142,6 +2165,7 @@ $args = array(
 
 //declare array to hold class/time schedule
 $classTime = array();
+
 //get the class/time schedule
 $tmpClassTime = get_posts( $args );
 
@@ -2184,6 +2208,9 @@ function filterTeachersList($teacherList) {
 //call function that filters teacher list
 filterTeachersList($teacherList);
 
+/* for teacher print */
+
+//checks if student class schedule is already in list
 function numClassExist ($pArr, $pNumClass) {
 	$exist = false;
 
@@ -2193,7 +2220,7 @@ function numClassExist ($pArr, $pNumClass) {
 			break;
 		}
 	}
-	
+
 	return $exist;
 }
 
@@ -2211,13 +2238,15 @@ function addGraduatingClass($pStudentId, $pStudentMetaArr) {
 			echo " graduating";
 		}
 	}
+
+	echo " ";
 }
 
 /* for teacher print */
 
 //adds a new-student class if student is new
 //recieves a student id, and the student meta array of start-date and end-date
-function addNewStudentClass($pStudentId, $pStudentMetaArr) {
+function addNewStudentClass($pStudentId, $pStudentMetaArr, $pClassType) {
 	//loops through the student meta array
 	foreach ($pStudentMetaArr as $fStudentId => $fStudentMeta) {
 		//checks if student id in meta is the same as passed student id
@@ -2227,9 +2256,90 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 		
 			if ($_REQUEST["stt"] == date("Y-m-d", $localStudentStt)) {
 				//return new-student class name
-				echo " new-student";
+				echo " new-student".$pClassType;
 				break;
 			}
+		}
+	}
+}
+
+/* for teacher print / check if class type is Men to Men (MM) */
+function isMMClass($pClass) {
+	$localIsMMClass = false;
+	$pClass = trim($pClass);
+
+	if ( strpos($pClass, " MM") > -1 ) {
+		$localIsMMClass = true;
+	}
+	
+	return $localIsMMClass;
+}
+
+/* for teacher print / check if class type is group class (GC) */
+function isGroupClass($pClass) {
+	$localIsGroupClass = false;
+	$pClass = trim($pClass);
+
+	if ( strpos($pClass, " GC") > -1 ) {
+		$localIsGroupClass = true;
+	}
+
+	return $localIsGroupClass;
+}
+
+/* for teacher print / get room or cubicle */
+function getClassRoomNumber($pClassRoom) {
+	$pClassRoom = trim($pClassRoom);
+	$pClassRoom = str_replace("cubicle ", " #", strtolower( $pClassRoom ));
+	$pClassRoom = str_replace("rm", "", strtolower( $pClassRoom ));
+	$pClassRoom = str_replace("# ", "#", $pClassRoom);
+
+	return $pClassRoom;
+}
+
+/* teacher print / get student id & class type */
+function addNumClass($pStudent, $pClassType) {
+	$numClass = "";
+	global $tmpStudClassArr;
+
+	if ($pStudent != "" && $pClassType != "") {
+		$numClass = str_replace( " ", "_", $pStudent )
+		."--".str_replace( " ", "_", $pClassType );
+	
+		if ( strpos($numClass, ".") > -1 ) {
+			$numClass = str_replace(".", "", $numClass);
+		}
+	
+		if ( strpos($numClass, "/") > -1 ) {
+			$numClass = str_replace("/", "_", $numClass);
+		}
+	
+		if ( !numClassExist($tmpStudClassArr, $numClass) ) {
+			$tmpStudClassArr[] = $numClass;
+		}
+	}
+
+	return $numClass;
+}
+
+function hasGroupClass($pTeacherSched) {
+	$hasGroupClass = false;
+
+	foreach ($pTeacherSched as $timeClass) {
+		if ( isGroupClass($timeClass["class_type"]) ) {
+			$hasGroupClass = true;
+			break;
+		}
+	}
+
+	return $hasGroupClass;
+}
+
+function getGroupClass($pTeacherSched) {
+	foreach ($pTeacherSched as $timeClass) {
+		if ( isGroupClass($timeClass["class_type"]) ) {
+			return $timeClass["class_type"];
+			break;
 		}
 	}
 }
@@ -2244,165 +2354,186 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 	<div class="teacherPrintControls" style="margin: 5px 5px; text-align: right;">
 		<span> <input class="hideShowGraduate" type="checkbox" /> <label> Hide graduating students </label> </span>
 		Print Page: 
-		<button class="printFirstPage" style="border: none;"> 1 </button>
-		<button class="printSecondPage" style="border: none;"> 2 </button>
+<!--	<button class="printFirstPage" style="border: none;"> 1 </button>
+		<button class="printSecondPage" style="border: none;"> 2 </button> -->
 		<button class="closeTeacherSchedule"> Close </button>
 	</div>
-	<table id="teacherPrint">
+	<table class="teacherPrint">
 		<tr>
 			<td style="padding-left: 5px;"> Name </td>
-		<?php 
+		<?php
 		foreach ( $classTime as $time ) { 
-		?>
+			?>
 			<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
 			<td style="text-align: center; height: 18px;"> class </td>
-		<?php 
+			<?php 
 		} 
 		?>
 		</tr>
 		<?php 
 		foreach ( $teacherList as $teacher ) {
-			$display = true; $rowClass = "row-show";
+			$display = true;
+			$addRow = true;
+			$rowClass = "row-show";
 		
-			if ( $rowCount > 14 ) {
+			if ($rowCount != 0 && $rowCount > 12) {
 				$rowClass = "row-hide";
-			} ?>
+			} 
 		
-		<tr class="teacher-data <?php echo $rowClass; ?>">
-			<!-- men to men class display -->
-			<?php 
-			foreach ( $scheduleArr as $sched ) {
-				if ( $teacher->user_login == $sched["teacher_name"] && $sched["class_type"] == "") {
-					$display = false;
-				?>
+			foreach ($scheduleArr as $info) {
+				if ($addRow) {
+					?>
+		<tr class="<?php echo $rowCount; ?> teacher-data <?php echo $rowClass;?>">
+					<?php
+					$addRow = false;
+				}
+			
+				if ($teacher -> user_login == $info["teacher_name"]) {
+					?>
+			<!-- teacher print / teacher display -->
 			<td style="padding-left: 5px;"> 
-				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>"> 
-					<?php echo $sched["teacher_name"]; ?> 
+				<span> 
+						<?php echo $teacher -> user_login; ?> 
 				</span>
-			</td> 
-					<?php 
-					//process class location name; remove text & keep number
-					for ( $x = 2; $x < 11; $x++ ) {
-						$room = $sched[$x]["class_room"]; 
-						$room = str_replace("cubicle ", " #", strtolower( $room )); 
-						$room = str_replace("rm", "", strtolower( $room )); 
-						$room = str_replace("# ", "#", $room);
-						$numClass = "";
-					
-						if ( $sched[$x]["student"][0] != "" && $sched[$x]["class_type"] != "" ) {
-							$numClass = str_replace( " ", "_", $sched[$x]["student"][0] ) 
-							."--".str_replace( " ", "_", $sched[$x]["class_type"] );
-						
-							if ( strpos($numClass, ".") > -1 ) {
-								$numClass = str_replace(".", "", $numClass);
-							}
-						
-							if ( strpos($numClass, "/") > -1 ) {
-								$numClass = str_replace("/", "_", $numClass);
-							}
-						
-							if ( !numClassExist($tmpStudClassArr, $numClass) ) {
-								$tmpStudClassArr[] = $numClass;
+			</td>
+				<?php
+					if ( isset($info["schedule"]) ) {
+						ksort($info["schedule"]);
+						for ($x = 2; $x < 11; $x++) {
+							if ( isset($info["schedule"][$x]) && isMMClass($info["schedule"][$x]["class_type"]) ) {
+								?>
+			<!-- teacher print / student display -->
+			<td style="text-align: center;" class="teacher-print<?php echo addNewStudentClass($info["schedule"][$x]["student_ids"][0], $studentMetaArr, ""); ?>"> 
+				<span class="<?php echo addGraduatingClass($info["schedule"][$x]["student_ids"][0], $studentMetaArr)?>"> <?php echo $info["schedule"][$x]["student"][0]." ".getClassRoomNumber($info["schedule"][$x]["class_room"]); ?> </span>
+			</td>
+			<!-- teacher print / class type display -->
+			<td style="text-align: center;" class="teacher-print"> 
+				<span class="<?php echo addGraduatingClass($info["schedule"][$x]["student_ids"][0], $studentMetaArr)?>"> 
+					<?php echo $info["schedule"][$x]["class_type"]; ?> 
+					<span style="display: none;" class="<?php echo addNumClass($info["schedule"][$x]["student_ids"][0], $info["schedule"][$x]["class_type"]); ?>"> <?php echo $x-1 ?> </span>
+				</span> 
+			</td>
+								<?php 
+							} else { 
+								?>
+			<td> </td>
+			<td> </td>
+								<?php 
 							}
 						}
-					?>
-					
-			<td style="text-align: center;" class="teacher-print<?php echo addNewStudentClass($sched[$x]["student_ids"][0], $studentMetaArr)."-mm"; ?>"> 
-				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
-						<?php echo strtoupper($sched[$x]["student"][0])?>
-				</span>
-				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
-						<?php echo $room; ?> 
-				</span>
-			</td>
-			<td style="text-align: center;" class="teacher-print">
-				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
-						<?php echo $sched[$x]["class_type"]; ?>
-					<span style="display: none;" <?php if ($numClass != "") { echo "class='".$numClass."'"; } ?>> <?php echo $x-1 ?> </span>
-				</span>
-			</td>
-					<?php 
-					}
-					break;
-				} elseif ( $teacher->user_login == $sched["teacher_name"] ) {
-					$display = false; break;
-				}
-			} 
-			?>
-			<?php 
-			if ( $display ) { 
-			?>
-			<td style="padding-left: 5px;"> <?php echo $teacher->user_login; ?> </td>
-				<?php 
-				for ( $x = 2; $x < 11; $x++ ) { 
-				?>
-			<td> </td>
-			<td> </td>
-				<?php 
-				}
-			} 
+					} // close parenthesis for isset $info["schedule"] if statement
+				} // close parenthesis for $teacher -> user_login == $sched["teacher_name"] if statement
+			} // close parenthesis for $scheduleArr foreach
 			?>
 		</tr>
-			<?php 
-			if ($rowCount != 0 && ($rowCount % 4) == 0) { 
-			?>
-		<tr class="<?php echo $rowClass; ?>">
-			<td style="padding-left: 5px;"> Name </td>
+			<?php
+			++$rowCount;
+		
+			if ( ($rowCount % 12 ) == 0 ) { 
+				?>
+	</table>
+	<div class="page-break" style="page-break-before: always;"> </div>
+	<table class="teacherPrint">
+				<?php
+			}
+			if ($rowCount != 0 && ($rowCount % 6) == 0) {
+				?>
+		<tr class="<?php if ($rowCount > 12) { echo "row-hide"; } ?>">
+			<td style="padding-left: 5px;"> Name 
+			</td>
 				<?php 
 				foreach ( $classTime as $time ) { 
-				?>
+					?>
 			<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
 			<td style="text-align: center; height: 18px;"> class </td>
-				<?php 
+					<?php 
 				} 
 				?>
 		</tr>
-			<?php 
+				<?php 
 			}
-			$rowCount++;
-		} ?>
-		<!-- group class display -->
-		<?php 
-		foreach ( $scheduleArr as $sched ) { ?>
-		<tr class="row-hide">
+		} 
+		?>
+	</table>
+	<!-- group class display -->
+	<div class="page-break" style="page-break-before: always;"> </div>
+	<table class="teacherPrint">
+		<tr>
+			<td style="padding-left: 5px;"> Name </td>
+		<?php
+		foreach ( $classTime as $time ) { 
+			?>
+			<td style="text-align: center; height: 18px !important;"> <?php echo $time['stt']."-".$time['end'] ?> </td>
+			<td style="text-align: center; height: 18px;"> class </td>
 			<?php 
-			if ( $sched["class_type"] != "" ) { ?>
-			<td style="padding-left: 5px;" class="teacher-print"> 
-				<span class="<?php echo addGraduatingClass($sched[$x]["student_ids"][0], $studentMetaArr); ?>">
-					<?php echo $sched["teacher_name"]." ".$sched["class_type"]." ".$sched["class_room"]; ?> 
-				</span> 
-			</td> 
-				<?php 
-				for ( $x = 2; $x < 11; $x++ ) { ?>
-			<td colspan="2" style="text-align: center;" > 
-					<?php 
-					for ( $x2 = 0; $x2 < count($sched[$x]["student"]); $x2++ ) {
-						$localSeparator = "";
-						if ( count($sched[$x]["student"]) > 1 ) { $localSeparator = "; "; } 
-					?>
-				<span class="teacher-print<?php echo addGraduatingClass($sched[$x]["student_ids"][$x2], $studentMetaArr); ?><?php echo addNewStudentClass($sched[$x]["student_ids"][$x2], $studentMetaArr)."-gc"; ?>">
-					<?php echo strtoupper($sched[$x]["student"][$x2]).$localSeparator; ?>
-				</span> 
-					<?php 
-					} 
-					?> 
-			</td>
-				<?php 
-				}
-			} ?>
+		} 
+		?>
 		</tr>
-		<?php 
-		} ?>
+		<?php
+		foreach ( $scheduleArr as $info ) {
+			if ( isset($info["schedule"]) && $info["teacher_name"] != "" && hasGroupClass($info["schedule"]) ) {
+				ksort($info["schedule"]);
+				?>
+		<tr>
+				<?php
+				for ($x = 2; $x < 11; $x++) {
+					if ($x == 2) {
+						?>
+			<td style="padding-left: 5px;" class="teacher-print"> 
+				<span class="<?php echo addGraduatingClass($info["schedule"][$x]["student_ids"][0], $studentMetaArr); ?>">
+						<?php 
+						echo $info["teacher_name"];
+						if ( isGroupClass($info["schedule"][$x]["class_type"]) ) {
+							echo "</br>".$info["schedule"][$x]["class_type"]."</br>";
+						
+							if ( strpos(strtolower($info["schedule"][$x]["class_room"]), "rm") > -1 ) {
+								echo getClassRoomNumber($info["schedule"][$x]["class_room"]);
+							} else {
+								echo $info["schedule"][$x]["class_room"];
+							}
+						}
+						?>
+				</span> 
+			</td>
+						<?php
+					}
+					?>
+			<td colspan="2" style="text-align: center;" >
+					<?php
+					if ( isGroupClass($info["schedule"][$x]["class_type"]) ) {
+						for ( $x2 = 0; $x2 < count($info["schedule"][$x]["student"]); $x2++ ) {
+							$localSeparator = "";
+						
+							if ( count($info["schedule"][$x]["student"]) > 1 ) {
+								$localSeparator = "; "; 
+							} 
+							?>
+				<span style = "margin-right: 3px; padding: 0 3px;" class = "teacher-print<?php echo addGraduatingClass($info["schedule"][$x]["student_ids"][$x2], $studentMetaArr); ?><?php echo addNewStudentClass($info["schedule"][$x]["student_ids"][$x2], $studentMetaArr, ""); ?>">
+							<?php echo strtoupper($info["schedule"][$x]["student"][$x2]).$localSeparator; ?>
+				</span> 
+							<?php 
+						}
+					}
+					?>
+			</td>
+					<?php
+				}
+				?>
+		</tr>
+				<?php
+			} // end of isset condition
+		} //end of scheduleArr foreach
+		?>
 	</table>
 	<div class="teacherPrintControls" style="margin: 5px 5px; text-align: right;">
 	<span> <input class="hideShowGraduate" type="checkbox" /> <label> Hide graduating students </label> </span>
-		Print Page: 
-		<button class="printFirstPage" style="border: none;"> 1 </button>
-		<button class="printSecondPage" style="border: none;"> 2 </button>
+<!-- 		Print Page:  -->
+<!-- 		<button class="printFirstPage" style="border: none;"> 1 </button>
+		<button class="printSecondPage" style="border: none;"> 2 </button> -->
 		<button class="closeTeacherSchedule"> Close </button>
 	</div>
 </div>
-
+<!-- teacher print / color selection box -->
 <div id="colorSelection" style="text-align: center">
 	<div style="font-size: 15px"> Select Color <span id="closeColorSlection" style="cursor: pointer; float: right; margin-right: 4px; margin-top: -2px;"> x </span> </div>
 	<div style="text-align: left; padding: 5px;">
@@ -2426,7 +2557,7 @@ function addNewStudentClass($pStudentId, $pStudentMetaArr) {
 	var incClassList = <?php echo json_encode($tmpClassList); $tmpClassList = null; ?>;
 	var incNumber = <?php echo json_encode($incNumber); $incNumber = null; ?>;
 	//for teachers print
-	var teacherPrintClassNumArr = <?php echo json_encode($tmpStudClassArr); $tmpStudClassArr = null; ?>;
+	var teacherPrintClassNumArr = <?php global $tmpStudClassArr; echo json_encode($tmpStudClassArr); $tmpStudClassArr = null; ?>;
 	//old student or new student identifier
 	var oldStudent = <?php echo json_encode($oldStudent); $oldStudent = null; ?>;
 	oldSchedule = <?php global $oldStudentSched; echo json_encode($oldStudentSched); $oldStudentSched = null; ?>;
