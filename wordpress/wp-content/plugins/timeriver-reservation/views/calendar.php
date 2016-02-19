@@ -310,8 +310,6 @@ var allowClassInc = true;
 
 var oldSchedule;
 
-//var siteUrl = "<?php echo get_site_url(); ?>";
-
 (function($){$(function() {
 
 	$(window).load(function(){
@@ -1167,7 +1165,7 @@ var oldSchedule;
 			$("#colorSelection").hide();
 		}
 	}
-	
+
 	//add click listener for teacher-print item
 	$(".teacher-print").on('click', function(e) {
 		selectDeselectItem(e.currentTarget);
@@ -1428,6 +1426,9 @@ var oldSchedule;
 		console.log("auto load schedule");
 		convertToData(oldSchedule);
 	}
+
+	console.log("studentWithRequest: ");
+	console.log(localStorage.studentsWithRequest);
 
 });})(jQuery);
 </script>
@@ -2416,7 +2417,7 @@ function getGroupClass($pTeacherSched) {
 							if ( isset($info["schedule"][$x]) && isMMClass($info["schedule"][$x]["class_type"]) ) {
 								?>
 			<!-- teacher print / student display -->
-			<td style="text-align: center;" class="teacher-print<?php echo addNewStudentClass($info["schedule"][$x]["student_ids"][0], $studentMetaArr, ""); ?>"> 
+			<td id="<?php echo $info["teacher_name"]."--".$info["schedule"][$x]["student"][0] ?>" style="text-align: center;" class="teacher-print<?php echo addNewStudentClass($info["schedule"][$x]["student_ids"][0], $studentMetaArr, ""); ?>"> 
 				<span class="<?php echo addGraduatingClass($info["schedule"][$x]["student_ids"][0], $studentMetaArr)?>"> <?php echo $info["schedule"][$x]["student"][0]." ".getClassRoomNumber($info["schedule"][$x]["class_room"]); ?> </span>
 			</td>
 			<!-- teacher print / class type display -->
@@ -2520,7 +2521,7 @@ function getGroupClass($pTeacherSched) {
 								$localSeparator = "; "; 
 							} 
 							?>
-				<span style = "margin-right: 3px; padding: 0 3px;" class = "teacher-print<?php echo addGraduatingClass($info["schedule"][$x]["student_ids"][$x2], $studentMetaArr); ?><?php echo addNewStudentClass($info["schedule"][$x]["student_ids"][$x2], $studentMetaArr, ""); ?>">
+				<span id="<?php echo $info["teacher_name"]."--".$info["schedule"][$x]["student"][$x2] ?>" style = "margin-right: 3px; padding: 0 3px;" class = "teacher-print<?php echo addGraduatingClass($info["schedule"][$x]["student_ids"][$x2], $studentMetaArr); ?><?php echo addNewStudentClass($info["schedule"][$x]["student_ids"][$x2], $studentMetaArr, ""); ?>">
 							<?php echo strtoupper($info["schedule"][$x]["student"][$x2]).$localSeparator; ?>
 				</span> 
 							<?php 
