@@ -916,15 +916,11 @@ var oldSchedule;
 		if (booleanForSecondData) {
 			secondData = "-2";
 		}
-	
+
 		$("#stdStartDate" + secondData).text(startDate.getDate() + " " + monthString[startDate.getMonth()] + 
 		" " + startDate.getFullYear().toString().slice(-2));
 		$("#stdEndDate" + secondData).text(endDate.getDate() + " " + monthString[endDate.getMonth()] + 
 		" " + endDate.getFullYear().toString().slice(-2));
-	
-// 		if (booleanForSecondData) {
-			alert(classStartDate + " : " + startDate);
-// 		}
 	
 		if ( (((classStartDate.getTime() - startDate.getTime()) / msDay) + startDate.getDay()) <= 7 ) {
 			$("#stdType" + secondData).text("NEW STUDENT");
@@ -1192,7 +1188,7 @@ var oldSchedule;
 
 	$("#closeColorSlection").on('click', function() {
 		$("#colorSelection").hide();
-		$("#text-color").val("#000");
+		$("#text-color").val("#fff");
 		$("#bg-color").val("#000");
 		$(".teacher-print.focusin").removeClass("focusin");
 	});
@@ -1822,7 +1818,6 @@ function createDateQuery($pStartDate, $forToday) {
 	return $localDateQuery;
 }
 
-
 //check if schedule of date is not empty
 function scheduleEmpty($pSchedule) {
 	global $globalStudentName;
@@ -2335,6 +2330,24 @@ function hasGroupClass($pTeacherSched) {
 	return $hasGroupClass;
 }
 
+function getGroupClassRoom($pTeacherSched) {
+	foreach ($pTeacherSched as $timeClass) {
+		if ( isGroupClass($timeClass["class_type"]) ) {
+			return $timeClass["class_room"];
+			break;
+		}
+	}
+}
+
+function getGroupClassName($pTeacherSched) {
+	foreach ($pTeacherSched as $timeClass) {
+		if ( isGroupClass($timeClass["class_type"]) ) {
+			return getClassRoomNumber($timeClass["class_type"]);
+			break;
+		}
+	}
+}
+
 function getGroupClass($pTeacherSched) {
 	foreach ($pTeacherSched as $timeClass) {
 		if ( isGroupClass($timeClass["class_type"]) ) {
@@ -2482,15 +2495,14 @@ function getGroupClass($pTeacherSched) {
 			<td style="padding-left: 5px;" class="teacher-print"> 
 				<span class="<?php echo addGraduatingClass($info["schedule"][$x]["student_ids"][0], $studentMetaArr); ?>">
 						<?php 
-						echo $info["teacher_name"];
-						if ( isGroupClass($info["schedule"][$x]["class_type"]) ) {
-							echo "</br>".$info["schedule"][$x]["class_type"]."</br>";
+						echo $info["teacher_name"]."</br>"
+						.getGroupClassName($info["schedule"])."</br>"
+						.getGroupClassRoom($info["schedule"]);
 						
-							if ( strpos(strtolower($info["schedule"][$x]["class_room"]), "rm") > -1 ) {
-								echo getClassRoomNumber($info["schedule"][$x]["class_room"]);
-							} else {
-								echo $info["schedule"][$x]["class_room"];
-							}
+						if ( strpos(strtolower($info["schedule"][$x]["class_room"]), "rm") > -1 ) {
+							echo getClassRoomNumber($info["schedule"][$x]["class_room"]);
+						} else {
+							echo $info["schedule"][$x]["class_room"];
 						}
 						?>
 				</span> 
@@ -2566,5 +2578,4 @@ function getGroupClass($pTeacherSched) {
 		$globalCurrentScheduleEmpty = null; 
 		?>;
 </script>
-
 
