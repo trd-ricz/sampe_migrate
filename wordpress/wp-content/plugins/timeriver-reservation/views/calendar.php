@@ -997,7 +997,7 @@ var oldSchedule;
 			}
 		
 			//handling for class room print display
-			if (sched[y] != null && sched[y]["class-room"] != null && sched[y]["class-room"].toLowerCase().indexOf("cubicle") == -1) {
+			if (sched[y] != null && sched[y]["class-room"] != null && sched[y]["class-room"].toLowerCase().indexOf("CUBICLE") == -1) {
 				$("#class-"+(y)+"-gc-room" + secondData).text(sched[y]["class-room"]);
 			}
 		}
@@ -1027,7 +1027,7 @@ var oldSchedule;
 		$("#searchLabel").hide();
 		$("#regist_box").hide();
 		$(".wp-list-table").hide();
-		setSchedDate($("#from").val(), $("#to").val(), false);
+		setSchedDate($("#from").val(), $("#to").val(), true);
 		/*
 		*call function that gets single day class schedule
 		*assign data to new variable sched
@@ -1659,6 +1659,8 @@ $oldStudent = false;
 $oldStudentSched = array();
 $globalStudentName = "";
 $globalCurrentScheduleEmpty = true;
+
+//print_r($studentIdArr);
 
 foreach ($studentIdArr as $fStudent) {
 	if ($post_id == $fStudent->ID) {
@@ -2566,8 +2568,8 @@ function getGroupClass($pTeacherSched) {
 	}
 	var weekSchedEndDate = <?php echo json_encode( end($date_arr) ); ?>;
 	var date_array = <?php echo json_encode($date_arr); $date_arr = null; ?>;
-	//for schedule
 	var incClassList = <?php echo json_encode($tmpClassList); $tmpClassList = null; ?>;
+	
 	var incNumber = <?php echo json_encode($incNumber); $incNumber = null; ?>;
 	//for teachers print
 	var teacherPrintClassNumArr = <?php global $tmpStudClassArr; echo json_encode($tmpStudClassArr); $tmpStudClassArr = null; ?>;
