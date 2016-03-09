@@ -581,7 +581,6 @@ var oldSchedule;
 		console.log("update_box_info");
 		//console.log(data["to_id"]);
 		var toDom = $("#" + data["to_id"]);
-	
 		if (data["status"] == "ok") { 
 			// delete
 			var box_id = 'del--' + data["to_id"] + '--' + data["post_id"];
@@ -625,7 +624,7 @@ var oldSchedule;
 		} else if (data["status"] == "duplicate") {
 			var statusDom = $('<span class="show_status">Ｘ 重複 (conflict)</span>');
 		} else if (data["status"] == "error") {
-			var statusDom = $('<span class="show_status">Ｘ '+ data["mess"] +'</span>');
+			var statusDom = $('<span class="show_status">Ｘ a' + data["mess"] +' a</span>');
 		}
 	
 		toDom.find( "p" ).append(statusDom);
@@ -799,7 +798,7 @@ var oldSchedule;
 			nxtMonth = mText[0];
 		}
 
-		$("#schedDate" + secondData).text(mText[strDate.getMonth()] + " " + strDate.getDate() +
+		$("#schedDate"+ secondData).text(mText[strDate.getMonth()] + " " + strDate.getDate() +
 		" TO " + nxtMonth + " " + endDate.getDate() + ", '" + endDate.getYear().toString().slice(-2) +
 		" WEEKLY SCHEDULE");
 	}
@@ -818,7 +817,7 @@ var oldSchedule;
 				idArr["class-room"] = $("#"+idArr["class-room"]+" .block").text().trim().match(/(.*[^\sx])/);
 				idArr["class-type"] = $("#"+idArr["class-type"]+" .block").text().trim().match(/(.*[^\sx])/);
 				idArr["teacher"] = $("#"+idArr["teacher"]+" .block").text().trim().match(/(.*[^\sx])/);
-			
+				
 				//checks if data is not null && get data while removing the unecessary space and character
 				if (idArr["class-room"] != null) {
 					idArr["class-room"] = idArr["class-room"][0];
@@ -834,14 +833,14 @@ var oldSchedule;
 					stop = true;
 				}
 				//get cubicle number
-				if (idArr["class-room"] != null && idArr["class-room"].toLowerCase().indexOf("cubicle") > -1 && cubeNum == 0) {
-					cubeNum = idArr["class-room"].toLowerCase().trim().replace(/(cubicle\s)/,"");	
+				if (idArr["class-room"] != null && idArr["class-room"].toString().indexOf("CUBICLE") > -1 && cubeNum == 0) {
+					cubeNum = idArr["class-room"].toLowerCase().trim().replace(/(cubicle\s)/,"");
 				}
 				//get buddy teacher
 				var tmpStr = idArr["class-type"];
 				//idArr["class-type"] == "REVIEW" || idArr["class-type"] == "REVIEW MM"
 				if (tmpStr != null) {
-					if (tmpStr.toLowerCase().indexOf("review") > -1) {
+					if (tmpStr.toString().indexOf("REVIEW") > -1) {
 						budteach = idArr["teacher"];
 					}
 				}
@@ -877,10 +876,8 @@ var oldSchedule;
 			$("#cubicleNum").text(cubeNum);
 			$("#buddyTeacher").text(budteach);
 		} else {
-			var tmpObj = {};
-			tmpObj["cubicle_number"] = cubeNum.replace(/([a-zA-Z]*\s)/, "");
-			tmpObj["buddy_teacher"] = budteach;
-			localStorage.tmpObj = JSON.stringify(tmpObj);
+			localStorage.teacher = budteach;
+			localStorage.cubicle = cubeNum;
 		}
 
 		return sched;
@@ -902,9 +899,9 @@ var oldSchedule;
 			var endDate = new Date(student_meta[studentId]['end-date']);
 		
 		} else {
-			var schedData = JSON.parse(localStorage.schedData);
-			var startDate = new Date(schedData["meta"]['start-date']);
-			var endDate = new Date(schedData["meta"]['end-date']);
+			var schedData = JSON.parse(localStorage.studData);
+			var startDate = new Date(schedData[localStorage.studID]['start-date']);
+			var endDate = new Date(schedData[localStorage.studID]['end-date']);
 		}
 	
 		var monthString = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -1015,10 +1012,9 @@ var oldSchedule;
 			//$("#cubicleNum").text(schedData["cubicle_number"]);
 			$("#studentName").text(studName + " ( " + Math.round(totalWeeks) + " WKS.").append(classCount);
 		} else {
-			var studName = schedData["student_name"];
-			$("#studentName-2").text(studName + " ( " + Math.round(totalWeeks) + " WKS.").append(classCount);
-			$("#cubicleNum-2").text(schedData["cubicle_number"]);
-			$("#buddyTeacher-2").text(schedData["buddy_teacher"]);
+			$("#studentName-2").text(localStorage.studName + " ( " + Math.round(totalWeeks) + " WKS.").append(classCount);
+			$("#cubicleNum-2").text(localStorage.cubicle);
+			$("#buddyTeacher-2").text(localStorage.teacher);
 		}
 	}
 
@@ -1027,7 +1023,7 @@ var oldSchedule;
 		$("#searchLabel").hide();
 		$("#regist_box").hide();
 		$(".wp-list-table").hide();
-		setSchedDate($("#from").val(), $("#to").val(), true);
+		setSchedDate($("#from").val(), $("#to").val(), false);
 		/*
 		*call function that gets single day class schedule
 		*assign data to new variable sched
@@ -1038,43 +1034,39 @@ var oldSchedule;
 		//calls the handler for data assigning in print view
 		setPrintContent(sched, false);
 	
-		if (localStorage.getItem("schedData") != null) {
-			var schedData = JSON.parse(localStorage.schedData);
-			//var sched = getDaySchedule(schedData["class"], true);
-			setSchedDate(schedData["schedule-start"], schedData["schedule-end"], true);
-			setPrintContent(schedData["class"], true);
+		if (localStorage.studSched != null) {
+			//var schedData = JSON.parse(localStorage.schedData);
+			var sched = JSON.parse(localStorage.studSched);
+			setSchedDate(localStorage.startDate, localStorage.endDate, true);
+			setPrintContent(sched, true);
 		}
 
 		$("#print_view_container").css("display", "block");
 		//console.log(sched);
-		setTimeout(function() {
+		/*setTimeout(function() {
 			window.print()
 			$("#search_form").show();
 			$("#searchLabel").show();
 			$("#regist_box").show();
 			$(".wp-list-table").show();
 			$("#print_view_container").hide();
-		}, 300);
+		}, 300);*/
 	});
 
 	$("#printQueue").on('click', function () {
 		var tmpObj, student_id = $("#choices_select").val();
-		//localStorage.removeItem("schedData");
-		tmpObj = {};
-		tmpObj["student_name"] = $("#choices_select option:selected").text();
-		tmpObj["class"] = getDaySchedule(class_sched, true);
-		tmpObj["meta"] = student_meta[student_id];
-		tmpObj["schedule-start"] = $("#from").val();
-		tmpObj["schedule-end"] = $("#to").val();
-		localStorage.schedData = JSON.stringify(tmpObj);
-
-		if (localStorage.tmpObj != null) {
-			tmpObj = JSON.parse(localStorage.schedData);
-			tmpObj["cubicle_number"] = JSON.parse(localStorage.tmpObj)["cubicle_number"];
-			tmpObj["buddy_teacher"] = JSON.parse(localStorage.tmpObj)["buddy_teacher"];
-			localStorage.schedData = JSON.stringify(tmpObj);
-			localStorage.removeItem("tmpObj");
-		}
+		/* Store Start Date of Student */
+		localStorage.startDate = $('#from').val();
+		/* Store Start End of Student */
+		localStorage.endDate = $("#to").val();
+		/* Store Meta Data of Student */
+		localStorage.studData = JSON.stringify(student_meta);
+		/* Store ID of Student */
+		localStorage.studID = student_id;
+		/* Store Schedule of Student */
+		localStorage.studSched = JSON.stringify(getDaySchedule(class_sched, true));
+		/* Stores Student Name */
+		localStorage.studName = $('#shown_target').text();
 	});
 
 	$("#printTeacherSched").on('click', function() {
@@ -1562,6 +1554,7 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 			<?php
 			$y = 0;
 			foreach ( $schedule as $key_d => $d ) {
+				
 				$index = 0;
 				$box_prefix = $key_d."--".$date_key;
 				/* for printing */
@@ -1569,7 +1562,6 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 				$data_id[$cdate][$y."-".$ctime]["class-room"] = "{$box_prefix}--class_room";
 				$data_id[$cdate][$y."-".$ctime]["class-type"] = "{$box_prefix}--class_type";
 				$data_id[$cdate][$y."-".$ctime]["teacher"] = "{$box_prefix}--teacher";
-			
 				if ($y < 10) {
 					$y++; 
 				} else {
@@ -1580,10 +1572,10 @@ foreach ($cal_data as $week_key => $class_schedule_data) {
 				<div id="<?php echo $box_prefix; ?>--class_room" class="droppable class_room">
 					<p>
 						<span class="block <?php echo "col-".$key_d; ?>">
-						<?php 
+						<?php
 						echo strtoupper($mt_class_room[$d['class_room']]['post_title']);
 						if ( $mt_class_room[$d['class_room']]['post_title'] ) { ?>
-							<span><a class="box_del" id="<?php echo "del--{$box_prefix}--class_room--".$d['class_room']; ?>">x</a></span>
+							<span><a class="box_del" id="<?php echo "del--".$box_prefix."--class_room--".$d['class_room']; ?>">x</a></span>
 						<?php 
 						} ?>
 						</span>
@@ -1710,7 +1702,7 @@ function currentScheduleEmpty() {
 	global $globalStudentName;
 	//loop through the date and make database query for schedule
 	foreach ($localCurrentDateQuery as $fDate) {
-		$localQuery = "SELECT *FROM wp_posts WHERE post_type = 'reservation' AND post_status = 'publish' AND post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."'";
+		$localQuery = "SELECT *FROM wp_posts WHERE post_type = 'reservation' AND post_status = 'publish' AND post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."%' Order by post_date asc";
 		$localReservationPost = $wpdb->get_results($localQuery, OBJECT);
 	
 		// check if schedule retrieve for date is not empty & save value to variable
@@ -1738,7 +1730,7 @@ function getOldStudentSchedule() {
 
 	//loop through the date and make database query for schedule
 	foreach ($localDateQuery as $fDate) {
-		$localQuery = "SELECT *FROM wp_posts WHERE post_type = 'reservation' AND post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."' AND post_status = 'publish'";
+		$localQuery = "SELECT *FROM wp_posts WHERE post_type = 'reservation' AND post_title LIKE '".$fDate."%' AND post_title LIKE '%".$globalStudentName."%' AND post_status = 'publish' and order by post_date asc";
 		$localReservationPost = $wpdb->get_results($localQuery, OBJECT);
 	
 		// check if schedule retrieve for date is not empty & save value to variable
@@ -1828,7 +1820,9 @@ function scheduleEmpty($pSchedule) {
 
 	foreach ($pSchedule as $fSchedule) {
 		$fScheduleInfoArray = explode('_', strtoupper($fSchedule->post_title));
-		$fHasStudent = strpos(strtoupper($fSchedule->post_title), strtoupper($globalStudentName));
+		if($fSchedule->post_title != null && $globalStudentName != null){
+			$fHasStudent = strpos(strtoupper($fSchedule->post_title), strtoupper($globalStudentName));
+		}
 	
 		if (count($fScheduleInfoArray) >= 5 && $fHasStudent > -1 && $fScheduleInfoArray[2] != "" && $fScheduleInfoArray[3] != "") {
 			$empty = false;

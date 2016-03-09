@@ -93,7 +93,7 @@ $date_format = get_option('date_format');
 $time_format = get_option('time_format');
 
 wp_enqueue_script( 'common' );
-
+@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', '1024M' ));
 
 
 
@@ -152,7 +152,7 @@ if ( current_user_can( 'manage_options' ) ) {
 	 *
 	 * @param string 'WP_MAX_MEMORY_LIMIT' The maximum WordPress memory limit. Default 256M.
 	 */
-	@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', WP_MAX_MEMORY_LIMIT ) );
+	@ini_set( 'memory_limit', apply_filters( 'admin_memory_limit', '2048M' ) );
 }
 
 /**
