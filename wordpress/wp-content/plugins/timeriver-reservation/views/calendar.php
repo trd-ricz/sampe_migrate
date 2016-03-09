@@ -168,7 +168,7 @@
 		border: 1px solid #000;
 		padding: 5px 2px;
 		margin: 0;
-		font-size: 11px;
+		font-size: 13.5px;
 		font-weight: bold;
 	}
 
@@ -1042,15 +1042,15 @@ var oldSchedule;
 		}
 
 		$("#print_view_container").css("display", "block");
-		//console.log(sched);
-		/*setTimeout(function() {
+		console.log(sched);
+		setTimeout(function() {
 			window.print()
 			$("#search_form").show();
 			$("#searchLabel").show();
 			$("#regist_box").show();
 			$(".wp-list-table").show();
 			$("#print_view_container").hide();
-		}, 300);*/
+		}, 300);
 	});
 
 	$("#printQueue").on('click', function () {
