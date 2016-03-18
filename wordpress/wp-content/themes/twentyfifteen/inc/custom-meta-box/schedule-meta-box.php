@@ -29,7 +29,9 @@ function populate_schedules() {
 
 
 
-//        for ($x = 1; $x <= count($fu); $x++) {
+        for ($x = 1; $x <= count($fu); $x++) {
+            echo $fu[$x]["sched"]["time1"][0];
+            echo $fu[$x]["sched"]["time2"][0];
 ////            echo $fu[$x]["name"];
 //            echo $fu[$x]["sched"][0];
 ////            foreach($fu[$x]["sched"] as $data) {
@@ -42,20 +44,20 @@ function populate_schedules() {
 ////                echo "<br/>";
 ////            }
 //
-//        }
+        }
 
 
 ?>
 
-<?php for ($x = 1; $x <= count($fu); $x++) : ?>
-    <div>
-       <p>7:50〜8:00</p>
-       <p>Student Name = <?php echo $fu[$x]["name"]; ?> </p>
-        <p>Teacher = <?php echo $fu[$x]["sched"][0]; ?> </p>
-        <p>Class = <?php echo $fu[$x]["sched"][1]; ?> </p>
-        <p>Room = <?php echo $fu[$x]["sched"][2]; ?> </p>
-   </div>
-<?php endfor; ?>
+<?php //for ($x = 1; $x <= count($fu); $x++) : ?>
+<!--    <div>-->
+<!--       <p>7:50〜8:00</p>-->
+<!--       <p>Student Name = --><?php //echo $fu[$x]["name"]; ?><!-- </p>-->
+<!--        <p>Teacher = --><?php //echo $fu[$x]["sched"][0]; ?><!-- </p>-->
+<!--        <p>Class = --><?php //echo $fu[$x]["sched"][1]; ?><!-- </p>-->
+<!--        <p>Room = --><?php //echo $fu[$x]["sched"][2]; ?><!-- </p>-->
+<!--   </div>-->
+<?php //endfor; ?>
 
 <?php
 }
@@ -136,6 +138,10 @@ function schedules_save($post_id) {
     $class78 = $_POST['class_type7508'];
     $room78 = $_POST['room7508'];
 
+    $teacher88 = $_POST['teacher8850'];
+    $class88 = $_POST['class_type8850'];
+    $room88 = $_POST['room8850'];
+
     $sched = array();
     for ($x = 1; $x <= count($studenta); $x++) {
         $data = array(
@@ -144,9 +150,18 @@ function schedules_save($post_id) {
             $room78[$x]
         );
 
+        $data2 = array(
+            $teacher88[$x],
+            $class88[$x],
+            $room88[$x]
+        );
+
         $sched[$x] = array(
            "name" => $studenta[$x],
-            "sched" => $data
+            "sched" => array(
+                "time1" => $data,
+                "time2" => $data2
+            )
         );
     }
 
