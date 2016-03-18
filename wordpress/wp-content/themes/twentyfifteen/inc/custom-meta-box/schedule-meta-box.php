@@ -3,7 +3,26 @@
 function add_schedules_metaboxes() {
     //new eventsListMetaBox();
     add_meta_box('wpt_schedules', 'Schedules Information',  'create_schedules', 'test_schedule', 'normal', 'high');
+//    add_meta_box('wpt_schedules_populate', 'Schedules Information Populate',  'populate_schedules', 'test_schedule', 'normal', 'high');
 }
+
+//function populate_schedules() {
+//
+//
+//    $sql = "SELECT * FROM wp_postmeta WHERE wp_posts.post_date LIKE %wp_postmeta.meta_value% AND wp_postmeta = _start_date AND wp_posts.post_type = test_schedule";
+//
+//
+//    $query = new WP_Query( $sql );
+//
+//    echo "<pre>";
+//    var_dump($query);
+//    echo "</pre>";
+//
+//    ?>
+<!---->
+<!---->
+<?php
+//}
 
 /**
  * Render Form for Events date
@@ -35,7 +54,7 @@ function create_schedules() {
 //            jQuery("#display_forms").prepend('<input type="hidden" name="other_counter">');
 
             for (var i= 1; i <= counter; i++) {
-                jQuery("#display_forms").append('<input type="text" name="student['+ i +']" placeholder="Student Name"><hr/><label>7:50〜8:00</label><input type="text" name="teacher7508['+ i +']" placeholder="Teacher"> <input type="text" name="class_type7508['+ i +']" placeholder="Class Type"> <input type="text" name="room7508['+ i +']" placeholder="Room"> <br /><label>8:00〜8:50</label><input type="text" name="teacher8850['+ i +']" placeholder="Teacher"> <input type="text" name="class_type8850['+ i +']" placeholder="Class Type"> <input type="text" name="room8850['+ i +']" placeholder="Room"> <br /><label>9:00〜9:50</label><input type="text" name="teacher9950['+ i +']" placeholder="Teacher"> <input type="text" name="class_type9950['+ i +']" placeholder="Class Type"> <input type="text" name="room9950['+ i +']" placeholder="Room"> <br /><label>10:00〜10:50</label><input type="text" name="teacher101050['+ i +']" placeholder="Teacher"> <input type="text" name="class_type101050['+ i +']" placeholder="Class Type"> <input type="text" name="room101050['+ i +']" placeholder="Room"> <br /><label>11:00〜11:50</label><input type="text" name="teacher111150['+ i +']" placeholder="Teacher"> <input type="text" name="class_type111150['+ i +']" placeholder="Class Type"> <input type="text" name="room111150['+ i +']" placeholder="Room"> <br /> <label>1:30〜2:20</label><input type="text" name="teacher130220['+ i +']" placeholder="Teacher"> <input type="text" name="class_type130220['+ i +']" placeholder="Class Type"> <input type="text" name="room130220['+ i +']" placeholder="Room"> <br /> <label>2:30〜3:20</label><input type="text" name="teacher230320['+ i +']" placeholder="Teacher"> <input type="text" name="class_type230320['+ i +']" placeholder="Class Type"> <input type="text" name="room230320['+ i +']" placeholder="Room"> <br /> <label>3:30〜4:20</label><input type="text" name="teacher330420['+ i +']" placeholder="Teacher"> <input type="text" name="class_type330420['+ i +']" placeholder="Class Type"> <input type="text" name="room330420['+ i +']" placeholder="Room"> <br /> <label>4:30〜5:20</label><input type="text" name="teacher430520['+ i +']" placeholder="Teacher"> <input type="text" name="class_type430520['+ i +']" placeholder="Class Type"> <input type="text" name="room430520['+ i +']" placeholder="Room"> <br /><label>5:30〜6:20</label><input type="text" name="teacher530620['+ i +']" placeholder="Teacher"> <input type="text" name="class_type530620['+ i +']" placeholder="Class Type"> <input type="text" name="room530620['+ i +']" placeholder="Room"> <br /> <br/> <hr /> <br/>');
+                jQuery("#display_forms").append('<input type="text" name="student['+ i +']" placeholder="Student Name"><hr/><label>7:50〜8:00</label><input type="text" name="teacher7508['+ i +']" placeholder="Teacher"> <input type="text" name="class_type7508['+ i +']" placeholder="Class Type"> <input type="text" name="room7508['+ i +']" placeholder="Room"> <br /><label>8:00〜8:50</label><input type="text" name="teacher8850['+ i +']" placeholder="Teacher"> <input type="text" name="class_type8850['+ i +']" placeholder="Class Type"> <input type="text" name="room8850['+ i +']" placeholder="Room"> <br /><label>9:00〜9:50</label><input type="text" name="teacher9950['+ i +']" placeholder="Teacher"> <input type="text" name="class_type9950['+ i +']" placeholder="Class Type"> <input type="text" name="room9950['+ i +']" placeholder="Room"> <br /><label>10:00〜10:50</label><input type="text" name="teacher101050['+ i +']" placeholder="Teacher"> <input type="text" name="class_type101050['+ i +']" placeholder="Class Type"> <input type="text" name="room101050['+ i +']" placeholder="Room"> <br /><label>11:00〜11:50</label><input type="text" name="teacher111150['+ i +']" placeholder="Teacher"> <input type="text" name="class_type111150['+ i +']" placeholder="Class Type"> <input type="text" name="room111150['+ i +']" placeholder="Room"> <br /> <label>1:30〜2:20</label><input type="text" name="teacher130220['+ i +']" placeholder="Teacher"> <input type="text" name="class_type130220['+ i +']" placeholder="Class Type"> <input type="text" name="room130220['+ i +']" placeholder="Room"> <br /> <label>2:30〜3:20</label><input type="text" name="teacher230320['+ i +']" placeholder="Teacher"> <input type="text" name="class_type230320['+ i +']" placeholder="Class Type"> <input type="text" name="room230320['+ i +']" placeholder="Room"> <br /> <label>3:30〜4:20</label><input type="text" name="teacher330420['+ i +']" placeholder="Teacher"> <input type="text" name="class_type330420['+ i +']" placeholder="Class Type"> <input type="text" name="room330420['+ i +']" placeholder="Room"> <br /> <label>4:30〜5:20</label><input type="text" name="teacher430520['+ i +']" placeholder="Teacher"> <input type="text" name="class_type430520['+ i +']" placeholder="Class Type"> <input type="text" name="room430520['+ i +']" placeholder="Room"> <br /><label>5:30〜6:20</label><input type="text" name="teacher530620['+ i +']" placeholder="Teacher"> <input type="text" name="class_type530620['+ i +']" placeholder="Class Type"> <input type="text" name="room530620['+ i +']" placeholder="Room"> <input type="hidden" name="date['+ i +']" value="<?php echo date("Y-m-d") ?>"><br /> <br/> <hr /> <br/>');
             }
 
             jQuery("#counter").hide();
@@ -73,22 +92,87 @@ function schedules_save($post_id) {
     if(! current_user_can('edit_post',$post_id) )
         return $post_id;
 
-    foreach ($_POST['student'] as $student) {
-        add_post_meta($post_id++, '_test_student', $student);
 
-        foreach ($_POST['teacher7508'] as $teacher7508) {
-            add_post_meta($post_id++, '_test_teacher_7', $teacher7508);
-        }
+    $studenta = array();
+    $studenta[] = $_POST['student'];
 
-        foreach ($_POST['class_type7508'] as $class_type7508) {
-            add_post_meta($post_id++, '_test_class_type_7',$class_type7508);
-        }
-
-        foreach ($_POST['room7508'] as $room7508) {
-            add_post_meta($post_id++, '_test_room_7', $room7508);
+    foreach ( $studenta as $student) {
+        if ($student[0]) {
+            add_post_meta($post_id, '_test_student', $student[0]);
+        } else {
+            foreach($student as $a) {
+            add_post_meta($post_id++, '_test_student', $a);
+            }
         }
     }
 
+    $teacher78 = array();
+    $teacher78[] = $_POST['teacher7508'];
+
+    foreach ( $teacher78 as $teacher7508) {
+        unset($post_id);
+        global $post;
+        $post_id = $post->ID;
+
+        if ($teacher7508[0]) {
+            add_post_meta($post_id, '_test_teacher_7', $teacher7508[0]);
+        } else {
+            foreach($teacher7508 as $b) {
+                add_post_meta($post_id++, '_test_teacher_7', $b);
+            }
+        }
+    }
+
+    $class_type78 = array();
+    $class_type78[] = $_POST['class_type7508'];
+
+    foreach ($class_type78 as $class_type7508) {
+        unset($post_id);
+        global $post;
+        $post_id = $post->ID;
+
+        if ($class_type7508[0]) {
+            add_post_meta($post_id, '_test_class_type_7', $class_type7508[0]);
+        } else {
+            foreach($class_type7508 as $c) {
+                add_post_meta($post_id++, '_test_class_type_7', $c);
+            }
+        }
+    }
+
+    $room78 = array();
+    $room78[] = $_POST['room7508'];
+
+    foreach ($room78 as $room7508) {
+        unset($post_id);
+        global $post;
+        $post_id = $post->ID;
+
+        if ($room7508[0]) {
+            add_post_meta($post_id, '_test_room_7', $room7508[0]);
+        } else {
+            foreach($room7508 as $d) {
+                add_post_meta($post_id++, '_test_room_7', $d);
+            }
+        }
+    }
+
+    $datea = array();
+    $datea[] = $_POST['date'];
+
+    foreach ($datea as $dateaa) {
+        unset($post_id);
+        global $post;
+        $post_id = $post->ID;
+
+        if ($dateaa[0]) {
+            add_post_meta($post_id, '_start_date', $dateaa[0]);
+        } else {
+            foreach($dateaa as $e) {
+                add_post_meta($post_id++, '_start_date', $e);
+            }
+        }
+    }
 
 
 
