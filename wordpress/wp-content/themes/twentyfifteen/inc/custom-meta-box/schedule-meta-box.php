@@ -3,26 +3,62 @@
 function add_schedules_metaboxes() {
     //new eventsListMetaBox();
     add_meta_box('wpt_schedules', 'Schedules Information',  'create_schedules', 'test_schedule', 'normal', 'high');
-//    add_meta_box('wpt_schedules_populate', 'Schedules Information Populate',  'populate_schedules', 'test_schedule', 'normal', 'high');
+    add_meta_box('wpt_schedules_populate', 'Schedules Information Populate',  'populate_schedules', 'test_schedule', 'normal', 'high');
 }
 
-//function populate_schedules() {
-//
-//
-//    $sql = "SELECT * FROM wp_postmeta WHERE wp_posts.post_date LIKE %wp_postmeta.meta_value% AND wp_postmeta = _start_date AND wp_posts.post_type = test_schedule";
-//
-//
-//    $query = new WP_Query( $sql );
-//
+function populate_schedules() {
+
+    global $wpdb;
+    global $post;
+
+
+    $fivesdrafts = $wpdb->get_results("SELECT meta_value FROM $wpdb->postmeta WHERE post_id = ". $post->ID ." AND meta_key = '_test_student' ");
+
+
 //    echo "<pre>";
-//    var_dump($query);
+//    print_r($fivesdrafts);
 //    echo "</pre>";
+
+//          print_r($f->meta_value);
+//        echo "<br>";
+
+        $fu = unserialize($fivesdrafts[0]->meta_value);
+         echo "<pre>";
+          print_r($fu);
+        echo "</pre>";
+
+
+
+//        for ($x = 1; $x <= count($fu); $x++) {
+////            echo $fu[$x]["name"];
+//            echo $fu[$x]["sched"][0];
+////            foreach($fu[$x]["sched"] as $data) {
+//////                echo $data;
+//////                echo $data[0];
+//////                echo $data["sched"][0];
+////                echo "<pre>";
+////                print_r($data);
+////                echo "</pre>";
+////                echo "<br/>";
+////            }
 //
-//    ?>
-<!---->
-<!---->
+//        }
+
+
+?>
+
+<?php for ($x = 1; $x <= count($fu); $x++) : ?>
+    <div>
+       <p>7:50〜8:00</p>
+       <p>Student Name = <?php echo $fu[$x]["name"]; ?> </p>
+        <p>Teacher = <?php echo $fu[$x]["sched"][0]; ?> </p>
+        <p>Class = <?php echo $fu[$x]["sched"][1]; ?> </p>
+        <p>Room = <?php echo $fu[$x]["sched"][2]; ?> </p>
+   </div>
+<?php endfor; ?>
+
 <?php
-//}
+}
 
 /**
  * Render Form for Events date
@@ -93,86 +129,105 @@ function schedules_save($post_id) {
         return $post_id;
 
 
-    $studenta = array();
-    $studenta[] = $_POST['student'];
+//    $studenta = array();
+//    $studenta[] = $_POST['student'];
+    $studenta = $_POST['student'];
+    $teacher78 = $_POST['teacher7508'];
+    $class78 = $_POST['class_type7508'];
+    $room78 = $_POST['room7508'];
 
-    foreach ( $studenta as $student) {
-        if ($student[0]) {
-            add_post_meta($post_id, '_test_student', $student[0]);
-        } else {
-            foreach($student as $a) {
-            add_post_meta($post_id++, '_test_student', $a);
-            }
-        }
+    $sched = array();
+    for ($x = 1; $x <= count($studenta); $x++) {
+        $data = array(
+            $teacher78[$x],
+            $class78[$x],
+            $room78[$x]
+        );
+
+        $sched[$x] = array(
+           "name" => $studenta[$x],
+            "sched" => $data
+        );
     }
 
-    $teacher78 = array();
-    $teacher78[] = $_POST['teacher7508'];
+    add_post_meta($post_id, '_test_student', $sched);
+//    foreach ( $studenta as $student) {
+//        if ($student[0]) {
+//            add_post_meta($post_id, '_test_student', $studenta);
+//        } else {
+//            foreach($student as $a) {
+//            add_post_meta($post_id++, '_test_student', $a);
+//            }
+//        }
+//    }
 
-    foreach ( $teacher78 as $teacher7508) {
-        unset($post_id);
-        global $post;
-        $post_id = $post->ID;
-
-        if ($teacher7508[0]) {
-            add_post_meta($post_id, '_test_teacher_7', $teacher7508[0]);
-        } else {
-            foreach($teacher7508 as $b) {
-                add_post_meta($post_id++, '_test_teacher_7', $b);
-            }
-        }
-    }
-
-    $class_type78 = array();
-    $class_type78[] = $_POST['class_type7508'];
-
-    foreach ($class_type78 as $class_type7508) {
-        unset($post_id);
-        global $post;
-        $post_id = $post->ID;
-
-        if ($class_type7508[0]) {
-            add_post_meta($post_id, '_test_class_type_7', $class_type7508[0]);
-        } else {
-            foreach($class_type7508 as $c) {
-                add_post_meta($post_id++, '_test_class_type_7', $c);
-            }
-        }
-    }
-
-    $room78 = array();
-    $room78[] = $_POST['room7508'];
-
-    foreach ($room78 as $room7508) {
-        unset($post_id);
-        global $post;
-        $post_id = $post->ID;
-
-        if ($room7508[0]) {
-            add_post_meta($post_id, '_test_room_7', $room7508[0]);
-        } else {
-            foreach($room7508 as $d) {
-                add_post_meta($post_id++, '_test_room_7', $d);
-            }
-        }
-    }
-
-    $datea = array();
-    $datea[] = $_POST['date'];
-
-    foreach ($datea as $dateaa) {
-        unset($post_id);
-        global $post;
-        $post_id = $post->ID;
-
-        if ($dateaa[0]) {
-            add_post_meta($post_id, '_start_date', $dateaa[0]);
-        } else {
-            foreach($dateaa as $e) {
-                add_post_meta($post_id++, '_start_date', $e);
-            }
-        }
-    }
+//    $teacher78 = array();
+//    $teacher78[] = $_POST['teacher7508'];
+//
+//    foreach ( $teacher78 as $teacher7508) {
+//        unset($post_id);
+//        global $post;
+//        $post_id = $post->ID;
+//
+//        if ($teacher7508[0]) {
+//            add_post_meta($post_id, '_test_teacher_7', $teacher7508[0]);
+//        } else {
+//            foreach($teacher7508 as $b) {
+//                add_post_meta($post_id++, '_test_teacher_7', $b);
+//            }
+//        }
+//    }
+//
+//    $class_type78 = array();
+//    $class_type78[] = $_POST['class_type7508'];
+//
+//    foreach ($class_type78 as $class_type7508) {
+//        unset($post_id);
+//        global $post;
+//        $post_id = $post->ID;
+//
+//        if ($class_type7508[0]) {
+//            add_post_meta($post_id, '_test_class_type_7', $class_type7508[0]);
+//        } else {
+//            foreach($class_type7508 as $c) {
+//                add_post_meta($post_id++, '_test_class_type_7', $c);
+//            }
+//        }
+//    }
+//
+//    $room78 = array();
+//    $room78[] = $_POST['room7508'];
+//
+//    foreach ($room78 as $room7508) {
+//        unset($post_id);
+//        global $post;
+//        $post_id = $post->ID;
+//
+//        if ($room7508[0]) {
+//            add_post_meta($post_id, '_test_room_7', $room7508[0]);
+//        } else {
+//            foreach($room7508 as $d) {
+//                add_post_meta($post_id++, '_test_room_7', $d);
+//            }
+//        }
+//    }
+//
+//    $datea = array();
+//    $datea[] = $_POST['date'];
+//
+//    foreach ($datea as $dateaa) {
+//        unset($post_id);
+//        global $post;
+//        $post_id = $post->ID;
+//
+//        if ($dateaa[0]) {
+//            add_post_meta($post_id, '_start_date', $dateaa[0]);
+//        } else {
+//            foreach($dateaa as $e) {
+//                add_post_meta($post_id++, '_start_date', $e);
+//            }
+//        }
+//    }
 
 
 
