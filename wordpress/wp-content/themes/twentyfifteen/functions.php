@@ -1,7 +1,8 @@
 <?php
 
-include "inc/custom-post-types/schedule.php";
-include "inc/custom-meta-box/schedule-meta-box.php";
+include "inc/custom-post-types/schedule_v2.php";
+include "inc/custom-meta-box/schedulev2-meta-box.php";
+
 
 /**
  * Twenty Fifteen functions and definitions

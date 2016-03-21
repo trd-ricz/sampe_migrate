@@ -2,13 +2,13 @@
 /**
  * Custom Post type event list creation
  */
-function schedule_list_init() {
+function schedule_v2_list_init() {
 
     $labels = array(
         'name'                  => _x( 'Schedule', 'post type general name' ),
         'singular_name'         => _x( 'Schedule', 'post type singular name' ),
-        'menu_name'             => _x( 'Schedules List', 'admin menu' ),
-        'name_admin_bar'        => _x( 'Schedules List', 'add new on admin bar' ),
+        'menu_name'             => _x( 'Schedule List', 'admin menu' ),
+        'name_admin_bar'        => _x( 'Schedule List', 'add new on admin bar' ),
         'add_new_item'          => __( 'Add New Schedule' ),
         'new_item'              => __( 'New Schedule' ),
         'edit_item'             => __( 'Edit Schedule' ),
@@ -27,20 +27,20 @@ function schedule_list_init() {
         'show_ui'               => true,
         'show_in_menu'          => true,
         'query_var'             => true,
-        'rewrite'               => array( 'slug' => 'schedulez' ),
+        'rewrite'               => array( 'slug' => 'schedule-v2' ),
         'capability_type'       => 'post',
         'has_archive'           => true,
         'hierarchical'          => true,
         'menu_position'         => 6,
-        'register_meta_box_cb'  => 'add_schedules_metaboxes',
+        'register_meta_box_cb'  => 'add_schedule_v2_metaboxes',
         'menu_icon'             => 'dashicons-calendar-alt',
         'supports'              => array( 'title' )
     );
 
-    register_post_type('test_schedule', $args);
+    register_post_type('schedule_v2', $args);
 }
 
-add_action('init','schedule_list_init');
+add_action('init', 'schedule_v2_list_init');
 
 
 
