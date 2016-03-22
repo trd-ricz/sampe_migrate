@@ -1,0 +1,113 @@
+@media print {
+
+.btn {
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+.schedule-parent {
+    margin-bottom: 20px;
+}
+
+.schedule-left, .schedule-right {
+    border: 1px solid #333;
+    padding: 10px;
+}
+
+.schedule-left {
+    float: left;
+    width: 40%;
+    height: 455px;
+}
+
+.schedule-right {
+    float: left;
+    width: 40%;
+    border-left: 0;
+    height: 455px;
+}
+
+.parent-box {
+    margin-bottom: 62px;
+    border-bottom: 1px solid #333;
+}
+
+.box-left {
+    float: left;
+    width: 50%;
+    margin-bottom: 5px;
+}
+
+.box-left p:nth-child(2) {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.box-right {
+    float: left;
+    width: 49%;
+}
+
+#clearit {
+    border-top: 1px solid #333;
+    margin-bottom: 5px !important;
+    border-bottom: 1px solid #333;
+}
+
+.hrbg {
+    border-color: #333;
+    border-top: 0;
+}
+
+#weekly {
+    color: #337ab7;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.text-deco {
+    text-decoration: underline;
+}
+
+#buddyspan {
+    display: block;
+    margin-top: -15px;
+}
+
+.small {
+    font-size: 13px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.skyblue {
+    background-color: #337ab7;
+    color: #fff;
+    margin-top: -6px;
+    margin-bottom: -7px;
+}
+
+input, select {
+    margin: 0;
+    padding: 3px 10px;
+}
+
+}
