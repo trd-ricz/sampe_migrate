@@ -1,0 +1,610 @@
+.icon {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	fill: currentColor;
+}
+
+/* ================================================================================
+Example showing how to change the color/size of the icons:
+.icon-name {
+	font-size: 32px; /* works because "width" & "height" were set using em units */
+	color: red; /* works because "fill" was set to "currentColor" */
+}
+================================================================================ */
+
+.icon-alignment-align {
+	width: 0.9375em;
+}
+
+.icon-alignment-aligned-to {
+	width: 0.9375em;
+}
+
+.icon-alignment-unalign {
+	width: 0.875em;
+}
+
+.icon-arrow-down2 {
+	width: 0.625em;
+}
+
+.icon-arrow-left2 {
+	width: 0.625em;
+}
+
+.icon-arrow-right2 {
+	width: 0.625em;
+}
+
+.icon-arrow-small-down {
+	width: 0.375em;
+}
+
+.icon-arrow-small-left {
+	width: 0.375em;
+}
+
+.icon-arrow-small-right {
+	width: 0.375em;
+}
+
+.icon-arrow-small-up {
+	width: 0.375em;
+}
+
+.icon-arrow-up2 {
+	width: 0.625em;
+}
+
+.icon-bookmark4 {
+	width: 0.375em;
+}
+
+.icon-broadcast {
+	width: 0.875em;
+}
+
+.icon-browser2 {
+	width: 0.875em;
+}
+
+.icon-bug2 {
+	width: 0.7158203125em;
+}
+
+.icon-check {
+	width: 0.75em;
+}
+
+.icon-checklist {
+	width: 0.7470703125em;
+}
+
+.icon-chevron-down {
+	width: 0.625em;
+}
+
+.icon-chevron-left {
+	width: 0.4375em;
+}
+
+.icon-chevron-right {
+	width: 0.4375em;
+}
+
+.icon-chevron-up {
+	width: 0.625em;
+}
+
+.icon-circle-slash {
+	width: 0.625em;
+}
+
+.icon-clippy {
+	width: 0.875em;
+}
+
+.icon-clock3 {
+	width: 0.875em;
+}
+
+.icon-code2 {
+	width: 0.875em;
+}
+
+.icon-color-mode {
+	width: 0.75em;
+}
+
+.icon-comment3 {
+	width: 0.875em;
+}
+
+.icon-comment-discussion {
+	width: 0.875em;
+}
+
+.icon-dash {
+	width: 0.5em;
+}
+
+.icon-dashboard {
+	width: 0.8125em;
+}
+
+.icon-database2 {
+	width: 0.75em;
+}
+
+.icon-device-mobile {
+	width: 0.625em;
+}
+
+.icon-diff {
+	width: 0.875em;
+}
+
+.icon-diff-added {
+	width: 0.875em;
+}
+
+.icon-diff-ignored {
+	width: 0.875em;
+}
+
+.icon-diff-modified {
+	width: 0.875em;
+}
+
+.icon-diff-removed {
+	width: 0.875em;
+}
+
+.icon-diff-renamed {
+	width: 0.875em;
+}
+
+.icon-ellipsis {
+	width: 0.75em;
+}
+
+.icon-file-binary {
+	width: 0.75em;
+}
+
+.icon-file-code {
+	width: 0.75em;
+}
+
+.icon-file-directory {
+	width: 0.875em;
+}
+
+.icon-file-media {
+	width: 0.75em;
+}
+
+.icon-file-pdf {
+	width: 0.75em;
+}
+
+.icon-file-submodule {
+	width: 0.875em;
+}
+
+.icon-file-symlink-directory {
+	width: 0.875em;
+}
+
+.icon-file-symlink-file {
+	width: 0.75em;
+}
+
+.icon-file-text {
+	width: 0.75em;
+}
+
+.icon-file-zip {
+	width: 0.75em;
+}
+
+.icon-fold {
+	width: 0.875em;
+}
+
+.icon-gear {
+	width: 0.875em;
+}
+
+.icon-gift2 {
+	width: 0.875em;
+}
+
+.icon-gist {
+	width: 0.75em;
+}
+
+.icon-gist-secret {
+	width: 0.875em;
+}
+
+.icon-git-branch {
+	width: 0.625em;
+}
+
+.icon-git-commit {
+	width: 0.875em;
+}
+
+.icon-git-compare {
+	width: 0.875em;
+}
+
+.icon-git-merge {
+	width: 0.75em;
+}
+
+.icon-git-pull-request {
+	width: 0.75em;
+}
+
+.icon-heart3 {
+	width: 0.75em;
+}
+
+.icon-history {
+	width: 0.875em;
+}
+
+.icon-horizontal-rule {
+	width: 0.6240234375em;
+}
+
+.icon-hourglass {
+	width: 0.75em;
+}
+
+.icon-inbox2 {
+	width: 0.75em;
+}
+
+.icon-info2 {
+	width: 0.875em;
+}
+
+.icon-issue-opened {
+	width: 0.875em;
+}
+
+.icon-issue-reopened {
+	width: 0.875em;
+}
+
+.icon-jersey {
+	width: 0.875em;
+}
+
+.icon-jump-down {
+	width: 0.75em;
+}
+
+.icon-jump-left {
+	width: 0.625em;
+}
+
+.icon-jump-right {
+	width: 0.625em;
+}
+
+.icon-jump-up {
+	width: 0.75em;
+}
+
+.icon-key2 {
+	width: 0.875em;
+}
+
+.icon-link-external {
+	width: 0.75em;
+}
+
+.icon-list-ordered {
+	width: 0.75em;
+}
+
+.icon-list-unordered {
+	width: 0.75em;
+}
+
+.icon-location3 {
+	width: 0.625em;
+}
+
+.icon-lock2 {
+	width: 0.75em;
+}
+
+.icon-logo-github {
+	width: 2.7890625em;
+}
+
+.icon-mail {
+	width: 0.875em;
+}
+
+.icon-mail-read {
+	width: 0.875em;
+}
+
+.icon-mail-reply {
+	width: 0.75em;
+}
+
+.icon-mention {
+	width: 0.8125em;
+}
+
+.icon-microscope {
+	width: 0.75em;
+}
+
+.icon-milestone {
+	width: 0.8125em;
+}
+
+.icon-move-down {
+	width: 0.625em;
+}
+
+.icon-move-up {
+	width: 0.625em;
+}
+
+.icon-mute2 {
+	width: 0.875em;
+}
+
+.icon-organization {
+	width: 0.875em;
+}
+
+.icon-paintcan {
+	width: 0.75em;
+}
+
+.icon-pencil3 {
+	width: 0.875em;
+}
+
+.icon-person {
+	width: 0.5em;
+}
+
+.icon-pin {
+	width: 0.5068359375em;
+}
+
+.icon-playback-fast-forward {
+	width: 0.75em;
+}
+
+.icon-playback-pause {
+	width: 0.5em;
+}
+
+.icon-playback-play {
+	width: 0.5em;
+}
+
+.icon-playback-rewind {
+	width: 0.75em;
+}
+
+.icon-plus2 {
+	width: 0.625em;
+}
+
+.icon-podium {
+	width: 0.75em;
+}
+
+.icon-primitive-dot {
+	width: 0.4990234375em;
+}
+
+.icon-primitive-square {
+	width: 0.5em;
+}
+
+.icon-pulse {
+	width: 0.875em;
+}
+
+.icon-quote {
+	width: 0.625em;
+}
+
+.icon-repo {
+	width: 0.75em;
+}
+
+.icon-repo-force-push {
+	width: 0.7490234375em;
+}
+
+.icon-repo-forked {
+	width: 0.75em;
+}
+
+.icon-repo-push {
+	width: 0.75em;
+}
+
+.icon-rss {
+	width: 0.75em;
+}
+
+.icon-screen-full {
+	width: 0.8740234375em;
+}
+
+.icon-screen-normal {
+	width: 0.875em;
+}
+
+.icon-search3 {
+	width: 0.9501953125em;
+}
+
+.icon-server {
+	width: 0.75em;
+}
+
+.icon-settings2 {
+	width: 0.875em;
+}
+
+.icon-sign-in {
+	width: 0.875em;
+}
+
+.icon-star4 {
+	width: 0.875em;
+}
+
+.icon-steps {
+	width: 0.625em;
+}
+
+.icon-sync {
+	width: 0.75em;
+}
+
+.icon-tag3 {
+	width: 0.875em;
+}
+
+.icon-telescope {
+	width: 0.9072265625em;
+}
+
+.icon-terminal {
+	width: 0.875em;
+}
+
+.icon-three-bars {
+	width: 0.75em;
+}
+
+.icon-trashcan3 {
+	width: 0.75em;
+}
+
+.icon-triangle-down {
+	width: 0.7490234375em;
+}
+
+.icon-triangle-left {
+	width: 0.3740234375em;
+}
+
+.icon-triangle-right {
+	width: 0.3740234375em;
+}
+
+.icon-triangle-up {
+	width: 0.7490234375em;
+}
+
+.icon-unfold {
+	width: 0.875em;
+}
+
+.icon-unmute {
+	width: 0.875em;
+}
+
+.icon-versions {
+	width: 0.875em;
+}
+
+.icon-x {
+	width: 0.625em;
+}
+
+.icon-zap {
+	width: 0.625em;
+}
+
+.icon-images {
+	width: 1.125em;
+}
+
+.icon-connection {
+	width: 1.25em;
+}
+
+.icon-books {
+	width: 1.125em;
+}
+
+.icon-library {
+	width: 1.0625em;
+}
+
+.icon-price-tags {
+	width: 1.25em;
+}
+
+.icon-history2 {
+	width: 1.0625em;
+}
+
+.icon-keyboard3 {
+	width: 1.125em;
+}
+
+.icon-bubbles {
+	width: 1.125em;
+}
+
+.icon-bubbles2 {
+	width: 1.125em;
+}
+
+.icon-bubbles3 {
+	width: 1.125em;
+}
+
+.icon-bubbles4 {
+	width: 1.125em;
+}
+
+.icon-users3 {
+	width: 1.125em;
+}
+
+.icon-menu2 {
+	width: 1.375em;
+}
+
+.icon-menu3 {
+	width: 1.375em;
+}
+
+.icon-menu4 {
+	width: 1.375em;
+}
+
+.icon-volume-high {
+	width: 1.0625em;
+}
+
+.icon-embed2 {
+	width: 1.25em;
+}
+
+.icon-youtube4 {
+	width: 2.5087890625em;
+}

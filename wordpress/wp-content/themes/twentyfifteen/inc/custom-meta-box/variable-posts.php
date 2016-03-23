@@ -45,76 +45,76 @@ $sched = array();
 // if use [] / then use $x = 0;
 for ($x = 0; $x < count($studenta); $x++) {
 
-    $data2 = array(
-        $teacher88[$x],
-        $class88[$x],
-        $room88[$x]
-    );
+	$data2 = array(
+		$teacher88[$x],
+		$class88[$x],
+		$room88[$x]
+	);
 
-    $data3 = array(
-        $teacher99[$x],
-        $class99[$x],
-        $room99[$x]
-    );
+	$data3 = array(
+		$teacher99[$x],
+		$class99[$x],
+		$room99[$x]
+	);
 
-    $data4 = array(
-        $teacher1010[$x],
-        $class1010[$x],
-        $room1010[$x]
-    );
+	$data4 = array(
+		$teacher1010[$x],
+		$class1010[$x],
+		$room1010[$x]
+	);
 
-    $data5 = array(
-        $teacher1111[$x],
-        $class1111[$x],
-        $room1111[$x]
-    );
+	$data5 = array(
+		$teacher1111[$x],
+		$class1111[$x],
+		$room1111[$x]
+	);
 
-    $data6 = array(
-        $teacher1302[$x],
-        $class1302[$x],
-        $room1302[$x]
-    );
+	$data6 = array(
+		$teacher1302[$x],
+		$class1302[$x],
+		$room1302[$x]
+	);
 
-    $data7 = array(
-        $teacher2303[$x],
-        $class2303[$x],
-        $room2303[$x]
-    );
+	$data7 = array(
+		$teacher2303[$x],
+		$class2303[$x],
+		$room2303[$x]
+	);
 
-    $data8 = array(
-        $teacher3304[$x],
-        $class3304[$x],
-        $room3304[$x]
-    );
+	$data8 = array(
+		$teacher3304[$x],
+		$class3304[$x],
+		$room3304[$x]
+	);
 
-    $data9 = array(
-        $teacher4305[$x],
-        $class4305[$x],
-        $room4305[$x]
-    );
+	$data9 = array(
+		$teacher4305[$x],
+		$class4305[$x],
+		$room4305[$x]
+	);
 
-    $data10 = array(
-        $teacher5306[$x],
-        $class5306[$x],
-        $room5306[$x]
-    );
+	$data10 = array(
+		$teacher5306[$x],
+		$class5306[$x],
+		$room5306[$x]
+	);
 
 
-    $sched[$x] = array(
-        "name" => $studenta[$x],
-        "start_date" => $start_date[$x],
-        "end_date" => $end_date[$x],
-        "sched" => array(
-            "time2" => $data2,
-            "time3" => $data3,
-            "time4" => $data4,
-            "time5" => $data5,
-            "time6" => $data6,
-            "time7" => $data7,
-            "time8" => $data8,
-            "time9" => $data9,
-            "time10" => $data10
-        )
-    );
+	$sched[$x] = array(
+		"name" => $studenta[$x],
+		"start_date" => $start_date[$x],
+		"end_date" => $end_date[$x],
+		"sched" => array(
+			"time2" => $data2,
+			"time3" => $data3,
+			"time4" => $data4,
+			"time5" => $data5,
+			"time6" => $data6,
+			"time7" => $data7,
+			"time8" => $data8,
+			"time9" => $data9,
+			"time10" => $data10
+		)
+	);
 }
 ?>

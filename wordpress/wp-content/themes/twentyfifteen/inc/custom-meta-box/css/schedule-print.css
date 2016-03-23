@@ -1,0 +1,52 @@
+@media printand (color) {
+	* {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+	}
+
+	.table>tbody>tr>td,
+	.table>tbody>tr>th,
+	.table>tfoot>tr>td,
+	.table>tfoot>tr>th,
+	.table>thead>tr>td,
+	.table>thead>tr>th {
+		border-top: none;
+		padding:0 8px 0;
+	}
+	.tdleft{
+		border-left:1px solid;
+	}
+	.tdright{
+		border-right:1px solid;
+	}
+	.tdtop{
+		border-top:1px solid !important;
+	}
+	.tdbottom{
+		border-bottom:1px solid;
+	}
+	.table-holder{
+		width:90%;
+		margin-top:10px;
+	}
+	.cubicle{
+		font-size:30px;
+	}
+	#cubicle-head{
+		font-weight: bold;
+	}
+	.student{
+		vertical-align:middle !important;
+		font-size:20px;
+	}
+	#tblSched{
+		color:blue;
+		font-weight: bold;
+	}
+	#bTeach{
+		text-decoration: underline;
+	}
+	#time {
+		background-color: skyblue;
+	}
+}
