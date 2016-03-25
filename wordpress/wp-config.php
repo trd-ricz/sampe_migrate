@@ -35,7 +35,7 @@ define('DB_NAME', 'firstenglish');
 define('DB_USER', 'root');
 
 /** MySQL データベースのパスワード */
-define('DB_PASSWORD', '');
+define('DB_PASSWORD', 'mysql');
 
 /** MySQL のホスト名 */
 define('DB_HOST', 'localhost');

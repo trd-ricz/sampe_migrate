@@ -1,5 +1,6 @@
 <?php
 $studenta = $_POST['student'];
+$student_status = $_POST['student_status'];
 $start_date = $_POST['start_date'];
 $end_date = $_POST['end_date'];
 
@@ -102,6 +103,7 @@ for ($x = 0; $x < count($studenta); $x++) {
 
 	$sched[$x] = array(
 		"name" => $studenta[$x],
+		"status" => $student_status[$x],
 		"start_date" => $start_date[$x],
 		"end_date" => $end_date[$x],
 		"sched" => array(
