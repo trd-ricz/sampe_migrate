@@ -8,7 +8,7 @@ jQuery("#counter_value").click(function() {
         ' <span id="tblSched">WEEKLY SCHEDULE</span> ' +
         '</td> ' +
         '<td class="tdtop tdright">' +
-        'Start Date: <input type="text" id="start_date" name="start_date[]" value="<?php echo date("m-d-Y"); ?>">' +
+        'Start Date: <input type="text" class="start_date" name="start_date[]" value="<?php echo date("Y-m-d"); ?>">' +
         '</td> ' +
         '<td id="cubicle-head" class="tdright tdtop">' +
         'CUBICLE NO.' +
@@ -18,12 +18,12 @@ jQuery("#counter_value").click(function() {
         '<td class="tdleft tdright text-right" colspan=2> ' +
         '<span id="bTeach">Buddy Teacher:</span> ' +
         '</td> ' +
-        '<td class="tdright"><input type="text" id="student_status" name="student_status[]" value="NEW STUDENT"></td>' +
-        '<td class="tdright cubicle text-center" rowspan=2>37</td>' +
+        '<td class="tdright"><input type="text" class="student_status" name="student_status[]" value="New Student"></td>' +
+        '<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" placeholder="Cubicle No."></td>' +
         '</tr> ' +
         '<tr> ' +
-        '<td class="tdleft tdright text-right" colspan=2>Ralph</td> ' +
-        '<td class="tdright tdbottom">End Date: <input type="text" id="end_date" name="end_date[]" value="<?php echo date("m-d-Y", strtotime("+5 days")); ?>"></td> ' +
+        '<td class="tdleft tdright text-right" colspan=2><input type="text" class="buddy_teacher" name="buddy_teacher[]"></td> ' +
+        '<td class="tdright tdbottom">End Date: <input type="text" class="end_date" name="end_date[]" value="<?php echo date("Y-m-d", strtotime("+7 days")); ?>"></td> ' +
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom" colspan=2>Student:</td> ' +
@@ -31,9 +31,21 @@ jQuery("#counter_value").click(function() {
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom student text-center" colspan=2 rowspan="2">' +
-        '<input type="text" name="student[]" placeholder="Student Name" list="schedule_students" onchange="showUser(this.value)"></td> ' +
+        '<input type="text" class="student-name" name="student[]" placeholder="Student Name" list="schedule_students">' +
+		'<input type="text" class="student-weeks" name="student_weeks[]">' +
+		'<input type="text" class="student-mm" name="student_mm[]">' +
+		'<input type="text" class="student-gc" name="student_gc[]">' +
+		'<input type="hidden" class="student-time-1"><input type="hidden" class="student-time-11">' +
+		'<input type="hidden" class="student-time-2"><input type="hidden" class="student-time-22">' +
+		'<input type="hidden" class="student-time-3"><input type="hidden" class="student-time-33">' +
+		'<input type="hidden" class="student-time-4"><input type="hidden" class="student-time-44">' +
+		'<input type="hidden" class="student-time-5"><input type="hidden" class="student-time-55">' +
+		'<input type="hidden" class="student-time-6"><input type="hidden" class="student-time-66">' +
+		'<input type="hidden" class="student-time-7"><input type="hidden" class="student-time-77">' +
+		'<input type="hidden" class="student-time-8"><input type="hidden" class="student-time-88">' +
+		'<input type="hidden" class="student-time-9"><input type="hidden" class="student-time-99"></td> ' +
         '<td class="tdright tdbottom text-center" colspan="2"> ' +
-        '<input type="text" name="class_type130220[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" name="class_type130220[]" class="class_type130220" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '</tr> ' +
         '<tr> ' +
@@ -54,10 +66,10 @@ jQuery("#counter_value").click(function() {
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type8850[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '<td class="tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type230320[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '</tr> ' +
         '<tr> ' +
@@ -84,10 +96,10 @@ jQuery("#counter_value").click(function() {
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type9950[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" name="class_type9950[]" class="class_type9950" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '<td class="tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type330420[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" name="class_type330420[]" class="class_type330420" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '</tr> ' +
         '<tr> ' +
@@ -114,10 +126,10 @@ jQuery("#counter_value").click(function() {
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type101050[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" name="class_type101050[]" class="class_type101050" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '<td class="tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '</tr> ' +
         '<tr> ' +
@@ -128,7 +140,7 @@ jQuery("#counter_value").click(function() {
         '<input type="text" name="room101050[]" placeholder="Room" list="schedule_rooms"> ' +
         '</td> ' +
         '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers"> ' +
+        '<input type="text" class="for_buddy_teacher_value" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers"> ' +
         '</td> ' +
         '<td class="tdright tdbottom text-center"> ' +
         '<input type="text" name="room430520[]" placeholder="Room" list="schedule_rooms"> ' +
@@ -144,10 +156,10 @@ jQuery("#counter_value").click(function() {
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type111150[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" name="class_type111150[]" class="class_type111150" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '<td class="tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type530620[]" placeholder="Class Type" list="schedule_class_type"> ' +
+        '<input type="text" name="class_type530620[]"  class="class_type530620" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +
         '</tr> ' +
         '<tr> ' +
@@ -208,34 +220,566 @@ function myFunction() {
 			mywindow.close();
 }
 
-function showUser(str) {
-    if (str == "") {
-        //jQuery("#start_date").val("");
-        //jQuery("#end_date").val("");
-        //return;
-    } else {
-            if (window.XMLHttpRequest) {
-                // code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            } else {
-                // code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function() {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    var result = JSON.parse(xmlhttp.responseText);
+//function showUser(str) {
+//    if (str == "") {
+//        //jQuery("#start_date").val("");
+//        //jQuery("#end_date").val("");
+//        //return;
+//    } else {
+//            if (window.XMLHttpRequest) {
+//                // code for IE7+, Firefox, Chrome, Opera, Safari
+//                xmlhttp = new XMLHttpRequest();
+//            } else {
+//                // code for IE6, IE5
+//                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+//            }
+//            xmlhttp.onreadystatechange = function() {
+//                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+//                    var result = JSON.parse(xmlhttp.responseText);
+//
+//					//jQuery(".start_date").parents("table:first").eq(0).val(result.start_date);
+//					//jQuery(".end_date").parents("table:first").eq(0).val(result.end_date);
+//					//jQuery(".student_status").parents("table:first").eq(0).val(result.student_status);
+//                    jQuery(".start_date").val(result.start_date);
+//                    jQuery(".end_date").val(result.end_date);
+//                    jQuery(".student_status").val(result.student_status);
+//                    //jQuery("#end_date").val(result.end_date).trigger("change");
+//
+//                }
+//            };
+//            xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/getuser.php?q='?>"+str,true);
+//            xmlhttp.send();
+//    }
+//}
 
-                    jQuery("#start_date").val(result.start_date);
-                    jQuery("#end_date").val(result.end_date);
-                    jQuery("#student_status").val(result.student_status);
-                    //jQuery("#end_date").val(result.end_date).trigger("change");
-                }
-            };
-            xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/getuser.php?q='?>"+str,true);
-            xmlhttp.send();
-    }
-}
+jQuery(document).on("change", ".student-name", function() {
 
-//jQuery(document).on('change', '#end_date', function() {
-//    jQuery("#student_status").val("OLD STUDENT");
-//});
+	var $this = jQuery(this), str = $this.val();
+
+	if (str == "") {
+		//jQuery("#start_date").val("");
+		//jQuery("#end_date").val("");
+		//return;
+	} else {
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {
+			// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				var result = JSON.parse(xmlhttp.responseText);
+
+				$this.parents("table:first").find(".start_date").eq(0).val(result.start_date);
+				$this.parents("table:first").find(".end_date").eq(0).val(result.end_date);
+				$this.parents("table:first").find(".student_status").eq(0).val(result.student_status);
+				$this.parents("table:first").find(".student-weeks").eq(0).val(result.count_weeks);
+			}
+		};
+		xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/getuser.php?q='?>"+str,true);
+		xmlhttp.send();
+	}
+});
+
+
+jQuery(document).on('change', '.for_buddy_teacher_value', function() {
+	var str = jQuery(this).parents("table:first").find(".for_buddy_teacher").eq(0).val();
+	var test = jQuery(this).val();
+
+	if (str.toLowerCase().indexOf("review") >= 0) {
+		jQuery(this).parents("table:first").find(".buddy_teacher").eq(0).val(test);
+	}
+});
+
+
+jQuery(document).on('change', '.for_buddy_teacher', function() {
+	var str = jQuery(this).parents("table:first").find(".for_buddy_teacher_value").eq(0).val();
+	var test = jQuery(this).val();
+
+	if (test.toLowerCase().indexOf("review") < 0) {
+		jQuery(this).parents("table:first").find(".buddy_teacher").eq(0).val("");
+	} else {
+		jQuery(this).parents("table:first").find(".buddy_teacher").eq(0).val(str);
+	}
+});
+
+
+jQuery(document).on('change', '.class_type8850', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-1").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-11").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-1").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-11").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-1").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-1").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-11").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-11").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-11").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-1").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+
+jQuery(document).on('change', '.class_type9950', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-2").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-22").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-2").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-22").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-2").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-2").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-22").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-22").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-22").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-2").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+
+jQuery(document).on('change', '.class_type101050', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-3").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-33").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-3").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-33").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-3").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-3").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-33").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-33").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-33").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-3").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+
+jQuery(document).on('change', '.class_type111150', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-4").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-44").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-4").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-44").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-4").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-4").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-44").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-44").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-44").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-4").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+
+jQuery(document).on('change', '.class_type130220', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-5").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-55").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-5").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-55").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-5").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-5").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-55").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-55").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-55").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-5").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+
+jQuery(document).on('change', '.class_type230320', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-6").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-66").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-6").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-66").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-6").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-6").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-66").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-66").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-66").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-6").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+
+jQuery(document).on('change', '.class_type330420', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-7").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-77").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-7").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-77").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-7").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-7").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-77").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-77").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-77").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-7").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+
+jQuery(document).on('change', '.class_type430520', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-8").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-88").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-8").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-88").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-8").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-8").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-88").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-88").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-88").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-8").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+
+jQuery(document).on('change', '.class_type530620', function() {
+	var temp = jQuery(this).val();
+
+	var countMM = (temp.match(/ MM/g) || []).length;
+	var countGC = (temp.match(/ GC/g) || []).length;
+
+	var newMM = +jQuery(this).parents("table:first").find(".student-time-9").eq(0).val() + countMM;
+	var newGC = +jQuery(this).parents("table:first").find(".student-time-99").eq(0).val() + countGC;
+
+	var newMM1 = +jQuery(this).parents("table:first").find(".student-time-9").eq(0).val() - 1;
+	var newGC1 = +jQuery(this).parents("table:first").find(".student-time-99").eq(0).val() - 1;
+
+	if (countMM == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-9").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-9").eq(0).val(newMM);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-99").eq(0).val("");
+	} else if (countGC == 1) {
+		if (jQuery(this).parents("table:first").find(".student-time-99").eq(0).val().length < 1) {
+			jQuery(this).parents("table:first").find(".student-time-99").eq(0).val(newGC);
+		}
+
+		jQuery(this).parents("table:first").find(".student-time-9").eq(0).val("");
+	}
+
+	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
+	var b = jQuery(this).parents("table:first").find(".student-time-2").eq(0).val();
+	var c = jQuery(this).parents("table:first").find(".student-time-3").eq(0).val();
+	var d = jQuery(this).parents("table:first").find(".student-time-4").eq(0).val();
+	var e = jQuery(this).parents("table:first").find(".student-time-5").eq(0).val();
+	var f = jQuery(this).parents("table:first").find(".student-time-6").eq(0).val();
+	var g = jQuery(this).parents("table:first").find(".student-time-7").eq(0).val();
+	var h = jQuery(this).parents("table:first").find(".student-time-8").eq(0).val();
+	var i = jQuery(this).parents("table:first").find(".student-time-9").eq(0).val();
+
+	var j = jQuery(this).parents("table:first").find(".student-time-11").eq(0).val();
+	var k = jQuery(this).parents("table:first").find(".student-time-22").eq(0).val();
+	var l = jQuery(this).parents("table:first").find(".student-time-33").eq(0).val();
+	var m = jQuery(this).parents("table:first").find(".student-time-44").eq(0).val();
+	var n = jQuery(this).parents("table:first").find(".student-time-55").eq(0).val();
+	var o = jQuery(this).parents("table:first").find(".student-time-66").eq(0).val();
+	var p = jQuery(this).parents("table:first").find(".student-time-77").eq(0).val();
+	var q = jQuery(this).parents("table:first").find(".student-time-88").eq(0).val();
+	var r = jQuery(this).parents("table:first").find(".student-time-99").eq(0).val();
+
+	var total_mm = Number(a) + Number(b) + Number(c) + Number(d) + Number(e) + Number(f) + Number(g) + Number(h) + Number(i);
+	var total_gc = Number(j) + Number(k) + Number(l) + Number(m) + Number(n) + Number(o) + Number(p) + Number(q) + Number(r);
+
+	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
+	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+});
+

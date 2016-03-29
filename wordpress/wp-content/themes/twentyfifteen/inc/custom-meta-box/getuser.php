@@ -11,10 +11,11 @@ $graduated = "Graduated";
 $old = "Old Student";
 $new = "New Student";
 $start_date_default = date("Y-m-d");
-$end_date_default = date("Y-m-d", strtotime("+5 days"));
+$end_date_default = date("Y-m-d", strtotime("+7 days"));
 
 $mylink1 = $wpdb->get_row( "SELECT ID FROM $wpdb->users WHERE display_name = '$q'" );
 $mylink = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->usermeta WHERE meta_key IN ('stt_date', 'end_date') and user_id = $mylink1->ID" );
+
 
 // for old students
 $startDate = new DateTime($mylink[0]->meta_value);

@@ -11,10 +11,10 @@
 			<span id="bTeach">Buddy Teacher:</span>
 		</td>
 		<td class="tdright"><input type="text" id="student_status" name="student_status[]" value="<?php echo $schedules[0][$x]["status"] ?>"></td>
-		<td class="tdright cubicle text-center" rowspan=2>37</td>
+		<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" placeholder="Cubicle No." value="<?php echo $schedules[0][$x]["cubicle_no"] ?>"></td>
 	</tr>
 	<tr>
-		<td class="tdleft tdright text-right" colspan=2>Ralph</td>
+		<td class="tdleft tdright text-right" colspan=2><?php echo $schedules[0][$x]["buddy_teacher"] ?></td>
 		<td class="tdright tdbottom">End Date: <input type="text" name="end_date[]" value="<?php echo $schedules[0][$x]["end_date"] ?>"></td>
 	</tr>
 	<tr>
