@@ -25,7 +25,10 @@
 <datalist id="schedule_students">
 	<?php
 	echo "<option>".implode('</option><option>', array_map(function ($entry) {
-			return strtoupper($entry->display_name);
+			if ($entry->end_date != null AND $entry->student != null )
+			{
+				return strtoupper($entry->display_name);
+			}
 		}, $students_v1))."</option>";
 	?>
 </datalist>

@@ -38,7 +38,7 @@
 	font-size:20px;
 }
 #tblSched{
-	color:blue;
+	color: #4682B4;
 	font-weight: bold;
 }
 #bTeach{
@@ -46,4 +46,27 @@
 }
 #time {
 	background-color: skyblue;
+}
+
+#gray {
+	background-color: #D3D3D3;
+}
+
+.red {
+	color: #CD5C5C;
+	font-weight: bold;
+}
+
+.blue {
+	color: #4682B4;
+	font-weight: bold;
+}
+
+td {
+	text-transform: uppercase;
+}
+
+.capital {
+	text-transform: capitalize !important;
+	text-decoration: underline;
 }

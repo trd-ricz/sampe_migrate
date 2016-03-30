@@ -8,7 +8,7 @@ jQuery("#counter_value").click(function() {
         ' <span id="tblSched">WEEKLY SCHEDULE</span> ' +
         '</td> ' +
         '<td class="tdtop tdright">' +
-        'Start Date: <input type="text" class="start_date" name="start_date[]" value="<?php echo date("Y-m-d"); ?>">' +
+        'Start Date: <input type="text" class="start_date" name="start_date[]">' +
         '</td> ' +
         '<td id="cubicle-head" class="tdright tdtop">' +
         'CUBICLE NO.' +
@@ -23,7 +23,7 @@ jQuery("#counter_value").click(function() {
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright text-right" colspan=2><input type="text" class="buddy_teacher" name="buddy_teacher[]"></td> ' +
-        '<td class="tdright tdbottom">End Date: <input type="text" class="end_date" name="end_date[]" value="<?php echo date("Y-m-d", strtotime("+7 days")); ?>"></td> ' +
+        '<td class="tdright tdbottom">End Date: <input type="text" class="end_date" name="end_date[]"></td> ' +
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom" colspan=2>Student:</td> ' +
@@ -35,15 +35,15 @@ jQuery("#counter_value").click(function() {
 		'<input type="text" class="student-weeks" name="student_weeks[]">' +
 		'<input type="text" class="student-mm" name="student_mm[]">' +
 		'<input type="text" class="student-gc" name="student_gc[]">' +
-		'<input type="hidden" class="student-time-1"><input type="hidden" class="student-time-11">' +
-		'<input type="hidden" class="student-time-2"><input type="hidden" class="student-time-22">' +
-		'<input type="hidden" class="student-time-3"><input type="hidden" class="student-time-33">' +
-		'<input type="hidden" class="student-time-4"><input type="hidden" class="student-time-44">' +
-		'<input type="hidden" class="student-time-5"><input type="hidden" class="student-time-55">' +
-		'<input type="hidden" class="student-time-6"><input type="hidden" class="student-time-66">' +
-		'<input type="hidden" class="student-time-7"><input type="hidden" class="student-time-77">' +
-		'<input type="hidden" class="student-time-8"><input type="hidden" class="student-time-88">' +
-		'<input type="hidden" class="student-time-9"><input type="hidden" class="student-time-99"></td> ' +
+		'<input type="hidden" name="student-time-1[]" class="student-time-1"><input type="hidden" name="student-time-11[]" class="student-time-11">' +
+		'<input type="hidden" name="student-time-2[]" class="student-time-2"><input type="hidden" name="student-time-22[]" class="student-time-22">' +
+		'<input type="hidden" name="student-time-3[]" class="student-time-3"><input type="hidden" name="student-time-33[]" class="student-time-33">' +
+		'<input type="hidden" name="student-time-4[]" class="student-time-4"><input type="hidden" name="student-time-44[]" class="student-time-44">' +
+		'<input type="hidden" name="student-time-5[]" class="student-time-5"><input type="hidden" name="student-time-55[]" class="student-time-55">' +
+		'<input type="hidden" name="student-time-6[]" class="student-time-6"><input type="hidden" name="student-time-66[]" class="student-time-66">' +
+		'<input type="hidden" name="student-time-7[]" class="student-time-7"><input type="hidden" name="student-time-77[]" class="student-time-77">' +
+		'<input type="hidden" name="student-time-8[]" class="student-time-8"><input type="hidden" name="student-time-88[]" class="student-time-88">' +
+		'<input type="hidden" name="student-time-9[]" class="student-time-9"><input type="hidden" name="student-time-99[]" class="student-time-99"></td> ' +
         '<td class="tdright tdbottom text-center" colspan="2"> ' +
         '<input type="text" name="class_type130220[]" class="class_type130220" placeholder="Class Type" list="schedule_class_type"> ' +
         '</td> ' +

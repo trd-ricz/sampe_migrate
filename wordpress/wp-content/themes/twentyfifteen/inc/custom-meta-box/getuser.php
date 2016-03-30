@@ -7,9 +7,8 @@ global $wpdb;
 
 $q = $_GET['q'];
 
-$graduated = "Graduated";
-$old = "Old Student";
-$new = "New Student";
+$old = "OLD STUDENT";
+$new = "NEW STUDENT";
 $start_date_default = date("Y-m-d");
 $end_date_default = date("Y-m-d", strtotime("+7 days"));
 
@@ -31,25 +30,18 @@ $count_result2 = (int)(($interval2->days) / 7);
 
 if ($mylink)
 {
-	$today = date('Y-m-d');
+	$result = new stdClass;
 
-	if ($mylink[1]->meta_value >= $today)
+	$result->start_date = $mylink[0]->meta_value;
+	$result->end_date   = $mylink[1]->meta_value;
+	$result->student_status = $old;
+	if ($count_result == 1)
 	{
-		$result = new stdClass;
-
-		$result->start_date = $mylink[0]->meta_value;
-		$result->end_date   = $mylink[1]->meta_value;
-		$result->student_status = $old;
-		$result->count_weeks = $count_result;
-
-		echo json_encode($result);
+		$result->student_status = $new;
 	}
-	else
-	{
-		$result = new stdClass;
-		$result->student_status = $graduated;
-		echo json_encode($result);
-	}
+	$result->count_weeks = $count_result;
+
+	echo json_encode($result);
 }
 else
 {
