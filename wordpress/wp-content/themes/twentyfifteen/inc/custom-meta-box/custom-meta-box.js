@@ -8,7 +8,7 @@ jQuery("#counter_value").click(function() {
         ' <span id="tblSched">WEEKLY SCHEDULE</span> ' +
         '</td> ' +
         '<td class="tdtop tdright">' +
-        'Start Date: <input type="text" class="start_date" name="start_date[]">' +
+        'Start: <input type="text" class="start_date" name="start_date[]">' +
         '</td> ' +
         '<td id="cubicle-head" class="tdright tdtop">' +
         'CUBICLE NO.' +
@@ -18,12 +18,14 @@ jQuery("#counter_value").click(function() {
         '<td class="tdleft tdright text-right" colspan=2> ' +
         '<span id="bTeach">Buddy Teacher:</span> ' +
         '</td> ' +
-        '<td class="tdright"><input type="text" class="student_status" name="student_status[]"></td>' +
+        '<td class="tdright"><label class="lstudent_status">N/A</label>' +
+		'<input type="hidden" class="student_status" name="student_status[]"></td>' +
         '<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" placeholder="Cubicle No."></td>' +
         '</tr> ' +
         '<tr> ' +
-        '<td class="tdleft tdright text-right" colspan=2><input type="text" class="buddy_teacher" name="buddy_teacher[]"></td> ' +
-        '<td class="tdright tdbottom">End Date: <input type="text" class="end_date" name="end_date[]"></td> ' +
+        '<td class="tdleft tdright text-right" colspan=2><label class="lbuddy_teacher"></label>' +
+		'<input type="hidden" class="buddy_teacher" name="buddy_teacher[]"></td> ' +
+        '<td class="tdright tdbottom">End: <input type="text" class="end_date" name="end_date[]"></td> ' +
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom" colspan=2>Student:</td> ' +
@@ -31,10 +33,13 @@ jQuery("#counter_value").click(function() {
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom student text-center" colspan=2 rowspan="2">' +
-        '<input type="text" class="student-name" name="student[]" placeholder="Student Name" list="schedule_students" required>' +
-		'<input type="text" class="student-weeks" name="student_weeks[]">' +
-		'<input type="text" class="student-mm" name="student_mm[]">' +
-		'<input type="text" class="student-gc" name="student_gc[]">' +
+        '<input type="text" class="student-name" name="student[]" placeholder="Student Name" list="schedule_students" required> ' +
+		'<label class="lstudent-weeks">( 0 WK/S.</label> ' +
+		'<input type="hidden" class="student-weeks" name="student_weeks[]">' +
+		'<label class="lstudent-mm">0 MM</label> ' +
+		'<input type="hidden" class="student-mm" name="student_mm[]">' +
+		'<label class="lstudent-gc">0 GC )</label>' +
+		'<input type="hidden" class="student-gc" name="student_gc[]">' +
 		'<input type="hidden" name="student-time-1[]" class="student-time-1"><input type="hidden" name="student-time-11[]" class="student-time-11">' +
 		'<input type="hidden" name="student-time-2[]" class="student-time-2"><input type="hidden" name="student-time-22[]" class="student-time-22">' +
 		'<input type="hidden" name="student-time-3[]" class="student-time-3"><input type="hidden" name="student-time-33[]" class="student-time-33">' +
@@ -275,7 +280,9 @@ jQuery(document).on("change", ".student-name", function() {
 				$this.parents("table:first").find(".start_date").eq(0).val(result.start_date);
 				$this.parents("table:first").find(".end_date").eq(0).val(result.end_date);
 				$this.parents("table:first").find(".student_status").eq(0).val(result.student_status);
+				$this.parents("table:first").find(".lstudent_status").eq(0).text(result.student_status);
 				$this.parents("table:first").find(".student-weeks").eq(0).val(result.count_weeks);
+				$this.parents("table:first").find(".lstudent-weeks").eq(0).text("( " + result.count_weeks + " WK/S.");
 			}
 		};
 		xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/getuser.php?q='?>"+str,true);
@@ -290,6 +297,7 @@ jQuery(document).on('change', '.for_buddy_teacher_value', function() {
 
 	if (str.toLowerCase().indexOf("review") >= 0) {
 		jQuery(this).parents("table:first").find(".buddy_teacher").eq(0).val(test);
+		jQuery(this).parents("table:first").find(".lbuddy_teacher").eq(0).text(test);
 	}
 });
 
@@ -300,8 +308,10 @@ jQuery(document).on('change', '.for_buddy_teacher', function() {
 
 	if (test.toLowerCase().indexOf("review") < 0) {
 		jQuery(this).parents("table:first").find(".buddy_teacher").eq(0).val("");
+		jQuery(this).parents("table:first").find(".lbuddy_teacher").eq(0).text("");
 	} else {
 		jQuery(this).parents("table:first").find(".buddy_teacher").eq(0).val(str);
+		jQuery(this).parents("table:first").find(".lbuddy_teacher").eq(0).text(str);
 	}
 });
 
@@ -357,6 +367,9 @@ jQuery(document).on('change', '.class_type8850', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
 jQuery(document).on('change', '.class_type9950', function() {
@@ -410,6 +423,9 @@ jQuery(document).on('change', '.class_type9950', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
 jQuery(document).on('change', '.class_type101050', function() {
@@ -463,6 +479,9 @@ jQuery(document).on('change', '.class_type101050', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
 jQuery(document).on('change', '.class_type111150', function() {
@@ -516,6 +535,9 @@ jQuery(document).on('change', '.class_type111150', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
 jQuery(document).on('change', '.class_type130220', function() {
@@ -569,6 +591,9 @@ jQuery(document).on('change', '.class_type130220', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
 jQuery(document).on('change', '.class_type230320', function() {
@@ -622,6 +647,9 @@ jQuery(document).on('change', '.class_type230320', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
 jQuery(document).on('change', '.class_type330420', function() {
@@ -675,6 +703,9 @@ jQuery(document).on('change', '.class_type330420', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
 jQuery(document).on('change', '.class_type430520', function() {
@@ -728,6 +759,9 @@ jQuery(document).on('change', '.class_type430520', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
 jQuery(document).on('change', '.class_type530620', function() {
@@ -781,5 +815,8 @@ jQuery(document).on('change', '.class_type530620', function() {
 
 	jQuery(this).parents("table:first").find(".student-mm").eq(0).val(total_mm);
 	jQuery(this).parents("table:first").find(".student-gc").eq(0).val(total_gc);
+
+	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
+	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 

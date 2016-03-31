@@ -3,19 +3,23 @@
 		<td class="tdleft tdright tdtop text-center" colspan=2>
 			<span id="tblSched">WEEKLY SCHEDULE</span>
 		</td>
-		<td class="tdtop tdright">Start Date: <input type="text" class="start_date" name="start_date[]" value="<?php echo $schedules[0][$x]["start_date"] ?>"></td>
+		<td class="tdtop tdright">Start: <input type="text" class="start_date" name="start_date[]" value="<?php echo $schedules[0][$x]["start_date"] ?>"></td>
 		<td id="cubicle-head" class="tdright tdtop">CUBICLE NO.</td>
 	</tr>
 	<tr>
 		<td class="tdleft tdright text-right" colspan=2>
 			<span id="bTeach">Buddy Teacher:</span>
 		</td>
-		<td class="tdright"><input type="text" class="student_status" name="student_status[]" value="<?php echo $schedules[0][$x]["status"] ?>"></td>
+		<td class="tdright">
+			<label class="lstudent_status"><?php echo $schedules[0][$x]["status"] ?></label>
+			<input type="hidden" class="student_status" name="student_status[]" value="<?php echo $schedules[0][$x]["status"] ?>"></td>
 		<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" placeholder="Cubicle No." value="<?php echo $schedules[0][$x]["cubicle_no"] ?>"></td>
 	</tr>
 	<tr>
-		<td class="tdleft tdright text-right" colspan=2><input type="text" class="buddy_teacher" name="buddy_teacher[]" value="<?php echo $schedules[0][$x]["buddy_teacher"] ?>"></td>
-		<td class="tdright tdbottom">End Date: <input type="text" class="end_date" name="end_date[]" value="<?php echo $schedules[0][$x]["end_date"] ?>"></td>
+		<td class="tdleft tdright text-right" colspan=2>
+			<label class="lbuddy_teacher"><?php echo $schedules[0][$x]["buddy_teacher"] ?></label>
+			<input type="hidden" class="buddy_teacher" name="buddy_teacher[]" value="<?php echo $schedules[0][$x]["buddy_teacher"] ?>"></td>
+		<td class="tdright tdbottom">End: <input type="text" class="end_date" name="end_date[]" value="<?php echo $schedules[0][$x]["end_date"] ?>"></td>
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom" colspan=2>Student:</td>
@@ -24,9 +28,12 @@
 	<tr>
 		<td class="tdleft tdright tdbottom student text-center" colspan=2 rowspan="2">
 			<input type="text" class="student-name" name="student[]" placeholder="Student Name" value="<?php echo $schedules[0][$x]["name"] ?>" list="schedule_students">
-			<input type="text" class="student-weeks" name="student_weeks[]" placeholder="Weeks" value="<?php echo $schedules[0][$x]["student_weeks"] ?>">
-			<input type="text" class="student-mm" name="student_mm[]" placeholder="MM" value="<?php echo $schedules[0][$x]["student_mm"] ?>">
-			<input type="text" class="student-gc" name="student_gc[]" placeholder="GC" value="<?php echo $schedules[0][$x]["student_gc"] ?>">
+			<label class="lstudent-weeks">( <?php echo $schedules[0][$x]["student_weeks"] ?> WK/S.</label>
+			<input type="hidden" class="student-weeks" name="student_weeks[]" placeholder="Weeks" value="<?php echo $schedules[0][$x]["student_weeks"] ?>">
+			<label class="lstudent-mm"><?php echo $schedules[0][$x]["student_mm"] ?> MM</label>
+			<input type="hidden" class="student-mm" name="student_mm[]" placeholder="MM" value="<?php echo $schedules[0][$x]["student_mm"] ?>">
+			<label class="lstudent-gc"><?php echo $schedules[0][$x]["student_gc"] ?> GC )</label>
+			<input type="hidden" class="student-gc" name="student_gc[]" placeholder="GC" value="<?php echo $schedules[0][$x]["student_gc"] ?>">
 
 			<input type="hidden" class="student-time-1" name="student-time-1[]" value="<?php echo $schedules[0][$x]["student-time-1"] ?>"><input type="hidden" class="student-time-11" name="student-time-11[]" value="<?php echo $schedules[0][$x]["student-time-11"] ?>">
 			<input type="hidden" class="student-time-2" name="student-time-2[]" value="<?php echo $schedules[0][$x]["student-time-2"] ?>"><input type="hidden" class="student-time-22" name="student-time-22[]" value="<?php echo $schedules[0][$x]["student-time-22"] ?>">
