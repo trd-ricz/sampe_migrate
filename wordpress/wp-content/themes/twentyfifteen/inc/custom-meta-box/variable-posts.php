@@ -3,6 +3,9 @@ global $wpdb;
 
 $studenta = $_POST['student'];
 $student_status = $_POST['student_status'];
+$start_date = $_POST['start_date'];
+$end_date = $_POST['end_date'];
+$cubicle_no = $_POST['cubicle_no'];
 $buddy_teacher = $_POST['buddy_teacher'];
 $student_weeks = $_POST['student_weeks'];
 $student_mm = $_POST['student_mm'];
@@ -25,9 +28,6 @@ $studenttime66 = $_POST['student-time-66'];
 $studenttime77 = $_POST['student-time-77'];
 $studenttime88 = $_POST['student-time-88'];
 $studenttime99 = $_POST['student-time-99'];
-$cubicle_no = $_POST['cubicle_no'];
-$start_date = $_POST['start_date'];
-$end_date = $_POST['end_date'];
 
 $teacher88 = $_POST['teacher8850'];
 $class88 = $_POST['class_type8850'];
@@ -70,113 +70,112 @@ $sched = array();
 
 // if use [] / then use $x = 0;
 for ($x = 0; $x < count($studenta); $x++) {
+		$data2 = array(
+			$teacher88[$x],
+			$class88[$x],
+			$room88[$x]
+		);
 
-	$data2 = array(
-		$teacher88[$x],
-		$class88[$x],
-		$room88[$x]
-	);
+		$data3 = array(
+			$teacher99[$x],
+			$class99[$x],
+			$room99[$x]
+		);
 
-	$data3 = array(
-		$teacher99[$x],
-		$class99[$x],
-		$room99[$x]
-	);
+		$data4 = array(
+			$teacher1010[$x],
+			$class1010[$x],
+			$room1010[$x]
+		);
 
-	$data4 = array(
-		$teacher1010[$x],
-		$class1010[$x],
-		$room1010[$x]
-	);
+		$data5 = array(
+			$teacher1111[$x],
+			$class1111[$x],
+			$room1111[$x]
+		);
 
-	$data5 = array(
-		$teacher1111[$x],
-		$class1111[$x],
-		$room1111[$x]
-	);
+		$data6 = array(
+			$teacher1302[$x],
+			$class1302[$x],
+			$room1302[$x]
+		);
 
-	$data6 = array(
-		$teacher1302[$x],
-		$class1302[$x],
-		$room1302[$x]
-	);
+		$data7 = array(
+			$teacher2303[$x],
+			$class2303[$x],
+			$room2303[$x]
+		);
 
-	$data7 = array(
-		$teacher2303[$x],
-		$class2303[$x],
-		$room2303[$x]
-	);
+		$data8 = array(
+			$teacher3304[$x],
+			$class3304[$x],
+			$room3304[$x]
+		);
 
-	$data8 = array(
-		$teacher3304[$x],
-		$class3304[$x],
-		$room3304[$x]
-	);
+		$data9 = array(
+			$teacher4305[$x],
+			$class4305[$x],
+			$room4305[$x]
+		);
 
-	$data9 = array(
-		$teacher4305[$x],
-		$class4305[$x],
-		$room4305[$x]
-	);
-
-	$data10 = array(
-		$teacher5306[$x],
-		$class5306[$x],
-		$room5306[$x]
-	);
+		$data10 = array(
+			$teacher5306[$x],
+			$class5306[$x],
+			$room5306[$x]
+		);
 
 
-	$sched[$x] = array(
-		"name" =>	$studenta[$x],
-		"status" =>	$student_status[$x],
-		"cubicle_no" =>	$cubicle_no[$x],
-		"buddy_teacher" =>	$buddy_teacher[$x],
-		"student_weeks" =>	$student_weeks[$x],
-		"student_mm" =>	$student_mm[$x],
-		"student_gc" =>	$student_gc[$x],
-		"start_date" =>	$start_date[$x],
-		"end_date" =>	$end_date[$x],
-		"student-time-1" =>	$studenttime1[$x],
-		"student-time-2" =>	$studenttime2[$x],
-		"student-time-3" =>	$studenttime3[$x],
-		"student-time-4" =>	$studenttime4[$x],
-		"student-time-5" =>	$studenttime5[$x],
-		"student-time-6" =>	$studenttime6[$x],
-		"student-time-7" =>	$studenttime7[$x],
-		"student-time-8" =>	$studenttime8[$x],
-		"student-time-9" =>	$studenttime9[$x],
-		"student-time-11" =>	$studenttime11[$x],
-		"student-time-22" =>	$studenttime22[$x],
-		"student-time-33" =>	$studenttime33[$x],
-		"student-time-44" =>	$studenttime44[$x],
-		"student-time-55" =>	$studenttime55[$x],
-		"student-time-66" =>	$studenttime66[$x],
-		"student-time-77" =>	$studenttime77[$x],
-		"student-time-88" =>	$studenttime88[$x],
-		"student-time-99" =>	$studenttime99[$x],
-		"sched" => array(
-			"time2" => $data2,
-			"time3" => $data3,
-			"time4" => $data4,
-			"time5" => $data5,
-			"time6" => $data6,
-			"time7" => $data7,
-			"time8" => $data8,
-			"time9" => $data9,
-			"time10" => $data10
-		)
-	);
+		$sched[$x] = array(
+			"name" =>	$studenta[$x],
+			"status" =>	$student_status[$x],
+			"cubicle_no" =>	$cubicle_no[$x],
+			"buddy_teacher" =>	$buddy_teacher[$x],
+			"student_weeks" =>	$student_weeks[$x],
+			"student_mm" =>	$student_mm[$x],
+			"student_gc" =>	$student_gc[$x],
+			"start_date" =>	$start_date[$x],
+			"end_date" =>	$end_date[$x],
+			"student-time-1" =>	$studenttime1[$x],
+			"student-time-2" =>	$studenttime2[$x],
+			"student-time-3" =>	$studenttime3[$x],
+			"student-time-4" =>	$studenttime4[$x],
+			"student-time-5" =>	$studenttime5[$x],
+			"student-time-6" =>	$studenttime6[$x],
+			"student-time-7" =>	$studenttime7[$x],
+			"student-time-8" =>	$studenttime8[$x],
+			"student-time-9" =>	$studenttime9[$x],
+			"student-time-11" =>	$studenttime11[$x],
+			"student-time-22" =>	$studenttime22[$x],
+			"student-time-33" =>	$studenttime33[$x],
+			"student-time-44" =>	$studenttime44[$x],
+			"student-time-55" =>	$studenttime55[$x],
+			"student-time-66" =>	$studenttime66[$x],
+			"student-time-77" =>	$studenttime77[$x],
+			"student-time-88" =>	$studenttime88[$x],
+			"student-time-99" =>	$studenttime99[$x],
+			"sched" => array(
+				"time2" => $data2,
+				"time3" => $data3,
+				"time4" => $data4,
+				"time5" => $data5,
+				"time6" => $data6,
+				"time7" => $data7,
+				"time8" => $data8,
+				"time9" => $data9,
+				"time10" => $data10
+			)
+		);
 
-	$check_user = $wpdb->get_row( "SELECT ID FROM $wpdb->users WHERE display_name = '$studenta[$x]'" );
+		$check_user = $wpdb->get_row( "SELECT ID FROM $wpdb->users WHERE display_name = '$studenta[$x]'" );
 
-	if (! $check_user)
-	{
-		$wpdb->insert( 'wp_users', array('user_login' => "$studenta[$x]", 'display_name' => "$studenta[$x]"), array('%s', '%s') );
-		$lastid = $wpdb->insert_id;
+		if (! $check_user)
+		{
+			$wpdb->insert( 'wp_users', array('user_login' => "$studenta[$x]", 'display_name' => "$studenta[$x]"), array('%s', '%s') );
+			$lastid = $wpdb->insert_id;
 
-		add_user_meta( $lastid, 'wp_capabilities', 'student' );
-		add_user_meta( $lastid, 'stt_date', $start_date[$x] );
-		add_user_meta( $lastid, 'end_date', $end_date[$x] );
-	}
+			add_user_meta( $lastid, 'wp_capabilities', 'student' );
+			add_user_meta( $lastid, 'stt_date', $start_date[$x] );
+			add_user_meta( $lastid, 'end_date', $end_date[$x] );
+		}
 }
 ?>

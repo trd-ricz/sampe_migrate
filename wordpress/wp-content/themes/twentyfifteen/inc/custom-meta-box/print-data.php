@@ -25,19 +25,19 @@
 		<td class="tdleft tdright tdbottom student text-center" colspan=2 rowspan="2">
 			<strong><?php echo $schedules[0][$x]["name"] ?>
 			( <?php echo $schedules[0][$x]["student_weeks"] ?> WK/S.
-			<span class="red"><?php echo $schedules[0][$x]["student_mm"] ?> MM
-			<?php echo $schedules[0][$x]["student_gc"] ?> GC</span> )</strong>
+			<span class="red"><?php echo ($schedules[0][$x]["student_mm"]) ? $schedules[0][$x]["student_mm"] : 0 ?> MM
+			<?php echo ($schedules[0][$x]["student_gc"]) ? $schedules[0][$x]["student_gc"] : 0 ?> GC</span> )</strong>
 		</td>
 		<td class="tdright tdbottom text-center" colspan="2">
-			<?php echo $schedules[0][$x]["sched"]["time6"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time6"][1]) ? $schedules[0][$x]["sched"]["time6"][1] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time6"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time6"][0]) ? $schedules[0][$x]["sched"]["time6"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time6"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time6"][2]) ? $schedules[0][$x]["sched"]["time6"][2] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
@@ -50,24 +50,24 @@
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom text-center" colspan=2>
-			<?php echo $schedules[0][$x]["sched"]["time2"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time2"][1]) ? $schedules[0][$x]["sched"]["time2"][1] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center" colspan=2>
-			<?php echo $schedules[0][$x]["sched"]["time7"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time7"][1]) ? $schedules[0][$x]["sched"]["time7"][1] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time2"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time2"][0]) ? $schedules[0][$x]["sched"]["time2"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time2"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time2"][2]) ? $schedules[0][$x]["sched"]["time2"][2] : "&nbsp;" ?>
 		</td>
 		<td class="tdleft tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time7"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time7"][0]) ? $schedules[0][$x]["sched"]["time7"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time7"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time7"][2]) ? $schedules[0][$x]["sched"]["time7"][2] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
@@ -80,24 +80,24 @@
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom text-center" colspan=2>
-			<?php echo $schedules[0][$x]["sched"]["time3"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time3"][1]) ? $schedules[0][$x]["sched"]["time3"][1] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center" colspan=2>
-			<?php echo $schedules[0][$x]["sched"]["time8"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time8"][1]) ? $schedules[0][$x]["sched"]["time8"][1] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time3"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time3"][0]) ? $schedules[0][$x]["sched"]["time3"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time3"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time3"][2]) ? $schedules[0][$x]["sched"]["time3"][2] : "&nbsp;" ?>
 		</td>
 		<td class="tdleft tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time8"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time8"][0]) ? $schedules[0][$x]["sched"]["time8"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time8"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time8"][2]) ? $schedules[0][$x]["sched"]["time8"][2] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
@@ -110,24 +110,24 @@
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom text-center" colspan=2>
-			<?php echo $schedules[0][$x]["sched"]["time4"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time4"][1]) ? $schedules[0][$x]["sched"]["time4"][1] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center" colspan=2>
-			<?php echo $schedules[0][$x]["sched"]["time9"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time9"][1]) ? $schedules[0][$x]["sched"]["time9"][1] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time4"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time4"][0]) ? $schedules[0][$x]["sched"]["time4"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time4"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time4"][2]) ? $schedules[0][$x]["sched"]["time4"][2] : "&nbsp;" ?>
 		</td>
 		<td class="tdleft tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time9"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time9"][0]) ? $schedules[0][$x]["sched"]["time9"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time9"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time9"][2]) ? $schedules[0][$x]["sched"]["time9"][2] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
@@ -140,24 +140,24 @@
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom text-center" colspan=2>
-			<?php echo $schedules[0][$x]["sched"]["time5"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time5"][1]) ? $schedules[0][$x]["sched"]["time5"][1] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center" colspan=2>
-			<?php echo $schedules[0][$x]["sched"]["time10"][1] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time10"][1]) ? $schedules[0][$x]["sched"]["time10"][1] : "&nbsp;" ?>
 		</td>
 	</tr>
 	<tr>
 		<td class="tdleft tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time5"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time5"][0]) ? $schedules[0][$x]["sched"]["time5"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time5"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time5"][2]) ? $schedules[0][$x]["sched"]["time5"][2] : "&nbsp;" ?>
 		</td>
 		<td class="tdleft tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time10"][0] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time10"][0]) ? $schedules[0][$x]["sched"]["time10"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo $schedules[0][$x]["sched"]["time10"][2] ?>
+			<?php echo ($schedules[0][$x]["sched"]["time10"][2]) ? $schedules[0][$x]["sched"]["time10"][2] : "&nbsp;" ?>
 		</td>
 	</tr>
 </table>

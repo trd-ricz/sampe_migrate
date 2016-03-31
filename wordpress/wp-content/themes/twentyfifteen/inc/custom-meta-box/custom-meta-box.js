@@ -18,7 +18,7 @@ jQuery("#counter_value").click(function() {
         '<td class="tdleft tdright text-right" colspan=2> ' +
         '<span id="bTeach">Buddy Teacher:</span> ' +
         '</td> ' +
-        '<td class="tdright"><input type="text" class="student_status" name="student_status[]" value="New Student"></td>' +
+        '<td class="tdright"><input type="text" class="student_status" name="student_status[]"></td>' +
         '<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" placeholder="Cubicle No."></td>' +
         '</tr> ' +
         '<tr> ' +
@@ -31,7 +31,7 @@ jQuery("#counter_value").click(function() {
         '</tr> ' +
         '<tr> ' +
         '<td class="tdleft tdright tdbottom student text-center" colspan=2 rowspan="2">' +
-        '<input type="text" class="student-name" name="student[]" placeholder="Student Name" list="schedule_students">' +
+        '<input type="text" class="student-name" name="student[]" placeholder="Student Name" list="schedule_students" required>' +
 		'<input type="text" class="student-weeks" name="student_weeks[]">' +
 		'<input type="text" class="student-mm" name="student_mm[]">' +
 		'<input type="text" class="student-gc" name="student_gc[]">' +
