@@ -3,37 +3,37 @@ jQuery("#counter_value").click(function() {
 
 	for (var i= 1; i <= counter; i++) {
 		jQuery("#display_forms").append('<table class="table borderless"> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdtop text-center" colspan=2>' +
-        ' <span id="tblSched">WEEKLY SCHEDULE</span> ' +
-        '</td> ' +
-        '<td class="tdtop tdright">' +
-        'Start: <input type="text" class="start_date" name="start_date[]">' +
-        '</td> ' +
-        '<td id="cubicle-head" class="tdright tdtop">' +
-        'CUBICLE NO.' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright text-right" colspan=2> ' +
-        '<span id="bTeach">Buddy Teacher:</span> ' +
-        '</td> ' +
-        '<td class="tdright"><label class="lstudent_status">N/A</label>' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdtop text-center" colspan=2>' +
+		' <span id="tblSched">WEEKLY SCHEDULE</span> ' +
+		'</td> ' +
+		'<td class="tdtop tdright">' +
+		'Start: <input type="text" class="start_date" name="start_date[]">' +
+		'</td> ' +
+		'<td id="cubicle-head" class="tdright tdtop">' +
+		'CUBICLE NO.' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright text-right" colspan=2> ' +
+		'<span id="bTeach">Buddy Teacher:</span> ' +
+		'</td> ' +
+		'<td class="tdright"><label class="lstudent_status">N/A</label>' +
 		'<input type="hidden" class="student_status" name="student_status[]"></td>' +
-        '<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" placeholder="Cubicle No."></td>' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright text-right" colspan=2><label class="lbuddy_teacher"></label>' +
+		'<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" placeholder="Cubicle No."></td>' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright text-right" colspan=2><label class="lbuddy_teacher"></label>' +
 		'<input type="hidden" class="buddy_teacher" name="buddy_teacher[]"></td> ' +
-        '<td class="tdright tdbottom">End: <input type="text" class="end_date" name="end_date[]"></td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom" colspan=2>Student:</td> ' +
-        '<td id="time" class="tdright tdbottom text-center" colspan="2">1:30~2:20</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom student text-center" colspan=2 rowspan="2">' +
-        '<input type="text" class="student-name" name="student[]" placeholder="Student Name" list="schedule_students" required> ' +
+		'<td class="tdright tdbottom">End: <input type="text" class="end_date" name="end_date[]"></td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom" colspan=2>Student:</td> ' +
+		'<td id="time" class="tdright tdbottom text-center" colspan="2">1:30~2:20</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom student text-center" colspan=2 rowspan="2">' +
+		'<input type="text" class="student-name" name="student[]" placeholder="Student Name" list="schedule_students" required> ' +
 		'<label class="lstudent-weeks">( 0 WK/S.</label> ' +
 		'<input type="hidden" class="student-weeks" name="student_weeks[]">' +
 		'<label class="lstudent-mm">0 MM</label> ' +
@@ -49,138 +49,138 @@ jQuery("#counter_value").click(function() {
 		'<input type="hidden" name="student-time-7[]" class="student-time-7"><input type="hidden" name="student-time-77[]" class="student-time-77">' +
 		'<input type="hidden" name="student-time-8[]" class="student-time-8"><input type="hidden" name="student-time-88[]" class="student-time-88">' +
 		'<input type="hidden" name="student-time-9[]" class="student-time-9"><input type="hidden" name="student-time-99[]" class="student-time-99"></td> ' +
-        '<td class="tdright tdbottom text-center" colspan="2"> ' +
-        '<input type="text" name="class_type130220[]" class="class_type130220" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher130220[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="room130220[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center" colspan=2>7:50~8:00 WORD BUCKET TEST</td> ' +
-        '<td class="tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td id="time" class="tdleft tdright tdbottom text-center" colspan=2>8:00~8:50</td> ' +
-        '<td id="time" class="tdright tdbottom text-center" colspan=2>2:30~3:20</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher8850[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="room8850[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher230320[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="room230320[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
-        '<td class="tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
-        '</tr> ' +
-        '<tr>' +
-        '<td id="time" class="tdleft tdright tdbottom text-center" colspan=2>9:00~9:50</td> ' +
-        '<td id="time" class="tdright tdbottom text-center" colspan=2>3:30~4:20</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type9950[]" class="class_type9950" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type330420[]" class="class_type330420" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher9950[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="room9950[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher330420[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="room330420[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
-        '<td class="tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td id="time" class="tdleft tdright tdbottom text-center" colspan=2>10:00~10:50</td> ' +
-        '<td id="time" class="tdright tdbottom text-center" colspan=2>4:30~5:20</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type101050[]" class="class_type101050" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher101050[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="room101050[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" class="for_buddy_teacher_value" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="room430520[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
-        '<td class="tdright tdbottom text-center" colspan=2>Monday~Thursday/GRADUATION~Friday</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td id="time" class="tdleft tdright tdbottom text-center" colspan=2>11:00~11:50</td> ' +
-        '<td id="time" class="tdright tdbottom text-center" colspan=2>5:30~6:20</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type111150[]" class="class_type111150" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center" colspan=2> ' +
-        '<input type="text" name="class_type530620[]"  class="class_type530620" placeholder="Class Type" list="schedule_class_type"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '<tr> ' +
-        '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher111150[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> ' +
-        '<input type="text" name="room111150[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '<td class="tdleft tdright tdbottom text-center"> ' +
-        '<input type="text" name="teacher530620[]" placeholder="Teacher" list="schedule_teachers"> ' +
-        '</td> ' +
-        '<td class="tdright tdbottom text-center"> <input type="text" name="room530620[]" placeholder="Room" list="schedule_rooms"> ' +
-        '</td> ' +
-        '</tr> ' +
-        '</table>');
+		'<td class="tdright tdbottom text-center" colspan="2"> ' +
+		'<input type="text" name="class_type130220[]" class="class_type130220" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="teacher130220[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="room130220[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center" colspan=2>7:50~8:00 WORD BUCKET TEST</td> ' +
+		'<td class="tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td id="time" class="tdleft tdright tdbottom text-center" colspan=2>8:00~8:50</td> ' +
+		'<td id="time" class="tdright tdbottom text-center" colspan=2>2:30~3:20</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
+		'<input type="text" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center" colspan=2> ' +
+		'<input type="text" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center"> ' +
+		'<input type="text" name="teacher8850[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="room8850[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'<td class="tdleft tdright tdbottom text-center"> ' +
+		'<input type="text" name="teacher230320[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="room230320[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
+		'<td class="tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
+		'</tr> ' +
+		'<tr>' +
+		'<td id="time" class="tdleft tdright tdbottom text-center" colspan=2>9:00~9:50</td> ' +
+		'<td id="time" class="tdright tdbottom text-center" colspan=2>3:30~4:20</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
+		'<input type="text" name="class_type9950[]" class="class_type9950" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center" colspan=2> ' +
+		'<input type="text" name="class_type330420[]" class="class_type330420" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center"> ' +
+		'<input type="text" name="teacher9950[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="room9950[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'<td class="tdleft tdright tdbottom text-center"> ' +
+		'<input type="text" name="teacher330420[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="room330420[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
+		'<td class="tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td id="time" class="tdleft tdright tdbottom text-center" colspan=2>10:00~10:50</td> ' +
+		'<td id="time" class="tdright tdbottom text-center" colspan=2>4:30~5:20</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
+		'<input type="text" name="class_type101050[]" class="class_type101050" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center" colspan=2> ' +
+		'<input type="text" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center"> ' +
+		'<input type="text" name="teacher101050[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="room101050[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'<td class="tdleft tdright tdbottom text-center"> ' +
+		'<input type="text" class="for_buddy_teacher_value" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="room430520[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center" colspan=2>Monday~Friday</td> ' +
+		'<td class="tdright tdbottom text-center" colspan=2>Monday~Thursday/GRADUATION~Friday</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td id="time" class="tdleft tdright tdbottom text-center" colspan=2>11:00~11:50</td> ' +
+		'<td id="time" class="tdright tdbottom text-center" colspan=2>5:30~6:20</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
+		'<input type="text" name="class_type111150[]" class="class_type111150" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center" colspan=2> ' +
+		'<input type="text" name="class_type530620[]"  class="class_type530620" placeholder="Class Type" list="schedule_class_type"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'<tr> ' +
+		'<td class="tdleft tdright tdbottom text-center"> ' +
+		'<input type="text" name="teacher111150[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> ' +
+		'<input type="text" name="room111150[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'<td class="tdleft tdright tdbottom text-center"> ' +
+		'<input type="text" name="teacher530620[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'</td> ' +
+		'<td class="tdright tdbottom text-center"> <input type="text" name="room530620[]" placeholder="Room" list="schedule_rooms"> ' +
+		'</td> ' +
+		'</tr> ' +
+		'</table>');
 	}
 
 	jQuery("#counter").hide();
@@ -206,7 +206,7 @@ function myFunction() {
 	'.table-holder{width:90%;margin-top:10px;}' +
 	'.cubicle{font-size:30px;}' +
 	'#cubicle-head{font-weight: bold;}' +
-	'.student{vertical-align:middle !important;font-size:20px;}' +
+	'.student{vertical-align:middle !important;font-size:16px;}' +
 	'#tblSched{color:#4682B4;font-weight: bold;}' +
 	'#bTeach{text-decoration: underline;}' +
 	'#time{background-color: skyblue;}' +
@@ -219,10 +219,6 @@ function myFunction() {
 	'td {text-transform: uppercase; font-size: 13px;}' +
 	'.capital {text-transform: capitalize !important;text-decoration: underline;}' +
 	'</style>');
-	//mywindow.document.write('<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/bootstrap.min.css">');
-	//mywindow.document.write('<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/schedule.css">');
-	//mywindow.document.write('<link rel="stylesheet" href="<?php echo home_url(); ?>/wp-admin/load-styles.php?c=1&dir=ltr&load=dashicons,admin-bar,wp-admin,buttons,wp-auth-check,media-views,wp-color-picker&ver=4.3">');
-	//mywindow.document.write('<link rel="stylesheet" href="<?php echo home_url(); ?>/wp-content/plugins/advanced-custom-fields/css/global.css?ver=4.4.3">');
 	mywindow.document.write(jQuery('#print_preview').html());
 	mywindow.document.close(); // necessary for IE >= 10
 	mywindow.focus(); // necessary for IE >= 10
@@ -231,46 +227,12 @@ function myFunction() {
 			mywindow.close();
 }
 
-//function showUser(str) {
-//    if (str == "") {
-//        //jQuery("#start_date").val("");
-//        //jQuery("#end_date").val("");
-//        //return;
-//    } else {
-//            if (window.XMLHttpRequest) {
-//                // code for IE7+, Firefox, Chrome, Opera, Safari
-//                xmlhttp = new XMLHttpRequest();
-//            } else {
-//                // code for IE6, IE5
-//                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-//            }
-//            xmlhttp.onreadystatechange = function() {
-//                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-//                    var result = JSON.parse(xmlhttp.responseText);
-//
-//					//jQuery(".start_date").parents("table:first").eq(0).val(result.start_date);
-//					//jQuery(".end_date").parents("table:first").eq(0).val(result.end_date);
-//					//jQuery(".student_status").parents("table:first").eq(0).val(result.student_status);
-//                    jQuery(".start_date").val(result.start_date);
-//                    jQuery(".end_date").val(result.end_date);
-//                    jQuery(".student_status").val(result.student_status);
-//                    //jQuery("#end_date").val(result.end_date).trigger("change");
-//
-//                }
-//            };
-//            xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/getuser.php?q='?>"+str,true);
-//            xmlhttp.send();
-//    }
-//}
-
 jQuery(document).on("change", ".student-name", function() {
 
 	var $this = jQuery(this), str = $this.val();
 
 	if (str == "") {
-		//jQuery("#start_date").val("");
-		//jQuery("#end_date").val("");
-		//return;
+		// do nothing
 	} else {
 		if (window.XMLHttpRequest) {
 			// code for IE7+, Firefox, Chrome, Opera, Safari
