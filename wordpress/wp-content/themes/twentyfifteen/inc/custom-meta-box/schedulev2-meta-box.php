@@ -66,9 +66,44 @@ function update_schedules_v2()
 		WHERE users.ID = meta.user_id
 		AND meta.meta_key IN ('end_date','wp_capabilities')
 		GROUP BY ID");
+
 	$teachers_v1 = $wpdb->get_results("SELECT display_name FROM $wpdb->users as users, $wpdb->usermeta as meta WHERE meta.meta_key = 'wp_capabilities' AND meta.meta_value LIKE '%teacher%' AND users.ID = meta.user_id");
 	$class_types_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_type'");
 	$rooms_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_room'");
+	$students_graduated = $wpdb->get_results("SELECT ID,
+			display_name,
+			CASE WHEN meta.meta_key = 'end_date' AND meta.meta_value < now() THEN meta.meta_value END as end_date,
+			MAX(CASE WHEN meta.meta_key = 'wp_capabilities' AND meta.meta_value LIKE '%student%' THEN 'TRUE' END) as student
+		FROM $wpdb->users as users, $wpdb->usermeta as meta
+		WHERE users.ID = meta.user_id
+		AND meta.meta_key IN ('end_date','wp_capabilities')
+		GROUP BY ID");
+
+	array_map(function ($entry) {
+		if ($entry->end_date != null AND $entry->student != null )
+		{
+			global $wpdb;
+
+			if (strpos($entry->display_name, "graduated") !== false)
+			{
+				// do nothing
+			}
+			else
+			{
+				$wpdb->update(
+					'wp_users',
+					array(
+						'display_name' => $entry->display_name."_graduated"
+					),
+					array( 'ID' => $entry->ID),
+					array(
+						'%s'
+					),
+					array( '%d' )
+				);
+			}
+		}
+	}, $students_graduated);
 	?>
 
 	<div id="update_schedules_v2">

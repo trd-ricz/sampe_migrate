@@ -191,9 +191,10 @@ function myFunction() {
 	var mywindow = window.open('', '.inside #print_preview');
 	mywindow.document.write('<title>Print Preview</title>');
 	mywindow.document.write('<style>' +
-	'body { -webkit-print-color-adjust: exact;}' +
+	'@page { size: A4; }' +
+	'body { -webkit-print-color-adjust: exact;  margin: 5mm 0 5mm 0; font-size: 11px;}' +
 	'#tblSched {color: blue;font-weight: bold;}' +
-	'.table {width: 100%; max-width: 100%; margin-bottom: 20px; border-spacing: 0; border-collapse: collapse; background-color: transparent;}' +
+	'.table {width: 100%; max-width: 100%; margin-bottom: 20%; border-spacing: 0; border-collapse: collapse; background-color: transparent;}' +
 	'.table>tbody>tr>td, .table>tbody>tr>td, .table>tbody>tr>th, ' +
 	'.table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, ' +
 	'.table>thead>tr>th {border-top: none; padding:0 8px 0;}' +
@@ -206,12 +207,17 @@ function myFunction() {
 	'.cubicle{font-size:30px;}' +
 	'#cubicle-head{font-weight: bold;}' +
 	'.student{vertical-align:middle !important;font-size:20px;}' +
-	'#tblSched{color:blue;font-weight: bold;}' +
+	'#tblSched{color:#4682B4;font-weight: bold;}' +
 	'#bTeach{text-decoration: underline;}' +
 	'#time{background-color: skyblue;}' +
 	'.text-right {text-align: right;}' +
 	'.text-center {text-align: center;}' +
 	'.text-left {text-align: left;}' +
+	'#gray {background-color: #D3D3D3;}' +
+	'.red {color: #CD5C5C;font-weight: bold;}' +
+	'.blue {color: #4682B4;font-weight: bold;}' +
+	'td {text-transform: uppercase; font-size: 13px;}' +
+	'.capital {text-transform: capitalize !important;text-decoration: underline;}' +
 	'</style>');
 	//mywindow.document.write('<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/bootstrap.min.css">');
 	//mywindow.document.write('<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/schedule.css">');
