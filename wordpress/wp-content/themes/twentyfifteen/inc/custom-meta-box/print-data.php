@@ -1,7 +1,7 @@
 <table class="table borderless">
 	<tr>
 		<td class="tdleft tdright tdtop text-center" colspan=2>
-			<span id="tblSched">WEEKLY SCHEDULE</span>
+			<span id="tblSched"><?php echo $post->post_title; ?> WEEKLY SCHEDULE</span>
 		</td>
 		<td class="tdtop tdright">START: <span class="blue"><?php echo date("d M y", strtotime($schedules[0][$x]["start_date"]))?></span></td>
 		<td id="cubicle-head" class="tdright tdtop">CUBICLE NO.</td>
