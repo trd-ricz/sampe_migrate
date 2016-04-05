@@ -3,8 +3,8 @@
 function schedule_v2_list_init() {
 
 	$labels = array(
-		'name'                  => _x( 'Schedule', 'post type general name' ),
-		'singular_name'         => _x( 'Schedule', 'post type singular name' ),
+		'name'                  => _x( 'Schedules', 'post type general name' ),
+		'singular_name'         => _x( 'Schedule', 'post type singular name' ), // must be different with the general name
 		'menu_name'             => _x( 'Schedule List', 'admin menu' ),
 		'name_admin_bar'        => _x( 'Schedule List', 'add new on admin bar' ),
 		'add_new_item'          => __( 'Add New Schedule' ),

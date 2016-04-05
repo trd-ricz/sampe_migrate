@@ -34,8 +34,7 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom student text-center" colspan=2 rowspan="2">' +
 		'<input type="text" class="student-name" name="student[]" placeholder="Student Name" list="schedule_students" required> ' +
-		'<label class="lstudent-weeks">( 0 WK/S.</label> ' +
-		'<input type="hidden" class="student-weeks" name="student_weeks[]">' +
+		'( <input type="text" class="student-weeks" name="student_weeks[]"> WK/S.' +
 		'<label class="lstudent-mm">0 MM</label> ' +
 		'<input type="hidden" class="student-mm" name="student_mm[]">' +
 		'<label class="lstudent-gc">0 GC )</label>' +
@@ -187,7 +186,7 @@ jQuery("#counter_value").click(function() {
 	jQuery("#counter_value").hide();
 });
 
-function myFunction() {
+function myPrintFunction() {
 	var mywindow = window.open('', '.inside #print_preview');
 	mywindow.document.write('<title>Print Preview</title>');
 	mywindow.document.write('<style>' +
@@ -227,6 +226,69 @@ function myFunction() {
 			mywindow.close();
 }
 
+jQuery(document).on("click", ".delete-schedule", function() {
+	jQuery(this).parents("#update_schedules_v2:first").find(".start_date").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student_status").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".lstudent_status").eq(0).text("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".buddy_teacher").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".lbuddy_teacher").eq(0).text("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".cubicle_no").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".end_date").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-weeks").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-name").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-mm").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-gc").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-1").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-2").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-3").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-4").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-5").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-6").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-7").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-8").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-9").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-11").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-22").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-33").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-44").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-55").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-66").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-77").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-88").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-99").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".student-time-99").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type8850").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher8850").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room8850").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type9950").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher9950").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room9950").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type101050").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher101050").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room101050").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type111150").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher111150").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room111150").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type130220").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher130220").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room130220").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type230320").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher230320").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room230320").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type330420").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher330420").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room330420").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type430520").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher430520").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room430520").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".class_type530620").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".teacher530620").eq(0).val("");
+	jQuery(this).parents("#update_schedules_v2:first").find(".room530620").eq(0).val("");
+
+	jQuery(this).parents("#update_schedules_v2:first").find(".delete-schedule:first").eq(0).hide();
+	jQuery(this).parents("#update_schedules_v2:first").find("table:first").eq(0).hide();
+});
+
 jQuery(document).on("change", ".student-name", function() {
 
 	var $this = jQuery(this), str = $this.val();
@@ -250,12 +312,36 @@ jQuery(document).on("change", ".student-name", function() {
 				$this.parents("table:first").find(".student_status").eq(0).val(result.student_status);
 				$this.parents("table:first").find(".lstudent_status").eq(0).text(result.student_status);
 				$this.parents("table:first").find(".student-weeks").eq(0).val(result.count_weeks);
-				$this.parents("table:first").find(".lstudent-weeks").eq(0).text("( " + result.count_weeks + " WK/S.");
+				//$this.parents("table:first").find(".lstudent-weeks").eq(0).text("( " + result.count_weeks + " WK/S.");
 			}
 		};
 		xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/getuser.php?q='?>"+str,true);
 		xmlhttp.send();
 	}
+});
+
+jQuery(document).on("change", ".student-weeks", function() {
+
+	var $this = jQuery(this), str = $this.val();
+
+
+	if (window.XMLHttpRequest) {
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		// code for IE6, IE5
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			var result = JSON.parse(xmlhttp.responseText);
+
+			$this.parents("table:first").find(".end_date").eq(0).val(result.end_date);
+		}
+	};
+	xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/get_end_date.php?q='?>"+str,true);
+	xmlhttp.send();
+
 });
 
 
@@ -338,6 +424,8 @@ jQuery(document).on('change', '.class_type8850', function() {
 
 	jQuery(this).parents("table:first").find(".lstudent-mm").eq(0).text(total_mm + " MM ");
 	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
+
+
 });
 
 jQuery(document).on('change', '.class_type9950', function() {

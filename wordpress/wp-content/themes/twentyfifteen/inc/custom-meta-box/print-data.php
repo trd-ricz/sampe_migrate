@@ -1,3 +1,23 @@
+<?php if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]) && empty($schedules[0][$x]["buddy_teacher"])
+&& empty($schedules[0][$x]["cubicle_no"]) && empty($schedules[0][$x]["end_date"]) && empty($schedules[0][$x]["name"])
+&& empty($schedules[0][$x]["student_weeks"]) && empty($schedules[0][$x]["student_mm"]) && empty($schedules[0][$x]["student_gc"])
+&& empty($schedules[0][$x]["student-time-1"]) && empty($schedules[0][$x]["student-time-2"]) && empty($schedules[0][$x]["student-time-3"])
+&& empty($schedules[0][$x]["student-time-4"]) && empty($schedules[0][$x]["student-time-5"]) && empty($schedules[0][$x]["student-time-6"])
+&& empty($schedules[0][$x]["student-time-7"]) && empty($schedules[0][$x]["student-time-8"]) && empty($schedules[0][$x]["student-time-9"])
+&& empty($schedules[0][$x]["student-time-11"]) && empty($schedules[0][$x]["student-time-22"]) && empty($schedules[0][$x]["student-time-33"])
+&& empty($schedules[0][$x]["student-time-44"]) && empty($schedules[0][$x]["student-time-55"]) && empty($schedules[0][$x]["student-time-66"])
+&& empty($schedules[0][$x]["student-time-77"]) && empty($schedules[0][$x]["student-time-88"]) && empty($schedules[0][$x]["student-time-99"])
+&& empty($schedules[0][$x]["sched"]["time6"][1]) && empty($schedules[0][$x]["sched"]["time6"][0]) && empty($schedules[0][$x]["sched"]["time6"][2])
+&& empty($schedules[0][$x]["sched"]["time2"][1]) && empty($schedules[0][$x]["sched"]["time7"][1]) && empty($schedules[0][$x]["sched"]["time2"][0])
+&& empty($schedules[0][$x]["sched"]["time2"][2]) && empty($schedules[0][$x]["sched"]["time7"][0]) && empty($schedules[0][$x]["sched"]["time7"][2])
+&& empty($schedules[0][$x]["sched"]["time3"][1]) && empty($schedules[0][$x]["sched"]["time8"][1]) && empty($schedules[0][$x]["sched"]["time3"][0])
+&& empty($schedules[0][$x]["sched"]["time3"][2]) && empty($schedules[0][$x]["sched"]["time8"][0]) && empty($schedules[0][$x]["sched"]["time8"][2])
+&& empty($schedules[0][$x]["sched"]["time4"][1]) && empty($schedules[0][$x]["sched"]["time9"][1]) && empty($schedules[0][$x]["sched"]["time4"][0])
+&& empty($schedules[0][$x]["sched"]["time4"][2]) && empty($schedules[0][$x]["sched"]["time9"][0]) && empty($schedules[0][$x]["sched"]["time9"][2])
+&& empty($schedules[0][$x]["sched"]["time5"][1]) && empty($schedules[0][$x]["sched"]["time10"][1]) && empty($schedules[0][$x]["sched"]["time5"][0])
+&& empty($schedules[0][$x]["sched"]["time5"][2]) && empty($schedules[0][$x]["sched"]["time10"][0]) && empty($schedules[0][$x]["sched"]["time10"][2]) ) : ?>
+
+<?php else: ?>
 <table class="table borderless">
 	<tr>
 		<td class="tdleft tdright tdtop text-center" colspan=2>
@@ -161,3 +181,4 @@
 		</td>
 	</tr>
 </table>
+<?php endif; ?>
