@@ -217,6 +217,7 @@ function myPrintFunction() {
 	'.blue {color: #4682B4;font-weight: bold;}' +
 	'td {text-transform: uppercase; font-size: 13px;}' +
 	'.capital {text-transform: capitalize !important;text-decoration: underline;}' +
+	'.btn-sm, .modal {display:none;}' +
 	'</style>');
 	mywindow.document.write(jQuery('#print_preview').html());
 	mywindow.document.close(); // necessary for IE >= 10
@@ -225,6 +226,53 @@ function myPrintFunction() {
 			mywindow.print();
 			mywindow.close();
 }
+
+jQuery(document).on("click", ".singleclickprint", function() {
+	var sinprint = jQuery(this).parents(".modal:first").find(".singleprint").eq(0);
+
+	var mywindow = window.open('', sinprint);
+	mywindow.document.write('<title>Print Preview</title>');
+	mywindow.document.write('<style>' +
+	'@page { size: A4; }' +
+	'body { -webkit-print-color-adjust: exact;  margin: 5mm 0 5mm 0; font-size: 11px;}' +
+	'#tblSched {color: blue;font-weight: bold;}' +
+	'.table {width: 100%; max-width: 100%; margin-bottom: 20%; border-spacing: 0; border-collapse: collapse; background-color: transparent;}' +
+	'.table>tbody>tr>td, .table>tbody>tr>td, .table>tbody>tr>th, ' +
+	'.table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, ' +
+	'.table>thead>tr>th {border-top: none; padding:0 8px 0;}' +
+	'.table>thead>tr>th {border-top: none; padding:0 8px 0;}' +
+	'.tdleft{border-left:1px solid;}' +
+	'.tdright{border-right:1px solid;}' +
+	'.tdtop{border-top:1px solid !important;}' +
+	'.tdbottom{border-bottom:1px solid;}' +
+	'.table-holder{width:90%;margin-top:10px;}' +
+	'.cubicle{font-size:30px;}' +
+	'#cubicle-head{font-weight: bold;}' +
+	'.student{vertical-align:middle !important;font-size:16px;}' +
+	'#tblSched{color:#4682B4;font-weight: bold;}' +
+	'#bTeach{text-decoration: underline;}' +
+	'#time{background-color: skyblue;}' +
+	'.text-right {text-align: right;}' +
+	'.text-center {text-align: center;}' +
+	'.text-left {text-align: left;}' +
+	'#gray {background-color: #D3D3D3;}' +
+	'.red {color: #CD5C5C;font-weight: bold;}' +
+	'.blue {color: #4682B4;font-weight: bold;}' +
+	'td {text-transform: uppercase; font-size: 13px;}' +
+	'.capital {text-transform: capitalize !important;text-decoration: underline;}' +
+	'</style>');
+	mywindow.document.write(jQuery(sinprint).html());
+	mywindow.document.close(); // necessary for IE >= 10
+	mywindow.focus(); // necessary for IE >= 10
+
+	mywindow.print();
+	mywindow.close();
+});
+
+//function mySinglePrintFunction() {
+//
+//}
+
 
 jQuery(document).on("click", ".delete-schedule", function() {
 	var result = confirm("Are you sure you want to delete this schedule ?");

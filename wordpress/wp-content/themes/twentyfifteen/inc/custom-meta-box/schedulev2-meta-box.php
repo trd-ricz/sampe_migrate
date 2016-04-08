@@ -36,11 +36,13 @@ function print_schedules()
 	$schedules = get_post_meta($post->ID, '_schedule_v2');
 	?>
 
-	<link rel="stylesheet"
-		  href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/bootstrap.min.css">
+	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/schedule.css">
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-	<input type="button" onclick="myFunction()" class="btn btn-primary" value="Print">
+	<input type="button" onclick="myPrintFunction()" class="btn btn-primary" value="Print">
+	<br/>
+	<br/>
 
 	<div id="print_preview">
 		<?php for ($x = 0; $x < count($schedules[0]); $x++) : ?>
