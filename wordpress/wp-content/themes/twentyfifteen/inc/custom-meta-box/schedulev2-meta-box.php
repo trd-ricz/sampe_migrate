@@ -33,7 +33,105 @@ function print_schedules()
 	global $wpdb;
 	global $post;
 
+	$all_teachers_to_display = $wpdb->get_results("SELECT users.display_name FROM $wpdb->users as users
+	LEFT JOIN $wpdb->usermeta as meta ON users.ID = meta.user_id and meta.meta_value REGEXP 'teacher'
+	WHERE meta.meta_value IS NOT NULL");
+
+
+	$title = str_replace("&#039;","'",$post->post_title);
+	$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
+	$new_data_print_teacher = unserialize($get_data_by_title->meta_value);
+
+
+//	foreach($all_teachers_to_display as $asda) {
+//		for ($i=0; $i < count($new_data_print_teacher); $i++) {
+//			echo $asda->display_name;
+//		}
+
+
+
+//	array_map(function ($dsdsd) {
+////		return $dsdsd;
+//		for ($i=0; $i < count($new_data_print_teacher); $i++) {
+//			return $dsdsd;
+//			echo $dsdsd->display_name;
+//		}
+//
+//	}, $all_teachers_to_display);
+
+
+//	array_map(function ($entry) {
+		foreach($all_teachers_to_display as $asda) {
+		for ($i=0; $i < count($new_data_print_teacher); $i++) {
+
+	?>
+			<table class="table borderless">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>8:00-8:50</th>
+						<th>class</th>
+						<th>9:00-9:50</th>
+						<th>class</th>
+						<th>10:00 - 10:50</th>
+						<th>class</th>
+						<th>11:00 - 11:50</th>
+						<th>class</th>
+						<th>1:30 - 2:20</th>
+						<th>class</th>
+						<th>2:30 - 3:20</th>
+						<th>class</th>
+						<th>3:30 - 4:20</th>
+						<th>class</th>
+						<th>4:30 - 5:20</th>
+						<th>class</th>
+						<th>5:30 - 6:20</th>
+						<th>class</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><?php $asda->display_name; ?></td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+						<td>s</td>
+					</tr>
+				</tbody>
+			</table>
+
+		<?php
+			//			if ($new_data_print_teacher[$i]["sched"]["time2"][0] == strtoupper($entry->display_name)) {
+//				echo "found";
+//			} else if ($new_data_print_teacher[$i]["sched"]["time9"][0] == "AL MARIE") {
+//				echo "found";
+//			} else {
+//				echo "not found";
+//			}
+//
+//			echo "<br/>";
+
+			}
+		}
+//	}, $all_teachers_to_display);
+
+
 	$schedules = get_post_meta($post->ID, '_schedule_v2');
+
 	?>
 
 	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/bootstrap.min.css">
