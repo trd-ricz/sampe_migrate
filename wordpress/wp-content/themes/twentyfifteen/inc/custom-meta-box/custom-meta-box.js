@@ -186,7 +186,12 @@ jQuery("#counter_value").click(function() {
 	jQuery("#counter_value").hide();
 });
 
-function myPrintFunction() {
+
+function printTeacherWeeklySchedule() {
+
+}
+
+function printAllStudentWeeklySchedule() {
 	var mywindow = window.open('', '.inside #print_preview');
 	mywindow.document.write('<title>Print Preview</title>');
 	mywindow.document.write('<style>' +

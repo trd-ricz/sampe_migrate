@@ -19,7 +19,7 @@
 
 <?php else: ?>
 <!-- Trigger the modal with a button -->
-<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#<?php echo str_replace(array('.', ',', ' '), '', $schedules[0][$x]["name"]) ?>">Single Print</button>
+<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#<?php echo str_replace(array('.', ',', ' '), '', $schedules[0][$x]["name"]) ?>">Print Single Student Weekly Schedule</button>
 
 <!-- Modal -->
 <div class="modal fade" id="<?php echo str_replace(array('.', ',', ' '), '', $schedules[0][$x]["name"]) ?>" role="dialog">
