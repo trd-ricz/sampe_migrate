@@ -274,6 +274,27 @@ jQuery(document).on("click", ".singleclickprint", function() {
 	mywindow.close();
 });
 
+// Hide tr if tds are empty for Teacher Weekly Schedule Table
+jQuery(document).ready(function() {
+	jQuery('.tym-parent').each(function(e) {
+		var td_array = [];
+		jQuery(this).find('td').each(function(i) {
+			// default : first td has value
+			// 2nd : check if there are more tds that have value
+			if(jQuery(this).text() && i > 1) {
+				td_array.push("T");
+			} else {
+				td_array.push("F");
+			}
+		});
+
+		// if array doesnt have T then remove
+		if (jQuery.inArray("T",td_array) == -1 ) {
+			jQuery(this).remove();
+		}
+	});
+});
+
 //function mySinglePrintFunction() {
 //
 //}

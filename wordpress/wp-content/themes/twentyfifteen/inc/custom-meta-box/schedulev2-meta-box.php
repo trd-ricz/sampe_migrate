@@ -33,31 +33,18 @@ function print_teacher_schedules()
 	global $wpdb;
 	global $post;
 
-	$all_class_type = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type = 'class_type' and post_title like '%GC%'");
-//
-//	echo "bryllejohn";
-//	echo "<pre>";
-//	print_r($all_class_type);
-//	echo "</pre>";
+	$all_class_type = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type = 'class_type' and post_title like '%GC%' AND post_status = 'publish'");
 
 	$all_teachers_to_display = $wpdb->get_results("SELECT users.display_name FROM $wpdb->users as users
-	LEFT JOIN $wpdb->usermeta as meta ON users.ID = meta.user_id and meta.meta_value REGEXP 'teacher'
+	LEFT JOIN $wpdb->usermeta as meta ON users.ID = meta.user_id and meta.meta_key = 'wp_capabilities' and meta.meta_value REGEXP 'teacher'
 	WHERE meta.meta_value IS NOT NULL");
 
 	$title = str_replace("&#039;","'",$post->post_title);
 	$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
 	$new_data_print_teacher = unserialize($get_data_by_title->meta_value);
 
-//	foreach ($all_class_type as $zsd)
-//	{
-//		echo "bryllejohn";
-//		echo "<pre>";
-//		print_r($zsd->post_title);
-//		echo "</pre>";
-//	}
-
+	include __DIR__ . '/print-teacher-schedule.php';
 	include __DIR__ . '/print-teacher-schedule-gc.php';
-//	include __DIR__ . '/print-teacher-schedule.php';
 
 }
 
@@ -65,10 +52,6 @@ function print_schedules()
 {
 	global $wpdb;
 	global $post;
-
-	$all_teachers_to_display = $wpdb->get_results("SELECT users.display_name FROM $wpdb->users as users
-	LEFT JOIN $wpdb->usermeta as meta ON users.ID = meta.user_id and meta.meta_value REGEXP 'teacher'
-	WHERE meta.meta_value IS NOT NULL");
 
 	$schedules = get_post_meta($post->ID, '_schedule_v2');
 
