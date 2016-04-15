@@ -97,8 +97,8 @@ function update_schedules_v2()
 		GROUP BY ID");
 
 	$teachers_v1 = $wpdb->get_results("SELECT display_name FROM $wpdb->users as users, $wpdb->usermeta as meta WHERE meta.meta_key = 'wp_capabilities' AND meta.meta_value LIKE '%teacher%' AND users.ID = meta.user_id");
-	$class_types_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_type'");
-	$rooms_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_room'");
+	$class_types_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_type' and post_status ='publish'");
+	$rooms_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_room' and post_status ='publish'");
 	$students_graduated = $wpdb->get_results("SELECT ID,
 			display_name,
 			CASE WHEN meta.meta_key = 'end_date' AND meta.meta_value < now() THEN meta.meta_value END as end_date,

@@ -104,31 +104,31 @@
 				echo $gcroom;
 				?>
 			</td>
-			<td colspan="2" class="tym2"><?php foreach ($studentsgc2 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc2 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
-			<td colspan="2" class="tym3"><?php foreach ($studentsgc3 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc3 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
-			<td colspan="2" class="tym4"><?php foreach ($studentsgc4 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc4 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
-			<td colspan="2" class="tym5"><?php foreach ($studentsgc5 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc5 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
-			<td colspan="2" class="tym6"><?php foreach ($studentsgc6 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc6 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
-			<td colspan="2" class="tym7"><?php foreach ($studentsgc7 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc7 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
-			<td colspan="2" class="tym8"><?php foreach ($studentsgc8 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc8 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
-			<td colspan="2" class="tym9"><?php foreach ($studentsgc9 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc9 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
-			<td colspan="2" class="tym10"><?php foreach ($studentsgc10 as $key => $value) {
+			<td colspan="2"><?php foreach ($studentsgc10 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
 		</tr>
