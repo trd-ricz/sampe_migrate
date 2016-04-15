@@ -1,7 +1,6 @@
-<input type="button" onclick="printTeacherWeeklySchedule()" class="btn btn-success" value="Print Teacher Weekly Schedule">
 <br/>
 <br/>
-<table class="table table-bordered">
+<table class="table table-bordered twspfirst">
 	<thead>
 	<tr>
 		<th>Name</th>

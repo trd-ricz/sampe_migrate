@@ -188,7 +188,20 @@ jQuery("#counter_value").click(function() {
 
 
 function printTeacherWeeklySchedule() {
+	var mywindow = window.open('', '#printTeacherWeeklySchedule');
+	mywindow.document.write('<title>Print Preview</title>');
+	mywindow.document.write('<style>' +
+	'@page { size: A4; }' +
+	'body { -webkit-print-color-adjust: exact;  margin: 5mm 0 5mm 0; font-size: 11px;}' +
+	'.twspfirst {margin-bottom: 20%;} ' +
+	'.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th { border: 1px solid #ddd;}' +
+	'</style>');
+	mywindow.document.write(jQuery('#printTeacherWeeklySchedule').html());
+	mywindow.document.close(); // necessary for IE >= 10
+	mywindow.focus(); // necessary for IE >= 10
 
+	mywindow.print();
+	mywindow.close();
 }
 
 function printAllStudentWeeklySchedule() {
@@ -228,8 +241,8 @@ function printAllStudentWeeklySchedule() {
 	mywindow.document.close(); // necessary for IE >= 10
 	mywindow.focus(); // necessary for IE >= 10
 
-			mywindow.print();
-			mywindow.close();
+	mywindow.print();
+	mywindow.close();
 }
 
 jQuery(document).on("click", ".singleclickprint", function() {
@@ -294,11 +307,6 @@ jQuery(document).ready(function() {
 		}
 	});
 });
-
-//function mySinglePrintFunction() {
-//
-//}
-
 
 jQuery(document).on("click", ".delete-schedule", function() {
 	var result = confirm("Are you sure you want to delete this schedule ?");

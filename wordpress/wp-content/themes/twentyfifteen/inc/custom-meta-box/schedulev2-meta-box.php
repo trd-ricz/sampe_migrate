@@ -43,9 +43,15 @@ function print_teacher_schedules()
 	$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
 	$new_data_print_teacher = unserialize($get_data_by_title->meta_value);
 
+?>
+	<div id="printTeacherWeeklySchedule">
+		<input type="button" onclick="printTeacherWeeklySchedule()" class="btn btn-success" value="Print Teacher Weekly Schedule">
+<?php
 	include __DIR__ . '/print-teacher-schedule.php';
 	include __DIR__ . '/print-teacher-schedule-gc.php';
-
+?>
+	</div><!--printTeacherWeeklySchedule-->
+<?php
 }
 
 function print_schedules()
