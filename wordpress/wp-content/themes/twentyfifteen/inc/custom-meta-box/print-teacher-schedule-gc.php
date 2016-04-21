@@ -36,6 +36,16 @@
 	$studentsgc8 = array();
 	$studentsgc9 = array();
 	$studentsgc10 = array();
+	$colorgc2 = array();
+	$colorgc3 = array();
+	$colorgc4 = array();
+	$colorgc5 = array();
+	$colorgc6 = array();
+	$colorgc7 = array();
+	$colorgc8 = array();
+	$colorgc9 = array();
+	$colorgc10 = array();
+	$ssdate2 = array();
 
 	foreach($all_class_type as $single_class) {
 		foreach($new_data_print_teacher as $tsched_gc) {
@@ -43,6 +53,8 @@
 				$studentsgc2[] = $tsched_gc["name"];
 				$gcteacher = $tsched_gc["sched"]["time2"][0];
 				$gcroom = $tsched_gc["sched"]["time2"][2];
+				$colorgc2[] = $tsched_gc['status'];
+				$ssdate2[] = $tsched_gc['start_date'];
 			}
 
 			if ($tsched_gc["sched"]["time3"][1] == $single_class->post_title) {
@@ -93,7 +105,11 @@
 				$gcroom = $tsched_gc["sched"]["time10"][2];
 			}
 		} // end 2nd foreach
+
+
 		?>
+
+
 		<tr class="tym-parent">
 			<td>
 				<?php
@@ -104,9 +120,19 @@
 				echo $gcroom;
 				?>
 			</td>
-			<td colspan="2"><?php foreach ($studentsgc2 as $key => $value) {
-					echo $value."; ";
-				} ?></td>
+			<td colspan="2">
+
+				<?php
+				$sstoday = date('Y-m-d');
+				foreach ($studentsgc2 as $key => $value) {
+					$val2 = $colorgc2[$key];
+					$val3 = $ssdate2[$key];
+
+					$val4 = date('Y-m-d', strtotime($val3 . ' + 7 days'));
+
+					echo $value.$val2.$val4."; ";
+				}
+				?></td>
 			<td colspan="2"><?php foreach ($studentsgc3 as $key => $value) {
 					echo $value."; ";
 				} ?></td>
@@ -145,6 +171,7 @@
 		$studentsgc8 = array();
 		$studentsgc9 = array();
 		$studentsgc10 = array();
+		$colorgc2 = array();
 
 	} // end all class
 	?>

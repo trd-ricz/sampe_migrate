@@ -66,3 +66,7 @@ td {
 	text-transform: capitalize !important;
 	text-decoration: underline;
 }
+
+.yellow {
+	background-color: yellow;
+}

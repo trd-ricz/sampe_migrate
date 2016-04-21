@@ -47,7 +47,7 @@ function print_teacher_schedules()
 	<div id="printTeacherWeeklySchedule">
 		<input type="button" onclick="printTeacherWeeklySchedule()" class="btn btn-success" value="Print Teacher Weekly Schedule">
 <?php
-	include __DIR__ . '/print-teacher-schedule.php';
+	include __DIR__ . '/print-teacher-schedule-mm.php';
 	include __DIR__ . '/print-teacher-schedule-gc.php';
 ?>
 	</div><!--printTeacherWeeklySchedule-->
