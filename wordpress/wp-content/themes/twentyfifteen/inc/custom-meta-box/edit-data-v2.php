@@ -21,6 +21,7 @@
 
 <div class="delete-parent">
 	<input type="button" class="btn btn-danger delete-schedule" value="Delete">
+	<input type="button" class="btn btn-warning btn-sm process-cnt" value="Process">
 	<table class="table borderless">
 		<tr>
 			<td class="tdleft tdright tdtop text-center" colspan=2>

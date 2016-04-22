@@ -2,7 +2,7 @@ jQuery("#counter_value").click(function() {
 	var counter = jQuery('#counter').val();
 
 	for (var i= 1; i <= counter; i++) {
-		jQuery("#display_forms").append('<table class="table borderless"> ' +
+		jQuery("#display_forms").append('<div class="create-parent"><input type="button" class="btn btn-warning btn-sm process-cnt-create" value="Process"><table class="table borderless"> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdtop text-center" colspan=2>' +
 		' <span id="tblSched">WEEKLY SCHEDULE</span> ' +
@@ -179,7 +179,7 @@ jQuery("#counter_value").click(function() {
 		'<td class="tdright tdbottom text-center"> <input type="text" name="room530620[]" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'</tr> ' +
-		'</table>');
+		'</table></div>');
 	}
 
 	jQuery("#counter").hide();
@@ -194,6 +194,7 @@ function printTeacherWeeklySchedule() {
 	'@page { size: A4; }' +
 	'body { -webkit-print-color-adjust: exact;  margin: 5mm 0 5mm 0; font-size: 11px;}' +
 	'.twspfirst {margin-bottom: 20%;} ' +
+	'.yellow {background-color: yellow;} ' +
 	'.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th { border: 1px solid #ddd;}' +
 	'</style>');
 	mywindow.document.write(jQuery('#printTeacherWeeklySchedule').html());
@@ -309,6 +310,59 @@ jQuery(document).on("click", ".singleclickprint", function() {
 //	});
 //});
 
+function count_arr(num,inps){
+	var suffix = 1;
+	for(i = 0 ; i < num.length;i++){
+		if(num[i].indexOf(inps.val()) >= 0){
+			suffix += 1;
+		}
+	}
+	return suffix;
+}
+
+jQuery(document).on("click", ".process-cnt-create", function() {
+
+	var input_storage = [];
+	var input_display = [];
+	var inputs = jQuery(this).parents(".create-parent:first").find("input[placeholder='Class Type']");
+
+	inputs.each(function(i) {
+		if(jQuery.inArray(jQuery(this).val(),input_storage) > -1 && jQuery(this).val().length > 0){
+			var cnt = count_arr(input_storage,jQuery(this));
+			input_storage.push(jQuery(this).val());
+			input_display.push(jQuery(this).val()+" "+cnt);
+		}else{
+			input_storage.push(jQuery(this).val());
+			input_display.push(jQuery(this).val());
+		}
+	});
+
+	inputs.each(function(i) {
+		jQuery(this).val(input_display[i]);
+	});
+});
+
+jQuery(document).on("click", ".process-cnt", function() {
+
+	var input_storage = [];
+	var input_display = [];
+	var inputs = jQuery(this).parents(".delete-parent:first").find("input[placeholder='Class Type']");
+	inputs.each(function(i) {
+		if(jQuery.inArray(jQuery(this).val(),input_storage) > -1 && jQuery(this).val().length > 0){
+			var cnt = count_arr(input_storage,jQuery(this));
+			input_storage.push(jQuery(this).val());
+			input_display.push(jQuery(this).val()+" "+cnt);
+		}else{
+			input_storage.push(jQuery(this).val());
+			input_display.push(jQuery(this).val());
+		}
+	});
+
+	inputs.each(function(i) {
+		jQuery(this).val(input_display[i]);
+	});
+});
+
 jQuery(document).on("click", ".delete-schedule", function() {
 	var result = confirm("Are you sure you want to delete this schedule ?");
 
@@ -373,6 +427,7 @@ jQuery(document).on("click", ".delete-schedule", function() {
 
 		jQuery(this).parents(".delete-parent:first").find(".delete-schedule").eq(0).hide();
 		jQuery(this).parents(".delete-parent:first").find("table").eq(0).hide();
+		jQuery(this).parents(".delete-parent:first").find(".process-cnt").eq(0).hide();
 	}
 });
 
