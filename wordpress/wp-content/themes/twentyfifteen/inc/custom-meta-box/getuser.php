@@ -9,7 +9,7 @@ $q = $_GET['q'];
 
 $old = "OLD STUDENT";
 $new = "NEW STUDENT";
-$start_date_default = date("Y-m-d");
+//$start_date_default = date("Y-m-d");
 //$end_date_default = date("Y-m-d", strtotime("+7 days"));
 
 $mylink1 = $wpdb->get_row( "SELECT ID FROM $wpdb->users WHERE display_name = '$q'" );
@@ -47,7 +47,7 @@ else
 {
 	$result = new stdClass;
 
-	$result->start_date = $start_date_default;
+//	$result->start_date = $start_date_default;
 //	$result->end_date   = $end_date_default;
 	$result->student_status = $new;
 //	$result->count_weeks = $count_result2;

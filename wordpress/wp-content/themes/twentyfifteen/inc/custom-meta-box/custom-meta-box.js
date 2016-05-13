@@ -193,7 +193,8 @@ function printTeacherWeeklySchedule() {
 	mywindow.document.write('<style>' +
 	'@page { size: A4; }' +
 	'body { -webkit-print-color-adjust: exact;  margin: 5mm 0 5mm 0; font-size: 11px;}' +
-	'.twspfirst {margin-bottom: 20%;} ' +
+	'.twspfirst {margin-bottom: 40%;} ' +
+	'.btn-success {display: none;} ' +
 	'.yellow {background-color: yellow;} ' +
 	'.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th { border: 1px solid #ddd;}' +
 	'</style>');
@@ -466,6 +467,7 @@ jQuery(document).on("change", ".student-weeks", function() {
 
 	var $this = jQuery(this), str = $this.val();
 
+	var sttd = $this.parents("table:first").find(".start_date").eq(0).val();
 
 	if (window.XMLHttpRequest) {
 		// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -481,7 +483,7 @@ jQuery(document).on("change", ".student-weeks", function() {
 			$this.parents("table:first").find(".end_date").eq(0).val(result.end_date);
 		}
 	};
-	xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/get_end_date.php?q='?>"+str,true);
+	xmlhttp.open("GET", "<?php echo get_template_directory_uri().'/inc/custom-meta-box/get_end_date.php?q='?>"+str + "&sttd=" + sttd,true);
 	xmlhttp.send();
 
 });

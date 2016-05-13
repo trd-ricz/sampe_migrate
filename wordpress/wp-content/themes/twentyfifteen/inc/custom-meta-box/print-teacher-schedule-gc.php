@@ -317,6 +317,26 @@
 		$studentsgc9 = array();
 		$studentsgc10 = array();
 
+		$studgcstatus2 = array();
+		$studgcstatus3 = array();
+		$studgcstatus4 = array();
+		$studgcstatus5 = array();
+		$studgcstatus6 = array();
+		$studgcstatus7 = array();
+		$studgcstatus8 = array();
+		$studgcstatus9 = array();
+		$studgcstatus10 = array();
+
+		$ssdate2 = array();
+		$ssdate3 = array();
+		$ssdate4 = array();
+		$ssdate5 = array();
+		$ssdate6 = array();
+		$ssdate7 = array();
+		$ssdate8 = array();
+		$ssdate9 = array();
+		$ssdate10 = array();
+
 	} // end all class
 	?>
 	</tbody>

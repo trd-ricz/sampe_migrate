@@ -6,11 +6,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/wp-includes/wp-db.php';
 global $wpdb;
 
 $q = intval($_GET['q']);
+$sttd = $_GET['sttd'];
 
 $val = $q * 7;
 
-$end_date = date("Y-m-d", strtotime("+{$val} days"));
+$val = $val - 3;
 
+$end_date = date("Y-m-d", strtotime($sttd . "+{$val} days"));
 
 $result = new stdClass;
 

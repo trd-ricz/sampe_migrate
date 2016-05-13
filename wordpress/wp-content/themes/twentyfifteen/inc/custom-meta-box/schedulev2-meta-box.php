@@ -59,7 +59,27 @@ function print_schedules()
 	global $wpdb;
 	global $post;
 
+	// check if data is copied
+	$copied = $wpdb->get_results(
+		"
+	SELECT post_title
+	FROM $wpdb->posts
+	WHERE post_title LIKE '%copy%'
+		AND ID = {$post->ID}
+	"
+	);
+
 	$schedules = get_post_meta($post->ID, '_schedule_v2');
+
+	function update_new_old_status(&$item, $key)
+	{
+		if($key === 'status')
+			$item = 'OLD STUDENT';
+	}
+
+	if ($copied) {
+		array_walk_recursive($schedules, 'update_new_old_status');
+	}
 
 	?>
 
@@ -85,7 +105,28 @@ function update_schedules_v2()
 	global $wpdb;
 	global $post;
 
+	// check if data is copied
+	$copied = $wpdb->get_results(
+		"
+	SELECT post_title
+	FROM $wpdb->posts
+	WHERE post_title LIKE '%copy%'
+		AND ID = {$post->ID}
+	"
+	);
+
 	$schedules = get_post_meta($post->ID, '_schedule_v2');
+
+	function update_new_old_status1(&$item, $key)
+	{
+		if($key === 'status')
+			$item = 'OLD STUDENT';
+	}
+
+	if ($copied) {
+		array_walk_recursive($schedules, 'update_new_old_status1');
+		update_post_meta($post->ID, '_schedule_v2', $schedules);
+	}
 
 	$students_v1 = $wpdb->get_results("SELECT ID,
 			display_name,
