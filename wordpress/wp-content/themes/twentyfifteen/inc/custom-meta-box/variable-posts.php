@@ -32,38 +32,47 @@ $studenttime99 = $_POST['student-time-99'];
 $teacher88 = $_POST['teacher8850'];
 $class88 = $_POST['class_type8850'];
 $room88 = $_POST['room8850'];
+$transferred88 = $_POST['transfered8850'];
 
 $teacher99 = $_POST['teacher9950'];
 $class99 = $_POST['class_type9950'];
 $room99 = $_POST['room9950'];
+$transferred99 = $_POST['transfered9950'];
 
 $teacher1010 = $_POST['teacher101050'];
 $class1010 = $_POST['class_type101050'];
 $room1010 = $_POST['room101050'];
+$transferred1010 = $_POST['transfered101050'];
 
 $teacher1111 = $_POST['teacher111150'];
 $class1111 = $_POST['class_type111150'];
 $room1111 = $_POST['room111150'];
+$transferred1111 = $_POST['transfered111150'];
 
 $teacher1302 = $_POST['teacher130220'];
 $class1302 = $_POST['class_type130220'];
 $room1302 = $_POST['room130220'];
+$transferred1302 = $_POST['transfered130220'];
 
 $teacher2303 = $_POST['teacher230320'];
 $class2303 = $_POST['class_type230320'];
 $room2303 = $_POST['room230320'];
+$transferred2303 = $_POST['transfered230320'];
 
 $teacher3304 = $_POST['teacher330420'];
 $class3304 = $_POST['class_type330420'];
 $room3304 = $_POST['room330420'];
+$transferred3304 = $_POST['transfered330420'];
 
 $teacher4305 = $_POST['teacher430520'];
 $class4305 = $_POST['class_type430520'];
 $room4305 = $_POST['room430520'];
+$transferred4305 = $_POST['transfered430520'];
 
 $teacher5306 = $_POST['teacher530620'];
 $class5306 = $_POST['class_type530620'];
 $room5306 = $_POST['room530620'];
+$transferred5306 = $_POST['transfered530620'];
 
 
 $sched = array();
@@ -73,55 +82,64 @@ for ($x = 0; $x < count($studenta); $x++) {
 		$data2 = array(
 			$teacher88[$x],
 			$class88[$x],
-			$room88[$x]
+			$room88[$x],
+			$transferred88[$x]
 		);
 
 		$data3 = array(
 			$teacher99[$x],
 			$class99[$x],
-			$room99[$x]
+			$room99[$x],
+			$transferred99[$x]
 		);
 
 		$data4 = array(
 			$teacher1010[$x],
 			$class1010[$x],
-			$room1010[$x]
+			$room1010[$x],
+			$transferred1010[$x]
 		);
 
 		$data5 = array(
 			$teacher1111[$x],
 			$class1111[$x],
-			$room1111[$x]
+			$room1111[$x],
+			$transferred1111[$x]
 		);
 
 		$data6 = array(
 			$teacher1302[$x],
 			$class1302[$x],
-			$room1302[$x]
+			$room1302[$x],
+			$transferred1302[$x]
 		);
 
 		$data7 = array(
 			$teacher2303[$x],
 			$class2303[$x],
-			$room2303[$x]
+			$room2303[$x],
+			$transferred2303[$x]
 		);
 
 		$data8 = array(
 			$teacher3304[$x],
 			$class3304[$x],
-			$room3304[$x]
+			$room3304[$x],
+			$transferred3304[$x]
 		);
 
 		$data9 = array(
 			$teacher4305[$x],
 			$class4305[$x],
-			$room4305[$x]
+			$room4305[$x],
+			$transferred4305[$x]
 		);
 
 		$data10 = array(
 			$teacher5306[$x],
 			$class5306[$x],
-			$room5306[$x]
+			$room5306[$x],
+			$transferred5306[$x]
 		);
 
 

@@ -70,6 +70,8 @@
 			</td>
 			<td class="tdright tdbottom text-center" colspan="2">
 				<input type="text" class="class_type130220" name="class_type130220[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time6"][1] ?>">
+				<input type="text" name="transfered130220[]" class="transfered130220">
+				<input type="button" class="transfered130220btn" value="Transfer">
 			</td>
 		</tr>
 		<tr>
@@ -91,9 +93,13 @@
 		<tr>
 			<td class="tdleft tdright tdbottom text-center" colspan=2>
 				<input type="text" class="class_type8850" name="class_type8850[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time2"][1] ?>">
+				<input type="text" name="transfered8850[]" class="transfered8850">
+				<input type="button" class="transfered8850btn" value="Transfer">
 			</td>
 			<td class="tdright tdbottom text-center" colspan=2>
 				<input type="text" class="class_type230320" name="class_type230320[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time7"][1] ?>">
+				<input type="text" name="transfered230320[]" class="transfered230320">
+				<input type="button" class="transfered230320btn" value="Transfer">
 			</td>
 		</tr>
 		<tr>
@@ -121,9 +127,13 @@
 		<tr>
 			<td class="tdleft tdright tdbottom text-center" colspan=2>
 				<input type="text" class="class_type9950" name="class_type9950[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time3"][1] ?>">
+				<input type="text" name="transfered9950[]" class="transfered9950">
+				<input type="button" class="transfered9950btn" value="Transfer">
 			</td>
 			<td class="tdright tdbottom text-center" colspan=2>
 				<input type="text" class="class_type330420" name="class_type330420[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time8"][1] ?>">
+				<input type="text" name="transfered330420[]" class="transfered330420">
+				<input type="button" class="transfered330420btn" value="Transfer">
 			</td>
 		</tr>
 		<tr>
@@ -151,9 +161,13 @@
 		<tr>
 			<td class="tdleft tdright tdbottom text-center" colspan=2>
 				<input type="text" class="class_type101050" name="class_type101050[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time4"][1] ?>">
+				<input type="text" name="transfered101050[]" class="transfered101050">
+				<input type="button" class="transfered101050btn" value="Transfer">
 			</td>
 			<td class="tdright tdbottom text-center" colspan=2>
 				<input type="text" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time9"][1] ?>">
+				<input type="text" name="transfered430520[]" class="transfered430520">
+				<input type="button" class="transfered430520btn" value="Transfer">
 			</td>
 		</tr>
 		<tr>
@@ -181,9 +195,13 @@
 		<tr>
 			<td class="tdleft tdright tdbottom text-center" colspan=2>
 				<input type="text" class="class_type111150" name="class_type111150[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time5"][1] ?>">
+				<input type="text" name="transfered111150[]" class="transfered111150">
+				<input type="button" class="transfered111150btn" value="Transfer">
 			</td>
 			<td class="tdright tdbottom text-center" colspan=2>
 				<input type="text" class="class_type530620" name="class_type530620[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time10"][1] ?>">
+				<input type="text" name="transfered530620[]" class="transfered530620">
+				<input type="button" class="transfered530620btn" value="Transfer">
 			</td>
 		</tr>
 		<tr>

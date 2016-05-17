@@ -33,6 +33,7 @@
 	$clstype = array();
 	$color = array();
 
+
 	foreach($all_teachers_to_display as $teacher_single) {
 		foreach($new_data_print_teacher as $tsched) {
 			if ($tsched["sched"]["time2"][0] == strtoupper($teacher_single->display_name)) {
@@ -42,14 +43,12 @@
 					$stud_room[2] = $tsched["sched"]["time2"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date. ' + 7 days'));
+					$transf = $tsched["sched"]["time2"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[2] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[2] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[2] = 'orange';
 					} else {
 						$color[2] = 'yellow';
 					}
@@ -63,14 +62,12 @@
 					$stud_room[3] = $tsched["sched"]["time3"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date. ' + 7 days'));
+					$transf = $tsched["sched"]["time3"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[3] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[3] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[3] = 'orange';
 					} else {
 						$color[3] = 'yellow';
 					}
@@ -84,14 +81,12 @@
 					$stud_room[4] = $tsched["sched"]["time4"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date. ' + 7 days'));
+					$transf = $tsched["sched"]["time4"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[4] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[4] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[4] = 'orange';
 					} else {
 						$color[4] = 'yellow';
 					}
@@ -105,14 +100,12 @@
 					$stud_room[5] = $tsched["sched"]["time5"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date. ' + 7 days'));
+					$transf = $tsched["sched"]["time5"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[5] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[5] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[5] = 'orange';
 					} else {
 						$color[5] = 'yellow';
 					}
@@ -126,14 +119,12 @@
 					$stud_room[6] = $tsched["sched"]["time6"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date. ' + 7 days'));
+					$transf = $tsched["sched"]["time6"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[6] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[6] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[6] = 'orange';
 					} else {
 						$color[6] = 'yellow';
 					}
@@ -147,14 +138,12 @@
 					$stud_room[7] = $tsched["sched"]["time7"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date. ' + 7 days'));
+					$transf = $tsched["sched"]["time7"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[7] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[7] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[7] = 'orange';
 					} else {
 						$color[7] = 'yellow';
 					}
@@ -168,14 +157,12 @@
 					$stud_room[8] = $tsched["sched"]["time8"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date. ' + 7 days'));
+					$transf = $tsched["sched"]["time8"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[8] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[8] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[8] = 'orange';
 					} else {
 						$color[8] = 'yellow';
 					}
@@ -189,14 +176,12 @@
 					$stud_room[9] = $tsched["sched"]["time9"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date. ' + 7 days'));
+					$transf = $tsched["sched"]["time9"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[9] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[9] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[9] = 'orange';
 					} else {
 						$color[9] = 'yellow';
 					}
@@ -210,14 +195,12 @@
 					$stud_room[10] = $tsched["sched"]["time10"][2];
 
 					$sstatus = $tsched['status'];
-					$today_date = date('Y-m-d');
-					$studentdb_date = $tsched['start_date'];
-					$new_studentdb_date = date('Y-m-d', strtotime($studentdb_date . ' + 7 days'));
+					$transf = $tsched["sched"]["time10"][3];
 
-					if ($sstatus == 'NEW STUDENT' && $today_date >= $new_studentdb_date) {
+					if ($sstatus == 'OLD STUDENT') {
 						$color[10] = 'white';
-					} elseif ($sstatus == 'OLD STUDENT') {
-						$color[10] = 'white';
+					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
+						$color[10] = 'orange';
 					} else {
 						$color[10] = 'yellow';
 					}

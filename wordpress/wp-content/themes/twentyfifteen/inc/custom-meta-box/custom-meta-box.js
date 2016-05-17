@@ -71,6 +71,8 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered8850[]" class="transfered8850" style="display:none;"> ' +
+		'<input type="submit" class="transfered8850btn" value="Transfer"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
@@ -1084,3 +1086,7 @@ jQuery(document).on('change', '.class_type530620', function() {
 	jQuery(this).parents("table:first").find(".lstudent-gc").eq(0).text(total_gc + " GC )");
 });
 
+
+jQuery(document).on("click", ".transfered8850btn", function() {
+	jQuery(this).parents("table:first").find(".transfered8850").eq(0).val("transferred");
+});

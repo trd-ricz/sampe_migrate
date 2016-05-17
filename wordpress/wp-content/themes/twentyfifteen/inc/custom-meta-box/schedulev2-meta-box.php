@@ -1,5 +1,5 @@
 <?php
-//session_start();
+session_start();
 
 function add_schedule_v2_metaboxes()
 {
@@ -46,10 +46,6 @@ function print_teacher_schedules()
 
 	$new_data_print_teacher = unserialize($get_data_by_title->meta_value);
 
-	echo "bryllejohn";
-	echo "<pre>";
-	print_r($new_data_print_teacher);
-	echo "</pre>";
 ?>
 	<div id="printTeacherWeeklySchedule">
 		<input type="button" onclick="printTeacherWeeklySchedule()" class="btn btn-success" value="Print Teacher Weekly Schedule">
@@ -65,6 +61,8 @@ function print_schedules()
 {
 	global $wpdb;
 	global $post;
+
+
 
 	// check if data is copied
 	$copied = $wpdb->get_results(
@@ -87,6 +85,8 @@ function print_schedules()
 	if ($copied) {
 		array_walk_recursive($schedules, 'update_new_old_status');
 	}
+
+
 
 	?>
 
@@ -133,6 +133,7 @@ function update_schedules_v2()
 	if ($copied) {
 		array_walk_recursive($schedules, 'update_new_old_status1');
 		update_post_meta($post->ID, '_schedule_v2', $schedules);
+		$_SESSION['old_data'] = $schedules;
 	}
 
 	$students_v1 = $wpdb->get_results("SELECT ID,
