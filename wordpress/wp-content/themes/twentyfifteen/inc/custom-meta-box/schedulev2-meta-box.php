@@ -1,4 +1,5 @@
 <?php
+//session_start();
 
 function add_schedule_v2_metaboxes()
 {
@@ -41,8 +42,14 @@ function print_teacher_schedules()
 
 	$title = str_replace("&#039;","'",$post->post_title);
 	$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
+	//$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
+
 	$new_data_print_teacher = unserialize($get_data_by_title->meta_value);
 
+	echo "bryllejohn";
+	echo "<pre>";
+	print_r($new_data_print_teacher);
+	echo "</pre>";
 ?>
 	<div id="printTeacherWeeklySchedule">
 		<input type="button" onclick="printTeacherWeeklySchedule()" class="btn btn-success" value="Print Teacher Weekly Schedule">

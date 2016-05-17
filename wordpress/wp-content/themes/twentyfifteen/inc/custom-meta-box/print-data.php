@@ -69,7 +69,15 @@
 								<?php echo ($schedules[0][$x]["sched"]["time6"][0]) ? $schedules[0][$x]["sched"]["time6"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time6"][2]) ? $schedules[0][$x]["sched"]["time6"][2] : "&nbsp;" ?>
+								<?php
+									if (strpos($schedules[0][$x]["sched"]["time6"][1], " MM") !== false) {
+										echo "&nbsp;";
+									} elseif (strpos($schedules[0][$x]["sched"]["time6"][1], " GC") !== false) {
+										echo $schedules[0][$x]["sched"]["time6"][2];
+									} else {
+										echo "&nbsp;";
+									}
+								?>
 							</td>
 						</tr>
 						<tr>
@@ -93,13 +101,29 @@
 								<?php echo ($schedules[0][$x]["sched"]["time2"][0]) ? $schedules[0][$x]["sched"]["time2"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time2"][2]) ? $schedules[0][$x]["sched"]["time2"][2] : "&nbsp;" ?>
+								<?php
+								if (strpos($schedules[0][$x]["sched"]["time2"][1], " MM") !== false) {
+									echo "&nbsp;";
+								} elseif (strpos($schedules[0][$x]["sched"]["time2"][1], " GC") !== false) {
+									echo $schedules[0][$x]["sched"]["time2"][2];
+								} else {
+									echo "&nbsp;";
+								}
+								?>
 							</td>
 							<td class="tdleft tdright tdbottom text-center">
 								<?php echo ($schedules[0][$x]["sched"]["time7"][0]) ? $schedules[0][$x]["sched"]["time7"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time7"][2]) ? $schedules[0][$x]["sched"]["time7"][2] : "&nbsp;" ?>
+								<?php
+								if (strpos($schedules[0][$x]["sched"]["time7"][1], " MM") !== false) {
+									echo "&nbsp;";
+								} elseif (strpos($schedules[0][$x]["sched"]["time7"][1], " GC") !== false) {
+									echo $schedules[0][$x]["sched"]["time7"][2];
+								} else {
+									echo "&nbsp;";
+								}
+								?>
 							</td>
 						</tr>
 						<tr>
@@ -123,13 +147,29 @@
 								<?php echo ($schedules[0][$x]["sched"]["time3"][0]) ? $schedules[0][$x]["sched"]["time3"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time3"][2]) ? $schedules[0][$x]["sched"]["time3"][2] : "&nbsp;" ?>
+								<?php
+								if (strpos($schedules[0][$x]["sched"]["time3"][1], " MM") !== false) {
+									echo "&nbsp;";
+								} elseif (strpos($schedules[0][$x]["sched"]["time3"][1], " GC") !== false) {
+									echo $schedules[0][$x]["sched"]["time3"][2];
+								} else {
+									echo "&nbsp;";
+								}
+								?>
 							</td>
 							<td class="tdleft tdright tdbottom text-center">
 								<?php echo ($schedules[0][$x]["sched"]["time8"][0]) ? $schedules[0][$x]["sched"]["time8"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time8"][2]) ? $schedules[0][$x]["sched"]["time8"][2] : "&nbsp;" ?>
+								<?php
+								if (strpos($schedules[0][$x]["sched"]["time8"][1], " MM") !== false) {
+									echo "&nbsp;";
+								} elseif (strpos($schedules[0][$x]["sched"]["time8"][1], " GC") !== false) {
+									echo $schedules[0][$x]["sched"]["time8"][2];
+								} else {
+									echo "&nbsp;";
+								}
+								?>
 							</td>
 						</tr>
 						<tr>
@@ -153,13 +193,29 @@
 								<?php echo ($schedules[0][$x]["sched"]["time4"][0]) ? $schedules[0][$x]["sched"]["time4"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time4"][2]) ? $schedules[0][$x]["sched"]["time4"][2] : "&nbsp;" ?>
+								<?php
+								if (strpos($schedules[0][$x]["sched"]["time4"][1], " MM") !== false) {
+									echo "&nbsp;";
+								} elseif (strpos($schedules[0][$x]["sched"]["time4"][1], " GC") !== false) {
+									echo $schedules[0][$x]["sched"]["time4"][2];
+								} else {
+									echo "&nbsp;";
+								}
+								?>
 							</td>
 							<td class="tdleft tdright tdbottom text-center">
 								<?php echo ($schedules[0][$x]["sched"]["time9"][0]) ? $schedules[0][$x]["sched"]["time9"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time9"][2]) ? $schedules[0][$x]["sched"]["time9"][2] : "&nbsp;" ?>
+								<?php
+								if (strpos($schedules[0][$x]["sched"]["time9"][1], " MM") !== false) {
+									echo "&nbsp;";
+								} elseif (strpos($schedules[0][$x]["sched"]["time9"][1], " GC") !== false) {
+									echo $schedules[0][$x]["sched"]["time9"][2];
+								} else {
+									echo "&nbsp;";
+								}
+								?>
 							</td>
 						</tr>
 						<tr>
@@ -183,13 +239,29 @@
 								<?php echo ($schedules[0][$x]["sched"]["time5"][0]) ? $schedules[0][$x]["sched"]["time5"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time5"][2]) ? $schedules[0][$x]["sched"]["time5"][2] : "&nbsp;" ?>
+								<?php
+								if (strpos($schedules[0][$x]["sched"]["time5"][1], " MM") !== false) {
+									echo "&nbsp;";
+								} elseif (strpos($schedules[0][$x]["sched"]["time5"][1], " GC") !== false) {
+									echo $schedules[0][$x]["sched"]["time5"][2];
+								} else {
+									echo "&nbsp;";
+								}
+								?>
 							</td>
 							<td class="tdleft tdright tdbottom text-center">
 								<?php echo ($schedules[0][$x]["sched"]["time10"][0]) ? $schedules[0][$x]["sched"]["time10"][0] : "&nbsp;" ?>
 							</td>
 							<td class="tdright tdbottom text-center">
-								<?php echo ($schedules[0][$x]["sched"]["time10"][2]) ? $schedules[0][$x]["sched"]["time10"][2] : "&nbsp;" ?>
+								<?php
+								if (strpos($schedules[0][$x]["sched"]["time10"][1], " MM") !== false) {
+									echo "&nbsp;";
+								} elseif (strpos($schedules[0][$x]["sched"]["time10"][1], " GC") !== false) {
+									echo $schedules[0][$x]["sched"]["time10"][2];
+								} else {
+									echo "&nbsp;";
+								}
+								?>
 							</td>
 						</tr>
 					</table>
@@ -240,7 +312,15 @@
 			<?php echo ($schedules[0][$x]["sched"]["time6"][0]) ? $schedules[0][$x]["sched"]["time6"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time6"][2]) ? $schedules[0][$x]["sched"]["time6"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time6"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time6"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time6"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 	</tr>
 	<tr>
@@ -264,13 +344,29 @@
 			<?php echo ($schedules[0][$x]["sched"]["time2"][0]) ? $schedules[0][$x]["sched"]["time2"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time2"][2]) ? $schedules[0][$x]["sched"]["time2"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time2"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time2"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time2"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 		<td class="tdleft tdright tdbottom text-center">
 			<?php echo ($schedules[0][$x]["sched"]["time7"][0]) ? $schedules[0][$x]["sched"]["time7"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time7"][2]) ? $schedules[0][$x]["sched"]["time7"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time7"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time7"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time7"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 	</tr>
 	<tr>
@@ -294,13 +390,29 @@
 			<?php echo ($schedules[0][$x]["sched"]["time3"][0]) ? $schedules[0][$x]["sched"]["time3"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time3"][2]) ? $schedules[0][$x]["sched"]["time3"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time3"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time3"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time3"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 		<td class="tdleft tdright tdbottom text-center">
 			<?php echo ($schedules[0][$x]["sched"]["time8"][0]) ? $schedules[0][$x]["sched"]["time8"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time8"][2]) ? $schedules[0][$x]["sched"]["time8"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time8"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time8"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time8"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 	</tr>
 	<tr>
@@ -324,13 +436,29 @@
 			<?php echo ($schedules[0][$x]["sched"]["time4"][0]) ? $schedules[0][$x]["sched"]["time4"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time4"][2]) ? $schedules[0][$x]["sched"]["time4"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time4"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time4"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time4"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 		<td class="tdleft tdright tdbottom text-center">
 			<?php echo ($schedules[0][$x]["sched"]["time9"][0]) ? $schedules[0][$x]["sched"]["time9"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time9"][2]) ? $schedules[0][$x]["sched"]["time9"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time9"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time9"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time9"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 	</tr>
 	<tr>
@@ -354,13 +482,29 @@
 			<?php echo ($schedules[0][$x]["sched"]["time5"][0]) ? $schedules[0][$x]["sched"]["time5"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time5"][2]) ? $schedules[0][$x]["sched"]["time5"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time5"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time5"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time5"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 		<td class="tdleft tdright tdbottom text-center">
 			<?php echo ($schedules[0][$x]["sched"]["time10"][0]) ? $schedules[0][$x]["sched"]["time10"][0] : "&nbsp;" ?>
 		</td>
 		<td class="tdright tdbottom text-center">
-			<?php echo ($schedules[0][$x]["sched"]["time10"][2]) ? $schedules[0][$x]["sched"]["time10"][2] : "&nbsp;" ?>
+			<?php
+			if (strpos($schedules[0][$x]["sched"]["time10"][1], " MM") !== false) {
+				echo "&nbsp;";
+			} elseif (strpos($schedules[0][$x]["sched"]["time10"][1], " GC") !== false) {
+				echo $schedules[0][$x]["sched"]["time10"][2];
+			} else {
+				echo "&nbsp;";
+			}
+			?>
 		</td>
 	</tr>
 </table>

@@ -20,7 +20,7 @@ jQuery("#counter_value").click(function() {
 		'</td> ' +
 		'<td class="tdright"><label class="lstudent_status">N/A</label>' +
 		'<input type="hidden" class="student_status" name="student_status[]"></td>' +
-		'<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" placeholder="Cubicle No."></td>' +
+		'<td class="tdright cubicle text-center" rowspan=2><input type="text" name="cubicle_no[]" class="cubicle_no" placeholder="Cubicle No."></td>' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright text-right" colspan=2><label class="lbuddy_teacher"></label>' +
@@ -57,7 +57,7 @@ jQuery("#counter_value").click(function() {
 		'<input type="text" name="teacher130220[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="room130220[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<input type="text" name="room130220[]" class="room130220" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -81,13 +81,13 @@ jQuery("#counter_value").click(function() {
 		'<input type="text" name="teacher8850[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="room8850[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<input type="text" name="room8850[]" class="room8850" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
 		'<input type="text" name="teacher230320[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="room230320[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<input type="text" name="room230320[]" class="room230320" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -111,13 +111,13 @@ jQuery("#counter_value").click(function() {
 		'<input type="text" name="teacher9950[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="room9950[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<input type="text" name="room9950[]" class="room9950" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
 		'<input type="text" name="teacher330420[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="room330420[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<input type="text" name="room330420[]" class="room330420" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -141,13 +141,13 @@ jQuery("#counter_value").click(function() {
 		'<input type="text" name="teacher101050[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="room101050[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<input type="text" name="room101050[]" class="room101050" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
 		'<input type="text" class="for_buddy_teacher_value" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="room430520[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<input type="text" name="room430520[]" class="room430520" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -171,12 +171,12 @@ jQuery("#counter_value").click(function() {
 		'<input type="text" name="teacher111150[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="room111150[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<input type="text" name="room111150[]" class="room111150" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
 		'<input type="text" name="teacher530620[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
-		'<td class="tdright tdbottom text-center"> <input type="text" name="room530620[]" placeholder="Room" list="schedule_rooms"> ' +
+		'<td class="tdright tdbottom text-center"> <input type="text" name="room530620[]" class="room530620" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'</tr> ' +
 		'</table></div>');
@@ -532,12 +532,20 @@ jQuery(document).on('change', '.class_type8850', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-11").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room8850").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-11").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-11").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-1").eq(0).val("");
+
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room8850").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
@@ -590,12 +598,19 @@ jQuery(document).on('change', '.class_type9950', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-22").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room9950").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-22").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-22").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-2").eq(0).val("");
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room9950").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
@@ -646,12 +661,19 @@ jQuery(document).on('change', '.class_type101050', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-33").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room101050").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-33").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-33").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-3").eq(0).val("");
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room101050").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
@@ -702,12 +724,19 @@ jQuery(document).on('change', '.class_type111150', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-44").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room111150").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-44").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-44").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-4").eq(0).val("");
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room111150").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
@@ -758,12 +787,19 @@ jQuery(document).on('change', '.class_type130220', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-55").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room130220").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-55").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-55").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-5").eq(0).val("");
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room130220").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
@@ -814,12 +850,19 @@ jQuery(document).on('change', '.class_type230320', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-66").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room230320").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-66").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-66").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-6").eq(0).val("");
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room230320").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
@@ -870,12 +913,19 @@ jQuery(document).on('change', '.class_type330420', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-77").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room330420").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-77").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-77").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-7").eq(0).val("");
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room330420").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
@@ -926,12 +976,19 @@ jQuery(document).on('change', '.class_type430520', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-88").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room430520").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-88").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-88").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-8").eq(0).val("");
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room430520").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
@@ -982,12 +1039,19 @@ jQuery(document).on('change', '.class_type530620', function() {
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-99").eq(0).val("");
+
+		// get cubicle no. value
+		var cubicle_val = jQuery(this).parents("table:first").find(".cubicle_no").eq(0).val();
+		// put value on room input
+		jQuery(this).parents("table:first").find(".room530620").eq(0).val(cubicle_val);
 	} else if (countGC == 1) {
 		if (jQuery(this).parents("table:first").find(".student-time-99").eq(0).val().length < 1) {
 			jQuery(this).parents("table:first").find(".student-time-99").eq(0).val(newGC);
 		}
 
 		jQuery(this).parents("table:first").find(".student-time-9").eq(0).val("");
+		// remove value if change to gc or class type is gc
+		jQuery(this).parents("table:first").find(".room530620").eq(0).val("");
 	}
 
 	var a = jQuery(this).parents("table:first").find(".student-time-1").eq(0).val();
