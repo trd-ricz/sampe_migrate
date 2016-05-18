@@ -21,7 +21,7 @@
 
 <div class="delete-parent">
 	<input type="button" class="btn btn-danger delete-schedule" value="Delete">
-	<input type="button" class="btn btn-warning btn-sm process-cnt" value="Process">
+	<input type="button" class="btn btn-warning btn-sm process-cnt" value="Process Duplicate">
 	<table class="table borderless">
 		<tr>
 			<td class="tdleft tdright tdtop text-center" colspan=2>
@@ -73,11 +73,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered130220[]" class="transfered130220" value="<?php echo $schedules[0][$x]["sched"]["time6"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time6"][3] == "transferred") : ?>
-					<input type="button" class="transfered130220btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered130220btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered130220btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered130220btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered130220btn" value="Transfer">
-					<input type="button" class="transfered130220btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered130220btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered130220btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>
@@ -104,11 +104,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered8850[]" class="transfered8850" value="<?php echo $schedules[0][$x]["sched"]["time2"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time2"][3] == "transferred") : ?>
-					<input type="button" class="transfered8850btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered8850btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered8850btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered8850btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered8850btn" value="Transfer">
-					<input type="button" class="transfered8850btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered8850btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered8850btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>
@@ -117,11 +117,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered230320[]" class="transfered230320" value="<?php echo $schedules[0][$x]["sched"]["time7"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time7"][3] == "transferred") : ?>
-					<input type="button" class="transfered230320btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered230320btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered230320btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered230320btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered230320btn" value="Transfer">
-					<input type="button" class="transfered230320btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered230320btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered230320btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>
@@ -154,11 +154,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered9950[]" class="transfered9950" value="<?php echo $schedules[0][$x]["sched"]["time3"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time3"][3] == "transferred") : ?>
-					<input type="button" class="transfered9950btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered9950btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered9950btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered9950btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered9950btn" value="Transfer">
-					<input type="button" class="transfered9950btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered9950btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered9950btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>
@@ -167,11 +167,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered330420[]" class="transfered330420" value="<?php echo $schedules[0][$x]["sched"]["time8"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time8"][3] == "transferred") : ?>
-					<input type="button" class="transfered330420btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered330420btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered330420btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered330420btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered330420btn" value="Transfer">
-					<input type="button" class="transfered330420btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered330420btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered330420btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>
@@ -204,11 +204,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered101050[]" class="transfered101050" value="<?php echo $schedules[0][$x]["sched"]["time4"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time4"][3] == "transferred") : ?>
-					<input type="button" class="transfered101050btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered101050btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered101050btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered101050btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered101050btn" value="Transfer">
-					<input type="button" class="transfered101050btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered101050btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered101050btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>
@@ -217,11 +217,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered430520[]" class="transfered430520" value="<?php echo $schedules[0][$x]["sched"]["time9"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time9"][3] == "transferred") : ?>
-					<input type="button" class="transfered430520btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered430520btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered430520btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered430520btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered430520btn" value="Transfer">
-					<input type="button" class="transfered430520btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered430520btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered430520btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>
@@ -254,11 +254,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered111150[]" class="transfered111150" value="<?php echo $schedules[0][$x]["sched"]["time5"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time5"][3] == "transferred") : ?>
-					<input type="button" class="transfered111150btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered111150btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered111150btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered111150btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered111150btn" value="Transfer">
-					<input type="button" class="transfered111150btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered111150btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered111150btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>
@@ -267,11 +267,11 @@
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered530620[]" class="transfered530620" value="<?php echo $schedules[0][$x]["sched"]["time10"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time10"][3] == "transferred") : ?>
-					<input type="button" class="transfered530620btn" value="Transfer" style="display:none">
-					<input type="button" class="transfered530620btncancel" value="Cancel Transfer">
+					<input type="button" class="transfered530620btn btn btn-success btn-xs" value="Transfer" style="display:none">
+					<input type="button" class="transfered530620btncancel btn btn-danger btn-xs" value="Cancel Transfer">
 				<?php else :?>
-					<input type="button" class="transfered530620btn" value="Transfer">
-					<input type="button" class="transfered530620btncancel" value="Cancel Transfer" style="display:none">
+					<input type="button" class="transfered530620btn btn btn-success btn-xs" value="Transfer">
+					<input type="button" class="transfered530620btncancel btn btn-danger btn-xs" value="Cancel Transfer" style="display:none">
 				<?php endif; ?>
 				<!--End Transfer/Cancel-->
 			</td>

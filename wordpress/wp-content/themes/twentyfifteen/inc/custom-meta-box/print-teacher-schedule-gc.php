@@ -47,15 +47,15 @@
 	$studgcstatus9 = array();
 	$studgcstatus10 = array();
 
-	$ssdate2 = array();
-	$ssdate3 = array();
-	$ssdate4 = array();
-	$ssdate5 = array();
-	$ssdate6 = array();
-	$ssdate7 = array();
-	$ssdate8 = array();
-	$ssdate9 = array();
-	$ssdate10 = array();
+	$transgc2 = array();
+	$transgc3 = array();
+	$transgc4 = array();
+	$transgc5 = array();
+	$transgc6 = array();
+	$transgc7 = array();
+	$transgc8 = array();
+	$transgc9 = array();
+	$transgc10 = array();
 
 	foreach($all_class_type as $single_class) {
 		foreach($new_data_print_teacher as $tsched_gc) {
@@ -65,7 +65,9 @@
 				$gcroom = $tsched_gc["sched"]["time2"][2];
 
 				$studgcstatus2[] = $tsched_gc['status'];
-				$ssdate2[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc2[] = $tsched_gc["sched"]["time2"][3];
 			}
 
 			if ($tsched_gc["sched"]["time3"][1] == $single_class->post_title) {
@@ -74,7 +76,9 @@
 				$gcroom = $tsched_gc["sched"]["time3"][2];
 
 				$studgcstatus3[] = $tsched_gc['status'];
-				$ssdate3[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc3[] = $tsched_gc["sched"]["time3"][3];
 			}
 
 			if ($tsched_gc["sched"]["time4"][1] == $single_class->post_title) {
@@ -83,7 +87,9 @@
 				$gcroom = $tsched_gc["sched"]["time4"][2];
 
 				$studgcstatus4[] = $tsched_gc['status'];
-				$ssdate4[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc4[] = $tsched_gc["sched"]["time4"][3];
 			}
 
 			if ($tsched_gc["sched"]["time5"][1] == $single_class->post_title) {
@@ -92,7 +98,9 @@
 				$gcroom = $tsched_gc["sched"]["time5"][2];
 
 				$studgcstatus5[] = $tsched_gc['status'];
-				$ssdate5[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc5[] = $tsched_gc["sched"]["time5"][3];
 			}
 
 			if ($tsched_gc["sched"]["time6"][1] == $single_class->post_title) {
@@ -101,7 +109,9 @@
 				$gcroom = $tsched_gc["sched"]["time6"][2];
 
 				$studgcstatus6[] = $tsched_gc['status'];
-				$ssdate6[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc6[] = $tsched_gc["sched"]["time6"][3];
 			}
 
 			if ($tsched_gc["sched"]["time7"][1] == $single_class->post_title) {
@@ -110,7 +120,9 @@
 				$gcroom = $tsched_gc["sched"]["time7"][2];
 
 				$studgcstatus7[] = $tsched_gc['status'];
-				$ssdate7[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc7[] = $tsched_gc["sched"]["time7"][3];
 			}
 
 			if ($tsched_gc["sched"]["time8"][1] == $single_class->post_title) {
@@ -119,7 +131,9 @@
 				$gcroom = $tsched_gc["sched"]["time8"][2];
 
 				$studgcstatus8[] = $tsched_gc['status'];
-				$ssdate8[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc8[] = $tsched_gc["sched"]["time8"][3];
 			}
 
 			if ($tsched_gc["sched"]["time9"][1] == $single_class->post_title) {
@@ -128,7 +142,9 @@
 				$gcroom = $tsched_gc["sched"]["time9"][2];
 
 				$studgcstatus9[] = $tsched_gc['status'];
-				$ssdate9[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc9[] = $tsched_gc["sched"]["time9"][3];
 			}
 
 			if ($tsched_gc["sched"]["time10"][1] == $single_class->post_title) {
@@ -137,7 +153,9 @@
 				$gcroom = $tsched_gc["sched"]["time10"][2];
 
 				$studgcstatus10[] = $tsched_gc['status'];
-				$ssdate10[] = $tsched_gc['start_date'];
+
+				// get transferree status
+				$transgc10[] = $tsched_gc["sched"]["time10"][3];
 			}
 		} // end 2nd foreach
 
@@ -156,149 +174,85 @@
 			<td colspan="2">
 
 				<?php
-				$sstodaygc = date('Y-m-d');
 				foreach ($studentsgc2 as $key => $value) {
 					$sgcstatus = $studgcstatus2[$key];
-					$ssd2gc = $ssdate2[$key];
 
-					$newssd2gc = date('Y-m-d', strtotime($ssd2gc . ' + 7 days'));
+					$transgc2value = $transgc2[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd2gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc2value);
 
 						echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				}
 				?></td>
 			<td colspan="2"><?php foreach ($studentsgc3 as $key => $value) {
 					$sgcstatus = $studgcstatus3[$key];
-					$ssd3gc = $ssdate3[$key];
 
-					$newssd3gc = date('Y-m-d', strtotime($ssd3gc . ' + 7 days'));
+					$transgc3value = $transgc3[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd3gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc3value);
 
 						echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				} ?></td>
 			<td colspan="2"><?php foreach ($studentsgc4 as $key => $value) {
 					$sgcstatus = $studgcstatus4[$key];
-					$ssd4gc = $ssdate4[$key];
 
-					$newssd4gc = date('Y-m-d', strtotime($ssd4gc . ' + 7 days'));
+					$transgc4value = $transgc4[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd4gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc4value);
 
 						echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				} ?></td>
 			<td colspan="2"><?php foreach ($studentsgc5 as $key => $value) {
 					$sgcstatus = $studgcstatus5[$key];
-					$ssd5gc = $ssdate5[$key];
 
-					$newssd5gc = date('Y-m-d', strtotime($ssd5gc . ' + 7 days'));
+					$transgc5value = $transgc5[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd5gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc5value);
 
 						echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				} ?></td>
 			<td colspan="2"><?php foreach ($studentsgc6 as $key => $value) {
 					$sgcstatus = $studgcstatus6[$key];
-					$ssd6gc = $ssdate6[$key];
 
-					$newssd6gc = date('Y-m-d', strtotime($ssd6gc . ' + 7 days'));
+					$transgc6value = $transgc6[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd6gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc6value);
 
 						echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				} ?></td>
 			<td colspan="2"><?php foreach ($studentsgc7 as $key => $value) {
 					$sgcstatus = $studgcstatus7[$key];
-					$ssd7gc = $ssdate7[$key];
 
-					$newssd7gc = date('Y-m-d', strtotime($ssd7gc . ' + 7 days'));
+					$transgc7value = $transgc7[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd7gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc7value);
 
 						echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				} ?></td>
 			<td colspan="2"><?php foreach ($studentsgc8 as $key => $value) {
 					$sgcstatus = $studgcstatus8[$key];
-					$ssd8gc = $ssdate8[$key];
 
-					$newssd8gc = date('Y-m-d', strtotime($ssd8gc . ' + 7 days'));
+					$transgc8value = $transgc8[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd8gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc8value);
 
 						echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				} ?></td>
 			<td colspan="2"><?php foreach ($studentsgc9 as $key => $value) {
 						$sgcstatus = $studgcstatus9[$key];
-					$ssd9gc = $ssdate9[$key];
 
-					$newssd9gc = date('Y-m-d', strtotime($ssd9gc . ' + 7 days'));
+					$transgc9value = $transgc9[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd9gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc9value);
 
 						echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				} ?></td>
 			<td colspan="2"><?php foreach ($studentsgc10 as $key => $value) {
 						$sgcstatus = $studgcstatus10[$key];
-					$ssd10gc = $ssdate10[$key];
 
-					$newssd10gc = date('Y-m-d', strtotime($ssd10gc . ' + 7 days'));
+					$transgc10value = $transgc10[$key];
 
-					if ($sgcstatus == 'NEW STUDENT' && $sstodaygc >= $newssd10gc) {
-						$colorgc = 'white';
-					} elseif ($sgcstatus == 'OLD STUDENT') {
-						$colorgc = 'white';
-					} else {
-						$colorgc = 'yellow';
-					}
+					$colorgc = get_status_color($sgcstatus, $transgc10value);
 
 					echo '<span class="'.$colorgc.'">'.$value.";</span> ";
 				} ?></td>
@@ -327,15 +281,15 @@
 		$studgcstatus9 = array();
 		$studgcstatus10 = array();
 
-		$ssdate2 = array();
-		$ssdate3 = array();
-		$ssdate4 = array();
-		$ssdate5 = array();
-		$ssdate6 = array();
-		$ssdate7 = array();
-		$ssdate8 = array();
-		$ssdate9 = array();
-		$ssdate10 = array();
+		$transgc2 = array();
+		$transgc3 = array();
+		$transgc4 = array();
+		$transgc5 = array();
+		$transgc6 = array();
+		$transgc7 = array();
+		$transgc8 = array();
+		$transgc9 = array();
+		$transgc10 = array();
 
 	} // end all class
 	?>

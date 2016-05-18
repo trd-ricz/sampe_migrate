@@ -11,11 +11,13 @@ function add_schedule_v2_metaboxes()
 function create_schedules()
 {
 	global $post;
+	global $wpdb;
+
 	wp_nonce_field('check_schedule', 'check_schedule_nonce');
 	?>
 
 	<input type="text" name="counter" id="counter" value=""/>
-	<input type="button" id="counter_value" name="counter_value" value="Display"/>
+	<input type="button" id="counter_value" name="counter_value" value="Display Forms - Click Me" class="btn btn-primary btn-sm"/>
 
 	<div id="display_forms">
 		<!--this is where we append the forms by user integer input-->
@@ -137,6 +139,21 @@ function update_schedules_v2()
 		WHERE users.ID = meta.user_id
 		AND meta.meta_key IN ('end_date','wp_capabilities')
 		GROUP BY ID");
+
+	echo "bryllejohn";
+	echo "<pre>";
+	print_r($students_v1);
+	echo "</pre>";
+
+//		array_map(function ($entry) {
+//			if ($entry->end_date != null AND $entry->student != null )
+//			{
+//				echo "bryllejohn";
+//				echo "<pre>";
+//				print_r(strtoupper($entry->display_name));
+//				echo "</pre>";
+//			}
+//		}, $students_v1);
 
 	$teachers_v1 = $wpdb->get_results("SELECT display_name FROM $wpdb->users as users, $wpdb->usermeta as meta WHERE meta.meta_key = 'wp_capabilities' AND meta.meta_value LIKE '%teacher%' AND users.ID = meta.user_id");
 	$class_types_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_type' and post_status ='publish'");

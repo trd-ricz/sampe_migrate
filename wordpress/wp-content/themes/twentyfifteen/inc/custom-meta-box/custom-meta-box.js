@@ -2,7 +2,7 @@ jQuery("#counter_value").click(function() {
 	var counter = jQuery('#counter').val();
 
 	for (var i= 1; i <= counter; i++) {
-		jQuery("#display_forms").append('<div class="create-parent"><input type="button" class="btn btn-warning btn-sm process-cnt-create" value="Process"><table class="table borderless"> ' +
+		jQuery("#display_forms").append('<div class="create-parent"><input type="button" class="btn btn-warning btn-sm process-cnt-create" value="Process Duplicate"><table class="table borderless"> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdtop text-center" colspan=2>' +
 		' <span id="tblSched">WEEKLY SCHEDULE</span> ' +
@@ -71,8 +71,6 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
-		'<input type="text" name="transfered8850[]" class="transfered8850" style="display:none;"> ' +
-		'<input type="submit" class="transfered8850btn" value="Transfer"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
