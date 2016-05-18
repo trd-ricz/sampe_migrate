@@ -50,6 +50,7 @@ jQuery("#counter_value").click(function() {
 		'<input type="hidden" name="student-time-9[]" class="student-time-9"><input type="hidden" name="student-time-99[]" class="student-time-99"></td> ' +
 		'<td class="tdright tdbottom text-center" colspan="2"> ' +
 		'<input type="text" name="class_type130220[]" class="class_type130220" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered130220[]" class="transfered130220" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -71,10 +72,12 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
-		'</td> ' +
+        '<input type="text" name="transfered8850[]" class="transfered8850" value="" style="display: none">' +
+        '</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
-		'</td> ' +
+        '<input type="text" name="transfered230320[]" class="transfered230320" value="" style="display: none">' +
+        '</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
@@ -101,10 +104,12 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type9950[]" class="class_type9950" placeholder="Class Type" list="schedule_class_type"> ' +
-		'</td> ' +
+        '<input type="text" name="transfered9950[]" class="transfered9950" value="" style="display: none">' +
+        '</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type330420[]" class="class_type330420" placeholder="Class Type" list="schedule_class_type"> ' +
-		'</td> ' +
+        '<input type="text" name="transfered330420[]" class="transfered330420" value="" style="display: none">' +
+        '</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
@@ -131,10 +136,12 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type101050[]" class="class_type101050" placeholder="Class Type" list="schedule_class_type"> ' +
-		'</td> ' +
+        '<input type="text" name="transfered101050[]" class="transfered101050" value="" style="display: none">' +
+        '</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type"> ' +
-		'</td> ' +
+        '<input type="text" name="transfered430520[]" class="transfered430520" value="" style="display: none">' +
+        '</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
@@ -161,10 +168,12 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type111150[]" class="class_type111150" placeholder="Class Type" list="schedule_class_type"> ' +
-		'</td> ' +
+        '<input type="text" name="transfered111150[]" class="transfered111150" value="" style="display: none">' +
+        '</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type530620[]"  class="class_type530620" placeholder="Class Type" list="schedule_class_type"> ' +
-		'</td> ' +
+        '<input type="text" name="transfered530620[]" class="transfered530620" value="" style="display: none">' +
+        '</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +

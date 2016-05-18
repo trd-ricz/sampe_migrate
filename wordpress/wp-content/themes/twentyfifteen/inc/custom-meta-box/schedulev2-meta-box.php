@@ -42,7 +42,7 @@ function print_teacher_schedules()
 	WHERE meta.meta_value IS NOT NULL");
 
 	$title = str_replace("&#039;","'",$post->post_title);
-	$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
+	$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' and (b.post_status = 'publish' OR b.post_status = 'future') ");
 	//$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
 
 	$new_data_print_teacher = unserialize($get_data_by_title->meta_value);
@@ -139,21 +139,6 @@ function update_schedules_v2()
 		WHERE users.ID = meta.user_id
 		AND meta.meta_key IN ('end_date','wp_capabilities')
 		GROUP BY ID");
-
-	echo "bryllejohn";
-	echo "<pre>";
-	print_r($students_v1);
-	echo "</pre>";
-
-//		array_map(function ($entry) {
-//			if ($entry->end_date != null AND $entry->student != null )
-//			{
-//				echo "bryllejohn";
-//				echo "<pre>";
-//				print_r(strtoupper($entry->display_name));
-//				echo "</pre>";
-//			}
-//		}, $students_v1);
 
 	$teachers_v1 = $wpdb->get_results("SELECT display_name FROM $wpdb->users as users, $wpdb->usermeta as meta WHERE meta.meta_key = 'wp_capabilities' AND meta.meta_value LIKE '%teacher%' AND users.ID = meta.user_id");
 	$class_types_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_type' and post_status ='publish'");
