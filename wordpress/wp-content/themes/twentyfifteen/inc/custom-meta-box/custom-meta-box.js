@@ -1089,4 +1089,118 @@ jQuery(document).on('change', '.class_type530620', function() {
 
 jQuery(document).on("click", ".transfered8850btn", function() {
 	jQuery(this).parents("table:first").find(".transfered8850").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered8850btncancel").eq(0).show();
+	jQuery(this).hide();
 });
+jQuery(document).on("click", ".transfered8850btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered8850").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered8850btn").eq(0).show();
+	jQuery(this).hide();
+});
+
+jQuery(document).on("click", ".transfered9950btn", function() {
+	jQuery(this).parents("table:first").find(".transfered9950").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered9950btncancel").eq(0).show();
+	jQuery(this).hide();
+});
+jQuery(document).on("click", ".transfered9950btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered9950").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered9950btn").eq(0).show();
+	jQuery(this).hide();
+});
+
+jQuery(document).on("click", ".transfered101050btn", function() {
+	jQuery(this).parents("table:first").find(".transfered101050").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered101050btncancel").eq(0).show();
+	jQuery(this).hide();
+});
+jQuery(document).on("click", ".transfered101050btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered101050").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered101050btn").eq(0).show();
+	jQuery(this).hide();
+});
+
+jQuery(document).on("click", ".transfered111150btn", function() {
+	jQuery(this).parents("table:first").find(".transfered111150").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered111150btncancel").eq(0).show();
+	jQuery(this).hide();
+});
+jQuery(document).on("click", ".transfered111150btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered111150").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered111150btn").eq(0).show();
+	jQuery(this).hide();
+});
+
+jQuery(document).on("click", ".transfered130220btn", function() {
+	jQuery(this).parents("table:first").find(".transfered130220").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered130220btncancel").eq(0).show();
+	jQuery(this).hide();
+});
+jQuery(document).on("click", ".transfered130220btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered130220").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered130220btn").eq(0).show();
+	jQuery(this).hide();
+});
+
+jQuery(document).on("click", ".transfered230320btn", function() {
+	jQuery(this).parents("table:first").find(".transfered230320").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered230320btncancel").eq(0).show();
+	jQuery(this).hide();
+});
+jQuery(document).on("click", ".transfered230320btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered230320").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered230320btn").eq(0).show();
+	jQuery(this).hide();
+});
+
+jQuery(document).on("click", ".transfered330420btn", function() {
+	jQuery(this).parents("table:first").find(".transfered330420").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered330420btncancel").eq(0).show();
+	jQuery(this).hide();
+});
+jQuery(document).on("click", ".transfered330420btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered330420").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered330420btn").eq(0).show();
+	jQuery(this).hide();
+});
+
+jQuery(document).on("click", ".transfered430520btn", function() {
+	jQuery(this).parents("table:first").find(".transfered430520").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered430520btncancel").eq(0).show();
+	jQuery(this).hide();
+});
+jQuery(document).on("click", ".transfered430520btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered430520").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered430520btn").eq(0).show();
+	jQuery(this).hide();
+});
+
+jQuery(document).on("click", ".transfered530620btn", function() {
+	jQuery(this).parents("table:first").find(".transfered530620").eq(0).val("transferred");
+
+	jQuery(this).parents("table:first").find(".transfered530620btncancel").eq(0).show();
+	jQuery(this).hide();
+});
+jQuery(document).on("click", ".transfered530620btncancel", function() {
+	jQuery(this).parents("table:first").find(".transfered530620").eq(0).val("");
+
+	jQuery(this).parents("table:first").find(".transfered530620btn").eq(0).show();
+	jQuery(this).hide();
+});
+

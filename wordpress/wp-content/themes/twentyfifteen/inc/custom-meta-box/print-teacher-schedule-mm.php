@@ -1,4 +1,17 @@
-<br/>
+<?php
+
+function get_status_color($status, $transs) {
+
+	if ($transs == 'transferred') {
+		return 'orange';
+	} elseif ($status == 'OLD STUDENT') {
+		return 'white';
+	} else {
+		return 'yellow';
+	}
+}
+?><br/>
+
 <br/>
 <table class="table table-bordered twspfirst">
 	<thead>
@@ -27,6 +40,8 @@
 	<tbody>
 	<?php
 	error_reporting(0);
+	//	echo '<pre><dd>'.var_export($new_data_print_teacher, true).'</dd></pre>';
+	//	die();
 
 	$stud_name = array();
 	$stud_room = array();
@@ -42,16 +57,7 @@
 					$stud_name[2] = $tsched['name'];
 					$stud_room[2] = $tsched["sched"]["time2"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time2"][3];
-
-					if ($sstatus == 'OLD STUDENT') {
-						$color[2] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[2] = 'orange';
-					} else {
-						$color[2] = 'yellow';
-					}
+					$color[2] = get_status_color($tsched['status'], $tsched["sched"]["time2"][3]);
 				}
 			}
 
@@ -61,16 +67,7 @@
 					$stud_name[3] = $tsched['name'];
 					$stud_room[3] = $tsched["sched"]["time3"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time3"][3];
-
-					if ($sstatus == 'OLD STUDENT') {
-						$color[3] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[3] = 'orange';
-					} else {
-						$color[3] = 'yellow';
-					}
+					$color[3] = get_status_color($tsched['status'], $tsched["sched"]["time3"][3]);
 				}
 			}
 
@@ -80,16 +77,7 @@
 					$stud_name[4] = $tsched['name'];
 					$stud_room[4] = $tsched["sched"]["time4"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time4"][3];
-
-					if ($sstatus == 'OLD STUDENT') {
-						$color[4] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[4] = 'orange';
-					} else {
-						$color[4] = 'yellow';
-					}
+					$color[4] = get_status_color($tsched['status'], $tsched["sched"]["time4"][3]);
 				}
 			}
 
@@ -99,16 +87,7 @@
 					$stud_name[5] = $tsched['name'];
 					$stud_room[5] = $tsched["sched"]["time5"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time5"][3];
-
-					if ($sstatus == 'OLD STUDENT') {
-						$color[5] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[5] = 'orange';
-					} else {
-						$color[5] = 'yellow';
-					}
+					$color[5] = get_status_color($tsched['status'], $tsched["sched"]["time5"][3]);
 				}
 			}
 
@@ -118,16 +97,8 @@
 					$stud_name[6] = $tsched['name'];
 					$stud_room[6] = $tsched["sched"]["time6"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time6"][3];
 
-					if ($sstatus == 'OLD STUDENT') {
-						$color[6] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[6] = 'orange';
-					} else {
-						$color[6] = 'yellow';
-					}
+					$color[6] = get_status_color($tsched['status'], $tsched["sched"]["time6"][3]);
 				}
 			}
 
@@ -137,16 +108,7 @@
 					$stud_name[7] = $tsched['name'];
 					$stud_room[7] = $tsched["sched"]["time7"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time7"][3];
-
-					if ($sstatus == 'OLD STUDENT') {
-						$color[7] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[7] = 'orange';
-					} else {
-						$color[7] = 'yellow';
-					}
+					$color[7] = get_status_color($tsched['status'], $tsched["sched"]["time7"][3]);
 				}
 			}
 
@@ -156,16 +118,7 @@
 					$stud_name[8] = $tsched['name'];
 					$stud_room[8] = $tsched["sched"]["time8"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time8"][3];
-
-					if ($sstatus == 'OLD STUDENT') {
-						$color[8] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[8] = 'orange';
-					} else {
-						$color[8] = 'yellow';
-					}
+					$color[8] = get_status_color($tsched['status'], $tsched["sched"]["time8"][3]);
 				}
 			}
 
@@ -175,16 +128,7 @@
 					$stud_name[9] = $tsched['name'];
 					$stud_room[9] = $tsched["sched"]["time9"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time9"][3];
-
-					if ($sstatus == 'OLD STUDENT') {
-						$color[9] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[9] = 'orange';
-					} else {
-						$color[9] = 'yellow';
-					}
+					$color[9] = get_status_color($tsched['status'], $tsched["sched"]["time9"][3]);
 				}
 			}
 
@@ -194,16 +138,7 @@
 					$stud_name[10] = $tsched['name'];
 					$stud_room[10] = $tsched["sched"]["time10"][2];
 
-					$sstatus = $tsched['status'];
-					$transf = $tsched["sched"]["time10"][3];
-
-					if ($sstatus == 'OLD STUDENT') {
-						$color[10] = 'white';
-					} elseif ($transf == "transferred" && $sstatus == 'OLD STUDENT') {
-						$color[10] = 'orange';
-					} else {
-						$color[10] = 'yellow';
-					}
+					$color[10] = get_status_color($tsched['status'], $tsched["sched"]["time10"][3]);
 				}
 			}
 		} // end 2nd foreach

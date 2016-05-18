@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 function add_schedule_v2_metaboxes()
 {
@@ -62,8 +61,6 @@ function print_schedules()
 	global $wpdb;
 	global $post;
 
-
-
 	// check if data is copied
 	$copied = $wpdb->get_results(
 		"
@@ -86,8 +83,6 @@ function print_schedules()
 		array_walk_recursive($schedules, 'update_new_old_status');
 	}
 
-
-
 	?>
 
 	<link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/inc/custom-meta-box/css/bootstrap.min.css">
@@ -103,7 +98,6 @@ function print_schedules()
 			<?php include __DIR__ . '/print-data.php'; ?>
 		<?php endfor; ?>
 	</div><!--end print -->
-
 <?php
 }
 
@@ -133,7 +127,6 @@ function update_schedules_v2()
 	if ($copied) {
 		array_walk_recursive($schedules, 'update_new_old_status1');
 		update_post_meta($post->ID, '_schedule_v2', $schedules);
-		$_SESSION['old_data'] = $schedules;
 	}
 
 	$students_v1 = $wpdb->get_results("SELECT ID,
@@ -196,7 +189,6 @@ function update_schedules_v2()
 
 function save_schedules($post_id)
 {
-
 	if (!isset($_POST['check_schedule_nonce']))
 		return $post_id;
 
