@@ -21,6 +21,8 @@ $startDate = new DateTime($mylink[0]->meta_value);
 $endDate = new DateTime($mylink[1]->meta_value);
 $interval = $startDate->diff($endDate);
 $count_result = (int)(($interval->days) / 7);
+$count_result = $count_result + 1;
+
 
 // for new students
 //$startDate2 = new DateTime($start_date_default);

@@ -15,7 +15,10 @@
 && empty($schedules[0][$x]["sched"]["time4"][1]) && empty($schedules[0][$x]["sched"]["time9"][1]) && empty($schedules[0][$x]["sched"]["time4"][0])
 && empty($schedules[0][$x]["sched"]["time4"][2]) && empty($schedules[0][$x]["sched"]["time9"][0]) && empty($schedules[0][$x]["sched"]["time9"][2])
 && empty($schedules[0][$x]["sched"]["time5"][1]) && empty($schedules[0][$x]["sched"]["time10"][1]) && empty($schedules[0][$x]["sched"]["time5"][0])
-&& empty($schedules[0][$x]["sched"]["time5"][2]) && empty($schedules[0][$x]["sched"]["time10"][0]) && empty($schedules[0][$x]["sched"]["time10"][2]) ) : ?>
+&& empty($schedules[0][$x]["sched"]["time5"][2]) && empty($schedules[0][$x]["sched"]["time10"][0]) && empty($schedules[0][$x]["sched"]["time10"][2])
+&& empty($schedules[0][$x]["sched"]["time2"][3]) && empty($schedules[0][$x]["sched"]["time3"][3]) && empty($schedules[0][$x]["sched"]["time4"][3])
+&& empty($schedules[0][$x]["sched"]["time5"][3]) && empty($schedules[0][$x]["sched"]["time6"][3]) && empty($schedules[0][$x]["sched"]["time7"][3])
+&& empty($schedules[0][$x]["sched"]["time8"][3]) && empty($schedules[0][$x]["sched"]["time9"][3]) && empty($schedules[0][$x]["sched"]["time10"][3]) ) : ?>
 
 <?php else: ?>
 <!-- Trigger the modal with a button -->

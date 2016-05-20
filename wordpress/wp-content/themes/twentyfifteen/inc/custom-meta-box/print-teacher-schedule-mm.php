@@ -146,23 +146,23 @@ function get_status_color($status, $transs) {
 		?>
 		<tr>
 			<td><?php echo $teacher_single->display_name; echo $tors; 	?></td>
-			<td><?php echo '<span class="'.$color[2].'">'.$stud_name[2].'</span>'; echo "<br>"; echo $stud_room[2]; ?></td>
+			<td><?php echo '<span class="'.$color[2].'">'.$stud_name[2].'</span>'; echo "<br>"; echo $stud_room[2] ? "#".$stud_room[2] : ""; ?></td>
 			<td><?php echo $clstype[2]; ?></td>
-			<td><?php echo '<span class="'.$color[3].'">'.$stud_name[3].'</span>'; echo "<br>"; echo $stud_room[3]; ?></td>
+			<td><?php echo '<span class="'.$color[3].'">'.$stud_name[3].'</span>'; echo "<br>"; echo $stud_room[3] ? "#".$stud_room[3] : ""; ?></td>
 			<td><?php echo $clstype[3]; ?></td>
-			<td><?php echo '<span class="'.$color[4].'">'.$stud_name[4].'</span>'; echo "<br>"; echo $stud_room[4]; ?></td>
+			<td><?php echo '<span class="'.$color[4].'">'.$stud_name[4].'</span>'; echo "<br>"; echo $stud_room[4] ? "#".$stud_room[4] : ""; ?></td>
 			<td><?php echo $clstype[4]; ?></td>
-			<td><?php echo '<span class="'.$color[5].'">'.$stud_name[5].'</span>'; echo "<br>"; echo $stud_room[5]; ?></td>
+			<td><?php echo '<span class="'.$color[5].'">'.$stud_name[5].'</span>'; echo "<br>"; echo $stud_room[5] ? "#".$stud_room[5] : ""; ?></td>
 			<td><?php echo $clstype[5]; ?></td>
-			<td><?php echo '<span class="'.$color[6].'">'.$stud_name[6].'</span>'; echo "<br>"; echo $stud_room[6]; ?></td>
+			<td><?php echo '<span class="'.$color[6].'">'.$stud_name[6].'</span>'; echo "<br>"; echo $stud_room[6] ? "#".$stud_room[6] : ""; ?></td>
 			<td><?php echo $clstype[6]; ?></td>
-			<td><?php echo '<span class="'.$color[7].'">'.$stud_name[7].'</span>'; echo "<br>"; echo $stud_room[7]; ?></td>
+			<td><?php echo '<span class="'.$color[7].'">'.$stud_name[7].'</span>'; echo "<br>"; echo $stud_room[7] ? "#".$stud_room[7] : ""; ?></td>
 			<td><?php echo $clstype[7]; ?></td>
-			<td><?php echo '<span class="'.$color[8].'">'.$stud_name[8].'</span>'; echo "<br>"; echo $stud_room[8]; ?></td>
+			<td><?php echo '<span class="'.$color[8].'">'.$stud_name[8].'</span>'; echo "<br>"; echo $stud_room[8] ? "#".$stud_room[8] : ""; ?></td>
 			<td><?php echo $clstype[8]; ?></td>
-			<td><?php echo '<span class="'.$color[9].'">'.$stud_name[9].'</span>'; echo "<br>"; echo $stud_room[9]; ?></td>
+			<td><?php echo '<span class="'.$color[9].'">'.$stud_name[9].'</span>'; echo "<br>"; echo $stud_room[9] ? "#".$stud_room[9] : ""; ?></td>
 			<td><?php echo $clstype[9]; ?></td>
-			<td><?php echo '<span class="'.$color[10].'">'.$stud_name[10].'</span>'; echo "<br>"; echo $stud_room[10];?></td>
+			<td><?php echo '<span class="'.$color[10].'">'.$stud_name[10].'</span>'; echo "<br>"; echo $stud_room[10] ? "#".$stud_room[10] : ""; ?></td>
 			<td><?php echo $clstype[10]; ?></td>
 		</tr>
 		<?php

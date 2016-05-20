@@ -50,6 +50,7 @@ jQuery("#counter_value").click(function() {
 		'<input type="hidden" name="student-time-9[]" class="student-time-9"><input type="hidden" name="student-time-99[]" class="student-time-99"></td> ' +
 		'<td class="tdright tdbottom text-center" colspan="2"> ' +
 		'<input type="text" name="class_type130220[]" class="class_type130220" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered130220[]" class="transfered130220" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -71,9 +72,11 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered8850[]" class="transfered8850" value="" style="display: none">' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered230320[]" class="transfered230320" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -101,9 +104,11 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type9950[]" class="class_type9950" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered9950[]" class="transfered9950" value="" style="display: none">' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type330420[]" class="class_type330420" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered330420[]" class="transfered330420" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -131,9 +136,11 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type101050[]" class="class_type101050" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered101050[]" class="transfered101050" value="" style="display: none">' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered430520[]" class="transfered430520" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -161,9 +168,11 @@ jQuery("#counter_value").click(function() {
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type111150[]" class="class_type111150" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered111150[]" class="transfered111150" value="" style="display: none">' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
 		'<input type="text" name="class_type530620[]"  class="class_type530620" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" name="transfered530620[]" class="transfered530620" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
@@ -191,9 +200,12 @@ function printTeacherWeeklySchedule() {
 	var mywindow = window.open('', '#printTeacherWeeklySchedule');
 	mywindow.document.write('<title>Print Preview</title>');
 	mywindow.document.write('<style>' +
-	'@page { size: A4; }' +
-	'body { -webkit-print-color-adjust: exact;  margin: 5mm 0 5mm 0; font-size: 11px;}' +
-	'.twspfirst {margin-bottom: 40%;} ' +
+	'@page { size:11 8.5in; margin:0.5in 2pt 0in 2pt;}' +
+	'body { -webkit-print-color-adjust: exact; font-size: 11px;}' +
+	'table { page-break-after:always } '+
+	'tr    { page-break-inside:avoid; } '+
+	'thead { display:table-header-group; } '+
+	'tbody { display:table-row-group;}'+
 	'.btn-success {display: none;} ' +
 	'.yellow {background-color: yellow;} ' +
 	'.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th { border: 1px solid #ddd;}' +
@@ -425,6 +437,17 @@ jQuery(document).on("click", ".delete-schedule", function() {
 		jQuery(this).parents(".delete-parent:first").find(".class_type530620").eq(0).val("");
 		jQuery(this).parents(".delete-parent:first").find(".teacher530620").eq(0).val("");
 		jQuery(this).parents(".delete-parent:first").find(".room530620").eq(0).val("");
+
+		jQuery(this).parents(".delete-parent:first").find(".transfered8850").eq(0).val("");
+		jQuery(this).parents(".delete-parent:first").find(".transfered9950").eq(0).val("");
+		jQuery(this).parents(".delete-parent:first").find(".transfered101050").eq(0).val("");
+		jQuery(this).parents(".delete-parent:first").find(".transfered111150").eq(0).val("");
+		jQuery(this).parents(".delete-parent:first").find(".transfered130220").eq(0).val("");
+		jQuery(this).parents(".delete-parent:first").find(".transfered230320").eq(0).val("");
+		jQuery(this).parents(".delete-parent:first").find(".transfered330420").eq(0).val("");
+		jQuery(this).parents(".delete-parent:first").find(".transfered430520").eq(0).val("");
+		jQuery(this).parents(".delete-parent:first").find(".transfered530620").eq(0).val("");
+
 
 		jQuery(this).parents(".delete-parent:first").find(".delete-schedule").eq(0).hide();
 		jQuery(this).parents(".delete-parent:first").find("table").eq(0).hide();

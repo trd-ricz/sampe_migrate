@@ -11,7 +11,6 @@ function add_schedule_v2_metaboxes()
 function create_schedules()
 {
 	global $post;
-	global $wpdb;
 
 	wp_nonce_field('check_schedule', 'check_schedule_nonce');
 	?>
@@ -38,13 +37,11 @@ function print_teacher_schedules()
 	$all_class_type = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type = 'class_type' and post_title like '%GC%' AND post_status = 'publish'");
 
 	$all_teachers_to_display = $wpdb->get_results("SELECT users.display_name FROM $wpdb->users as users
-	LEFT JOIN $wpdb->usermeta as meta ON users.ID = meta.user_id and meta.meta_key = 'wp_capabilities' and meta.meta_value REGEXP 'teacher'
-	WHERE meta.meta_value IS NOT NULL");
+	LEFT JOIN $wpdb->usermeta as meta ON users.ID = meta.user_id and meta.meta_key = 'wp_capabilities' and meta.meta_value LIKE '%teacher%'
+	WHERE meta.meta_value IS NOT NULL ORDER BY users.display_name ASC");
 
 	$title = str_replace("&#039;","'",$post->post_title);
-	$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
-	//$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' ");
-
+	$get_data_by_title = $wpdb->get_row("Select meta_value from wp_postmeta as a, wp_posts as b where a.post_id = b.ID and b.post_title = '".addslashes($title)."' and a.meta_key = '_schedule_v2' and (b.post_status = 'publish' OR b.post_status = 'future') ");
 	$new_data_print_teacher = unserialize($get_data_by_title->meta_value);
 
 ?>
@@ -100,6 +97,7 @@ function print_schedules()
 			<?php include __DIR__ . '/print-data.php'; ?>
 		<?php endfor; ?>
 	</div><!--end print -->
+
 <?php
 }
 
@@ -139,21 +137,6 @@ function update_schedules_v2()
 		WHERE users.ID = meta.user_id
 		AND meta.meta_key IN ('end_date','wp_capabilities')
 		GROUP BY ID");
-
-	echo "bryllejohn";
-	echo "<pre>";
-	print_r($students_v1);
-	echo "</pre>";
-
-//		array_map(function ($entry) {
-//			if ($entry->end_date != null AND $entry->student != null )
-//			{
-//				echo "bryllejohn";
-//				echo "<pre>";
-//				print_r(strtoupper($entry->display_name));
-//				echo "</pre>";
-//			}
-//		}, $students_v1);
 
 	$teachers_v1 = $wpdb->get_results("SELECT display_name FROM $wpdb->users as users, $wpdb->usermeta as meta WHERE meta.meta_key = 'wp_capabilities' AND meta.meta_value LIKE '%teacher%' AND users.ID = meta.user_id");
 	$class_types_v1 = $wpdb->get_results("SELECT post_title FROM $wpdb->posts WHERE post_type = 'class_type' and post_status ='publish'");
