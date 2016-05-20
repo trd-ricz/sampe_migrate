@@ -200,15 +200,23 @@ function printTeacherWeeklySchedule() {
 	var mywindow = window.open('', '#printTeacherWeeklySchedule');
 	mywindow.document.write('<title>Print Preview</title>');
 	mywindow.document.write('<style>' +
-	'@page { size:11 8.5in; margin:0.5in 2pt 0in 2pt;}' +
-	'body { -webkit-print-color-adjust: exact; font-size: 11px;}' +
-	'table { page-break-after:always } '+
-	'tr    { page-break-inside:avoid; } '+
-	'thead { display:table-header-group; } '+
-	'tbody { display:table-row-group;}'+
+	'@page { size: letter landscape; }' +
+	'body,html { -webkit-print-color-adjust: exact; margin: 0 .5% 0 .5%; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent;}' +
+	'table, figure { border: solid #ddd !important; border-width: 1px 0 0 1px !important; border-collapse: collapse; width: 100%;}' +
+	//'table, figure { page-break-inside: avoid; border-left: 1px solid #ddd}' +
+	//'table tr td { font-size: 8pt; text-transform: uppercase; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd} ' +
+	'table tr td { font-size: 8pt; text-transform: uppercase; border: solid #ddd !important; border-width: 0 1px 1px 0 !important; } ' +
+	//'table tr th { font-size: 7pt; text-transform: uppercase;} ' +
+	'table tr th { font-size: 6pt; text-transform: uppercase; border: solid #ddd !important; border-width: 0 1px 1px 0 !important; } ' +
+	//'tr { display: inline-block; page-break-inside: avoid; -webkit-region-break-inside: avoid;  }' +
+	//'th { page-break-inside:avoid; page-break-after:auto }' +
+	'thead {display: table-header-group;}' +
+	'tbody {display: table-row-group;}' +
+	//'table tr td:before, table tr td:after { content: ""; height: 4px; display: block; } ' +
 	'.btn-success {display: none;} ' +
 	'.yellow {background-color: yellow;} ' +
-	'.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th { border: 1px solid #ddd;}' +
+	'.orange {background-color: orange;} ' +
+	//'.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th { border: 1px solid #ddd;}' +
 	'</style>');
 	mywindow.document.write(jQuery('#printTeacherWeeklySchedule').html());
 	mywindow.document.close(); // necessary for IE >= 10
