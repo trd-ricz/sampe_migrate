@@ -1224,4 +1224,3 @@ jQuery(document).on("click", ".transfered530620btncancel", function() {
 	jQuery(this).parents("table:first").find(".transfered530620btn").eq(0).show();
 	jQuery(this).hide();
 });
-
