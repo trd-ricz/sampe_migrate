@@ -205,7 +205,7 @@ function printTeacherWeeklySchedule() {
 	'table, figure { border: solid #ddd !important; border-width: 1px 0 0 1px !important; border-collapse: collapse; width: 100%;}' +
 	//'table, figure { page-break-inside: avoid; border-left: 1px solid #ddd}' +
 	//'table tr td { font-size: 8pt; text-transform: uppercase; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd} ' +
-	'table tr td { font-size: 8pt; text-transform: uppercase; border: solid #ddd !important; border-width: 0 1px 1px 0 !important; } ' +
+	'table tr td { font-size: 7pt; text-transform: uppercase; border: solid #ddd !important; border-width: 0 1px 1px 0 !important; } ' +
 	//'table tr th { font-size: 7pt; text-transform: uppercase;} ' +
 	'table tr th { font-size: 6pt; text-transform: uppercase; border: solid #ddd !important; border-width: 0 1px 1px 0 !important; } ' +
 	//'tr { display: inline-block; page-break-inside: avoid; -webkit-region-break-inside: avoid;  }' +

@@ -19,23 +19,7 @@ function get_status_color($status, $transs) {
 		display: none;
 	}
 	.page-break-- {
-		visibility: hidden;
-	}
-	.table {
-		width: 200px;
-		border: 0 solid black !important;
-	}
-	.table thead:first-child th {
-		border-top: 1px solid black !important;
-	}
-	.table thead:first-child th:last-child {
-		border-right: 1px solid black !important;
-	}
-	.table thead:first-child th:first-child {
-		border-left: 1px solid black;
-	}
-	.display-on-print {
-		display: none;
+
 	}
 	@media print{
 		.assume-thead  {
@@ -45,12 +29,21 @@ function get_status_color($status, $transs) {
 		.page-break-- {
 			page-break-before: always;
 			display: block;
+			width: 100px !important;
+			height: 10px !important;
+			position: relative;
 		}
-		.display-on-non-print {
-			display: none;
+		.table {
+			border: 0 solid black !important;
 		}
-		.display-on-print {
-			display: block;
+		.table thead:first-child th {
+			border-top: 1px solid black !important;
+		}
+		.table thead:first-child th:last-child {
+			border-right: 1px solid black !important;
+		}
+		.table thead:first-child th:first-child {
+			border-left: 1px solid black !important;
 		}
 	}
 
@@ -59,25 +52,25 @@ function get_status_color($status, $transs) {
 <table class="table table-bordered twspfirst">
 	<thead>
 	<tr>
-		<th>Name</th>
-		<th>8:00-8:50</th>
-		<th>class</th>
-		<th>9:00-9:50</th>
-		<th>class</th>
-		<th>10:00 - 10:50</th>
-		<th>class</th>
-		<th>11:00 - 11:50</th>
-		<th>class</th>
-		<th>1:30 - 2:20</th>
-		<th>class</th>
-		<th>2:30 - 3:20</th>
-		<th>class</th>
-		<th>3:30 - 4:20</th>
-		<th>class</th>
-		<th>4:30 - 5:20</th>
-		<th>class</th>
-		<th>5:30 - 6:20</th>
-		<th>class</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
+		<th >&nbsp;</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -91,11 +84,10 @@ function get_status_color($status, $transs) {
 	$clstype = array();
 	$color = array();
 
+
 	$i = 0;
-	$max=10;
-	$flag_hide_other = false;
-	$other_table = array();
-	$table_count = 1;
+	$max=38;
+
 	foreach($all_teachers_to_display as $teacher_single) {
 		foreach($new_data_print_teacher as $tsched) {
 			if ($tsched["sched"]["time2"][0] == strtoupper($teacher_single->display_name)) {
@@ -189,46 +181,56 @@ function get_status_color($status, $transs) {
 				}
 			}
 		} // end 2nd foreach
-		$i ++;?>
-
-	<?php
+		$i ++;
 		if ($max <= $i) {
 			$i = 0;
-			$flag_hide_other = true;
-			$table_count++;
-		}
-		if ($flag_hide_other) {
-
-			ob_start();
 			?>
-
-			<tr class="<?php echo $flag_hide_other ? "display-on-non-print" : null ?>">
-				<td><?php echo $teacher_single->display_name; echo $tors; 	?></td>
-				<td><?php echo '<span class="'.$color[2].'">'.$stud_name[2].'</span>'; echo "<br>"; echo $stud_room[2] ? "#".$stud_room[2] : ""; ?></td>
-				<td><?php echo $clstype[2]; ?></td>
-				<td><?php echo '<span class="'.$color[3].'">'.$stud_name[3].'</span>'; echo "<br>"; echo $stud_room[3] ? "#".$stud_room[3] : ""; ?></td>
-				<td><?php echo $clstype[3]; ?></td>
-				<td><?php echo '<span class="'.$color[4].'">'.$stud_name[4].'</span>'; echo "<br>"; echo $stud_room[4] ? "#".$stud_room[4] : ""; ?></td>
-				<td><?php echo $clstype[4]; ?></td>
-				<td><?php echo '<span class="'.$color[5].'">'.$stud_name[5].'</span>'; echo "<br>"; echo $stud_room[5] ? "#".$stud_room[5] : ""; ?></td>
-				<td><?php echo $clstype[5]; ?></td>
-				<td><?php echo '<span class="'.$color[6].'">'.$stud_name[6].'</span>'; echo "<br>"; echo $stud_room[6] ? "#".$stud_room[6] : ""; ?></td>
-				<td><?php echo $clstype[6]; ?></td>
-				<td><?php echo '<span class="'.$color[7].'">'.$stud_name[7].'</span>'; echo "<br>"; echo $stud_room[7] ? "#".$stud_room[7] : ""; ?></td>
-				<td><?php echo $clstype[7]; ?></td>
-				<td><?php echo '<span class="'.$color[8].'">'.$stud_name[8].'</span>'; echo "<br>"; echo $stud_room[8] ? "#".$stud_room[8] : ""; ?></td>
-				<td><?php echo $clstype[8]; ?></td>
-				<td><?php echo '<span class="'.$color[9].'">'.$stud_name[9].'</span>'; echo "<br>"; echo $stud_room[9] ? "#".$stud_room[9] : ""; ?></td>
-				<td><?php echo $clstype[9]; ?></td>
-				<td><?php echo '<span class="'.$color[10].'">'.$stud_name[10].'</span>'; echo "<br>"; echo $stud_room[10] ? "#".$stud_room[10] : ""; ?></td>
-				<td><?php echo $clstype[10]; ?></td>
-			</tr>
+				<tr class="page-break--">
+					<th>Name</th>
+					<th>8:00-8:50</th>
+					<th>class</th>
+					<th>9:00-9:50</th>
+					<th>class</th>
+					<th>10:00 - 10:50</th>
+					<th>class</th>
+					<th>11:00 - 11:50</th>
+					<th>class</th>
+					<th>1:30 - 2:20</th>
+					<th>class</th>
+					<th>2:30 - 3:20</th>
+					<th>class</th>
+					<th>3:30 - 4:20</th>
+					<th>class</th>
+					<th>4:30 - 5:20</th>
+					<th>class</th>
+					<th>5:30 - 6:20</th>
+					<th>class</th>
+				</tr>
+				<tr class="assume-thead">
+					<th>Name</th>
+					<th>8:00-8:50</th>
+					<th>class</th>
+					<th>9:00-9:50</th>
+					<th>class</th>
+					<th>10:00 - 10:50</th>
+					<th>class</th>
+					<th>11:00 - 11:50</th>
+					<th>class</th>
+					<th>1:30 - 2:20</th>
+					<th>class</th>
+					<th>2:30 - 3:20</th>
+					<th>class</th>
+					<th>3:30 - 4:20</th>
+					<th>class</th>
+					<th>4:30 - 5:20</th>
+					<th>class</th>
+					<th>5:30 - 6:20</th>
+					<th>class</th>
+				</tr>
 			<?php
-			$other_table[$table_count][] = ob_get_clean();
 		}
-
 		?>
-		<tr class="<?php echo $flag_hide_other ? "display-on-non-print" : null ?>">
+		<tr>
 			<td><?php echo $teacher_single->display_name; echo $tors; 	?></td>
 			<td><?php echo '<span class="'.$color[2].'">'.$stud_name[2].'</span>'; echo "<br>"; echo $stud_room[2] ? "#".$stud_room[2] : ""; ?></td>
 			<td><?php echo $clstype[2]; ?></td>
@@ -291,36 +293,3 @@ function get_status_color($status, $transs) {
 	?>
 	</tbody>
 </table>
-
-<?php foreach($other_table as $index => $row): ?>
-	<table class="table table-bordered twspfirst display-on-print">
-		<thead>
-		<tr>
-			<th>Name</th>
-			<th>8:00-8:50</th>
-			<th>class</th>
-			<th>9:00-9:50</th>
-			<th>class</th>
-			<th>10:00 - 10:50</th>
-			<th>class</th>
-			<th>11:00 - 11:50</th>
-			<th>class</th>
-			<th>1:30 - 2:20</th>
-			<th>class</th>
-			<th>2:30 - 3:20</th>
-			<th>class</th>
-			<th>3:30 - 4:20</th>
-			<th>class</th>
-			<th>4:30 - 5:20</th>
-			<th>class</th>
-			<th>5:30 - 6:20</th>
-			<th>class</th>
-		</tr>
-		</thead>
-		<tbody>
-		<?php foreach($row as $index2 => $row2): ?>
-			<?php echo $row2 ?>
-		<?php endforeach; ?>
-		</tbody>
-	</table>
-<?php endforeach; ?>
