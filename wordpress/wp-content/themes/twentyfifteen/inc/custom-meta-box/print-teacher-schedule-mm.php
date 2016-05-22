@@ -21,10 +21,6 @@ function get_status_color($status, $transs) {
 	.page-break-- {
 		visibility: hidden;
 	}
-	.table {
-		width: 200px;
-		border: 0 solid black !important;
-	}
 	.table thead:first-child th {
 		border-top: 1px solid black !important;
 	}
@@ -92,7 +88,7 @@ function get_status_color($status, $transs) {
 	$color = array();
 
 	$i = 0;
-	$max=10;
+	$max=20;
 	$flag_hide_other = false;
 	$other_table = array();
 	$table_count = 1;
@@ -202,7 +198,7 @@ function get_status_color($status, $transs) {
 			ob_start();
 			?>
 
-			<tr class="<?php echo $flag_hide_other ? "display-on-non-print" : null ?>">
+			<tr class="">
 				<td><?php echo $teacher_single->display_name; echo $tors; 	?></td>
 				<td><?php echo '<span class="'.$color[2].'">'.$stud_name[2].'</span>'; echo "<br>"; echo $stud_room[2] ? "#".$stud_room[2] : ""; ?></td>
 				<td><?php echo $clstype[2]; ?></td>
@@ -293,7 +289,8 @@ function get_status_color($status, $transs) {
 </table>
 
 <?php foreach($other_table as $index => $row): ?>
-	<table class="table table-bordered twspfirst display-on-print">
+	<div class="page-break--">&nbsp;</div>
+	<table class="table table-bordered display-on-print">
 		<thead>
 		<tr>
 			<th>Name</th>
