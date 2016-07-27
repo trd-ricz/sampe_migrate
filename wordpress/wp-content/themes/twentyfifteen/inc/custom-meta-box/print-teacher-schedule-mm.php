@@ -13,7 +13,7 @@ function get_status_color($status, $transs) {
 ?><br/>
 <style>
 	.table-second {
-		margin-top: 100px;
+		margin-top: 20px;
 	}
 	.assume-thead  {
 		display: none;
@@ -52,6 +52,7 @@ function get_status_color($status, $transs) {
 
 </style>
 <br/>
+<h1 style="text-align:center">Teacher's Weekly Schedule <?php echo strtoupper($post->post_title); ?> </h1>
 <table class="table table-bordered twspfirst">
 	<thead>
 	<tr>
@@ -79,23 +80,21 @@ function get_status_color($status, $transs) {
 	<tbody>
 	<?php
 	error_reporting(0);
-	//	echo '<pre><dd>'.var_export($new_data_print_teacher, true).'</dd></pre>';
-	//	die();
 
-	$stud_name = array();
+    $stud_name = array();
 	$stud_room = array();
 	$clstype = array();
 	$color = array();
 
 	$i = 0;
-	$max=20;
+	$max=200;
 	$flag_hide_other = false;
 	$other_table = array();
 	$table_count = 1;
 	foreach($all_teachers_to_display as $teacher_single) {
 		foreach($new_data_print_teacher as $tsched) {
-			if ($tsched["sched"]["time2"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time2"][1], " MM") !== false) {
+            if ($tsched["sched"]["time2"][0] == strtoupper($teacher_single->display_name)) {
+				if (strpos($tsched["sched"]["time2"][1], "MM") !== false) {
 					$clstype[2] = $tsched["sched"]["time2"][1];
 					$stud_name[2] = $tsched['name'];
 					$stud_room[2] = $tsched["sched"]["time2"][2];
@@ -105,7 +104,7 @@ function get_status_color($status, $transs) {
 			}
 
 			if ($tsched["sched"]["time3"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time3"][1], " MM") !== false) {
+				if (strpos($tsched["sched"]["time3"][1], "MM") !== false) {
 					$clstype[3] = $tsched["sched"]["time3"][1];
 					$stud_name[3] = $tsched['name'];
 					$stud_room[3] = $tsched["sched"]["time3"][2];
@@ -115,7 +114,7 @@ function get_status_color($status, $transs) {
 			}
 
 			if ($tsched["sched"]["time4"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time4"][1], " MM") !== false) {
+				if (strpos($tsched["sched"]["time4"][1], "MM") !== false) {
 					$clstype[4] = $tsched["sched"]["time4"][1];
 					$stud_name[4] = $tsched['name'];
 					$stud_room[4] = $tsched["sched"]["time4"][2];
@@ -125,7 +124,7 @@ function get_status_color($status, $transs) {
 			}
 
 			if ($tsched["sched"]["time5"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time5"][1], " MM") !== false) {
+				if (strpos($tsched["sched"]["time5"][1], "MM") !== false) {
 					$clstype[5] = $tsched["sched"]["time5"][1];
 					$stud_name[5] = $tsched['name'];
 					$stud_room[5] = $tsched["sched"]["time5"][2];
@@ -135,7 +134,7 @@ function get_status_color($status, $transs) {
 			}
 
 			if ($tsched["sched"]["time6"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time6"][1], " MM") !== false) {
+				if (strpos($tsched["sched"]["time6"][1], "MM") !== false) {
 					$clstype[6] = $tsched["sched"]["time6"][1];
 					$stud_name[6] = $tsched['name'];
 					$stud_room[6] = $tsched["sched"]["time6"][2];
@@ -146,7 +145,7 @@ function get_status_color($status, $transs) {
 			}
 
 			if ($tsched["sched"]["time7"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time7"][1], " MM") !== false) {
+				if (strpos($tsched["sched"]["time7"][1], "MM") !== false) {
 					$clstype[7] = $tsched["sched"]["time7"][1];
 					$stud_name[7] = $tsched['name'];
 					$stud_room[7] = $tsched["sched"]["time7"][2];
@@ -156,7 +155,7 @@ function get_status_color($status, $transs) {
 			}
 
 			if ($tsched["sched"]["time8"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time8"][1], " MM") !== false) {
+				if (strpos($tsched["sched"]["time8"][1], "MM") !== false) {
 					$clstype[8] = $tsched["sched"]["time8"][1];
 					$stud_name[8] = $tsched['name'];
 					$stud_room[8] = $tsched["sched"]["time8"][2];
@@ -166,7 +165,7 @@ function get_status_color($status, $transs) {
 			}
 
 			if ($tsched["sched"]["time9"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time9"][1], " MM") !== false) {
+				if (strpos($tsched["sched"]["time9"][1], "MM") !== false) {
 					$clstype[9] = $tsched["sched"]["time9"][1];
 					$stud_name[9] = $tsched['name'];
 					$stud_room[9] = $tsched["sched"]["time9"][2];
@@ -176,7 +175,7 @@ function get_status_color($status, $transs) {
 			}
 
 			if ($tsched["sched"]["time10"][0] == strtoupper($teacher_single->display_name)) {
-				if (strpos($tsched["sched"]["time10"][1], " MM") !== false) {
+				if (strpos($tsched["sched"]["time10"][1], "MM") !== false) {
 					$clstype[10] = $tsched["sched"]["time10"][1];
 					$stud_name[10] = $tsched['name'];
 					$stud_room[10] = $tsched["sched"]["time10"][2];
@@ -287,7 +286,7 @@ function get_status_color($status, $transs) {
 	?>
 	</tbody>
 </table>
-
+<div class="page-break--">&nbsp;</div>
 <?php foreach($other_table as $index => $row): ?>
 	<div class="page-break--">&nbsp;</div>
 	<table class="table table-bordered display-on-print">
