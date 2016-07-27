@@ -73,7 +73,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 				<input type="hidden" class="student-time-9" name="student-time-9[]" value="<?php echo $schedules[0][$x]["student-time-9"] ?>"><input type="hidden" class="student-time-99" name="student-time-99[]" value="<?php echo $schedules[0][$x]["student-time-99"] ?>">
 			</td>
 			<td class="tdright tdbottom text-center" colspan="2">
-				<input type="text" class="class_type130220" name="class_type130220[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time6"][1] ?>">
+				<input type="text" id="utime5<?php echo $x;?>" class="class_type130220" name="class_type130220[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time6"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered130220[]" class="transfered130220" value="<?php echo $schedules[0][$x]["sched"]["time6"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time6"][3] == "transferred") : ?>
@@ -88,7 +88,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdright tdbottom text-center">
-				<input type="text" class="teacher130220" name="teacher130220[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time6"][0] ?>">
+				<input type="text" id="uteacher5<?php echo $x;?>" class="teacher130220" name="teacher130220[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time6"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room130220" name="room130220[]" placeholder="Room" list="schedule_rooms"  value="<?php echo $schedules[0][$x]["sched"]["time6"][2] ?>">
@@ -104,7 +104,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdleft tdright tdbottom text-center" colspan=2>
-				<input type="text" class="class_type8850" name="class_type8850[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time2"][1] ?>">
+				<input type="text" id="utime1<?php echo $x;?>" class="class_type8850" name="class_type8850[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time2"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered8850[]" class="transfered8850" value="<?php echo $schedules[0][$x]["sched"]["time2"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time2"][3] == "transferred") : ?>
@@ -117,7 +117,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 				<!--End Transfer/Cancel-->
 			</td>
 			<td class="tdright tdbottom text-center" colspan=2>
-				<input type="text" class="class_type230320" name="class_type230320[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time7"][1] ?>">
+				<input type="text" id="utime6<?php echo $x;?>" class="class_type230320" name="class_type230320[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time7"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered230320[]" class="transfered230320" value="<?php echo $schedules[0][$x]["sched"]["time7"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time7"][3] == "transferred") : ?>
@@ -132,13 +132,13 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdleft tdright tdbottom text-center">
-				<input type="text" class="teacher8850" name="teacher8850[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time2"][0] ?>">
+				<input type="text" id="uteacher1<?php echo $x;?>" class="teacher8850" name="teacher8850[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time2"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room8850" name="room8850[]" placeholder="Room" list="schedule_rooms" value="<?php echo $schedules[0][$x]["sched"]["time2"][2] ?>">
 			</td>
 			<td class="tdleft tdright tdbottom text-center">
-				<input type="text" class="teacher230320" name="teacher230320[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time7"][0] ?>">
+				<input type="text" id="uteacher6<?php echo $x;?>" class="teacher230320" name="teacher230320[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time7"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room230320" name="room230320[]" placeholder="Room" list="schedule_rooms"  value="<?php echo $schedules[0][$x]["sched"]["time7"][2] ?>">
@@ -154,7 +154,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdleft tdright tdbottom text-center" colspan=2>
-				<input type="text" class="class_type9950" name="class_type9950[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time3"][1] ?>">
+				<input type="text" id="utime2<?php echo $x;?>" class="class_type9950" name="class_type9950[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time3"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered9950[]" class="transfered9950" value="<?php echo $schedules[0][$x]["sched"]["time3"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time3"][3] == "transferred") : ?>
@@ -167,7 +167,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 				<!--End Transfer/Cancel-->
 			</td>
 			<td class="tdright tdbottom text-center" colspan=2>
-				<input type="text" class="class_type330420" name="class_type330420[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time8"][1] ?>">
+				<input type="text" id="utime7<?php echo $x;?>" class="class_type330420" name="class_type330420[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time8"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered330420[]" class="transfered330420" value="<?php echo $schedules[0][$x]["sched"]["time8"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time8"][3] == "transferred") : ?>
@@ -182,13 +182,13 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdleft tdright tdbottom text-center">
-				<input type="text" class="teacher9950" name="teacher9950[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time3"][0] ?>">
+				<input type="text" id="uteacher2<?php echo $x;?>" class="teacher9950" name="teacher9950[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time3"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room9950" name="room9950[]" placeholder="Room" list="schedule_rooms" value="<?php echo $schedules[0][$x]["sched"]["time3"][2] ?>">
 			</td>
 			<td class="tdleft tdright tdbottom text-center">
-				<input type="text" class="teacher330420" name="teacher330420[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time8"][0] ?>">
+				<input type="text" id="uteacher7<?php echo $x;?>" class="teacher330420" name="teacher330420[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time8"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room330420" name="room330420[]" placeholder="Room" list="schedule_rooms"  value="<?php echo $schedules[0][$x]["sched"]["time8"][2] ?>">
@@ -204,7 +204,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdleft tdright tdbottom text-center" colspan=2>
-				<input type="text" class="class_type101050" name="class_type101050[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time4"][1] ?>">
+				<input type="text" id="utime3<?php echo $x;?>" class="class_type101050" name="class_type101050[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time4"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered101050[]" class="transfered101050" value="<?php echo $schedules[0][$x]["sched"]["time4"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time4"][3] == "transferred") : ?>
@@ -217,7 +217,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 				<!--End Transfer/Cancel-->
 			</td>
 			<td class="tdright tdbottom text-center" colspan=2>
-				<input type="text" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time9"][1] ?>">
+				<input type="text" id="utime8<?php echo $x;?>" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time9"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered430520[]" class="transfered430520" value="<?php echo $schedules[0][$x]["sched"]["time9"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time9"][3] == "transferred") : ?>
@@ -232,13 +232,13 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdleft tdright tdbottom text-center">
-				<input type="text" class="teacher101050" name="teacher101050[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time4"][0] ?>">
+				<input type="text" id="uteacher3<?php echo $x;?>" class="teacher101050" name="teacher101050[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time4"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room101050" name="room101050[]" placeholder="Room" list="schedule_rooms" value="<?php echo $schedules[0][$x]["sched"]["time4"][2] ?>">
 			</td>
 			<td class="tdleft tdright tdbottom text-center">
-				<input type="text" class="for_buddy_teacher_value teacher430520" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time9"][0] ?>">
+				<input type="text" id="uteacher8<?php echo $x;?>" class="for_buddy_teacher_value teacher430520" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time9"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room430520" name="room430520[]" placeholder="Room" list="schedule_rooms"  value="<?php echo $schedules[0][$x]["sched"]["time9"][2] ?>">
@@ -254,7 +254,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdleft tdright tdbottom text-center" colspan=2>
-				<input type="text" class="class_type111150" name="class_type111150[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time5"][1] ?>">
+				<input type="text" id="utime4<?php echo $x;?>" class="class_type111150" name="class_type111150[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time5"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered111150[]" class="transfered111150" value="<?php echo $schedules[0][$x]["sched"]["time5"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time5"][3] == "transferred") : ?>
@@ -267,7 +267,7 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 				<!--End Transfer/Cancel-->
 			</td>
 			<td class="tdright tdbottom text-center" colspan=2>
-				<input type="text" class="class_type530620" name="class_type530620[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time10"][1] ?>">
+				<input type="text" id="utime9<?php echo $x;?>" class="class_type530620" name="class_type530620[]" placeholder="Class Type" list="schedule_class_type" value="<?php echo $schedules[0][$x]["sched"]["time10"][1] ?>">
 				<!--Start Transfer/Cancel-->
 				<input type="text" name="transfered530620[]" class="transfered530620" value="<?php echo $schedules[0][$x]["sched"]["time10"][3] ?>" style="display: none">
 				<?php if($schedules[0][$x]["sched"]["time10"][3] == "transferred") : ?>
@@ -282,13 +282,13 @@ if ( empty($schedules[0][$x]["start_date"]) && empty($schedules[0][$x]["status"]
 		</tr>
 		<tr>
 			<td class="tdleft tdright tdbottom text-center">
-				<input type="text" class="teacher111150" name="teacher111150[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time5"][0] ?>">
+				<input type="text" id="uteacher4<?php echo $x;?>" class="teacher111150" name="teacher111150[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time5"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room111150" name="room111150[]" placeholder="Room" list="schedule_rooms" value="<?php echo $schedules[0][$x]["sched"]["time5"][2] ?>">
 			</td>
 			<td class="tdleft tdright tdbottom text-center">
-				<input type="text" class="teacher530620" name="teacher530620[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time10"][0] ?>">
+				<input type="text" id="uteacher9<?php echo $x;?>" class="teacher530620" name="teacher530620[]" placeholder="Teacher" list="schedule_teachers" value="<?php echo $schedules[0][$x]["sched"]["time10"][0] ?>">
 			</td>
 			<td class="tdright tdbottom text-center">
 				<input type="text" class="room530620" name="room530620[]" placeholder="Room" list="schedule_rooms"  value="<?php echo $schedules[0][$x]["sched"]["time10"][2] ?>">
