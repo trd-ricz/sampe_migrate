@@ -49,13 +49,13 @@ jQuery("#counter_value").click(function() {
 		'<input type="hidden" name="student-time-8[]" class="student-time-8"><input type="hidden" name="student-time-88[]" class="student-time-88">' +
 		'<input type="hidden" name="student-time-9[]" class="student-time-9"><input type="hidden" name="student-time-99[]" class="student-time-99"></td> ' +
 		'<td class="tdright tdbottom text-center" colspan="2"> ' +
-		'<input type="text" name="class_type130220[]" class="class_type130220" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time5'+ i +'" name="class_type130220[]" class="class_type130220" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered130220[]" class="transfered130220" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdright tdbottom text-center"> ' +
-		'<input type="text" name="teacher130220[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher5'+ i +'" name="teacher130220[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
 		'<input type="text" name="room130220[]" class="room130220" placeholder="Room" list="schedule_rooms"> ' +
@@ -71,23 +71,23 @@ jQuery("#counter_value").click(function() {
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-		'<input type="text" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time1'+ i +'" name="class_type8850[]" class="class_type8850" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered8850[]" class="transfered8850" value="" style="display: none">' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
-		'<input type="text" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time6'+ i +'" name="class_type230320[]" class="class_type230320" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered230320[]" class="transfered230320" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
-		'<input type="text" name="teacher8850[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher1'+ i +'" name="teacher8850[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
 		'<input type="text" name="room8850[]" class="room8850" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
-		'<input type="text" name="teacher230320[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher6'+ i +'" name="teacher230320[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
 		'<input type="text" name="room230320[]" class="room230320" placeholder="Room" list="schedule_rooms"> ' +
@@ -103,23 +103,23 @@ jQuery("#counter_value").click(function() {
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-		'<input type="text" name="class_type9950[]" class="class_type9950" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time2'+ i +'" name="class_type9950[]" class="class_type9950" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered9950[]" class="transfered9950" value="" style="display: none">' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
-		'<input type="text" name="class_type330420[]" class="class_type330420" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time7'+ i +'" name="class_type330420[]" class="class_type330420" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered330420[]" class="transfered330420" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
-		'<input type="text" name="teacher9950[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher2'+ i +'" name="teacher9950[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
 		'<input type="text" name="room9950[]" class="room9950" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
-		'<input type="text" name="teacher330420[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher7'+ i +'" name="teacher330420[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
 		'<input type="text" name="room330420[]" class="room330420" placeholder="Room" list="schedule_rooms"> ' +
@@ -135,23 +135,23 @@ jQuery("#counter_value").click(function() {
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-		'<input type="text" name="class_type101050[]" class="class_type101050" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time3'+ i +'" name="class_type101050[]" class="class_type101050" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered101050[]" class="transfered101050" value="" style="display: none">' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
-		'<input type="text" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time8'+ i +'" class="for_buddy_teacher class_type430520" name="class_type430520[]" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered430520[]" class="transfered430520" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
-		'<input type="text" name="teacher101050[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher3'+ i +'" name="teacher101050[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
 		'<input type="text" name="room101050[]" class="room101050" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
-		'<input type="text" class="for_buddy_teacher_value" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher8'+ i +'" class="for_buddy_teacher_value" name="teacher430520[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
 		'<input type="text" name="room430520[]" class="room430520" placeholder="Room" list="schedule_rooms"> ' +
@@ -167,23 +167,23 @@ jQuery("#counter_value").click(function() {
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center" colspan=2> ' +
-		'<input type="text" name="class_type111150[]" class="class_type111150" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time4'+ i +'" name="class_type111150[]" class="class_type111150" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered111150[]" class="transfered111150" value="" style="display: none">' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center" colspan=2> ' +
-		'<input type="text" name="class_type530620[]"  class="class_type530620" placeholder="Class Type" list="schedule_class_type"> ' +
+		'<input type="text" id="time9'+ i +'" name="class_type530620[]"  class="class_type530620" placeholder="Class Type" list="schedule_class_type"> ' +
 		'<input type="text" name="transfered530620[]" class="transfered530620" value="" style="display: none">' +
 		'</td> ' +
 		'</tr> ' +
 		'<tr> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
-		'<input type="text" name="teacher111150[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher4'+ i +'" name="teacher111150[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> ' +
 		'<input type="text" name="room111150[]" class="room111150" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
 		'<td class="tdleft tdright tdbottom text-center"> ' +
-		'<input type="text" name="teacher530620[]" placeholder="Teacher" list="schedule_teachers"> ' +
+		'<input type="text" id="teacher9'+ i +'" name="teacher530620[]" placeholder="Teacher" list="schedule_teachers"> ' +
 		'</td> ' +
 		'<td class="tdright tdbottom text-center"> <input type="text" name="room530620[]" class="room530620" placeholder="Room" list="schedule_rooms"> ' +
 		'</td> ' +
@@ -201,13 +201,11 @@ function printTeacherWeeklySchedule() {
 	mywindow.document.write('<title>Print Preview</title>');
 	mywindow.document.write('<style>' +
 	'@page { size: letter landscape; }' +
-	'body,html { -webkit-print-color-adjust: exact; margin: 0 .5% 0 .5%; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent;}' +
-	'table, figure { border: solid #ddd !important; border-width: 1px 0 0 1px !important; border-collapse: collapse; width: 100%;}' +
-	//'table, figure { page-break-inside: avoid; border-left: 1px solid #ddd}' +
+	'body,html { -webkit-print-color-adjust: exact; margin:0 !important; padding: 0; border: 0; outline: 0; font-size: 100%; vertical-align: baseline; background: transparent;}' +
+	'table, figure { border: solid #ddd !important; border-width: 1px 0 0 1px !important; border-collapse: collapse; width: 100%;margin:0 !important; padding:0 !important}' +
 	//'table tr td { font-size: 8pt; text-transform: uppercase; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd} ' +
 	'table tr td { font-size: 7pt; text-transform: uppercase; border: solid #ddd !important; border-width: 0 1px 1px 0 !important; } ' +
-	//'table tr th { font-size: 7pt; text-transform: uppercase;} ' +
-	'table tr th { font-size: 6pt; text-transform: uppercase; border: solid #ddd !important; border-width: 0 1px 1px 0 !important; } ' +
+	'table tr th { font-size: 10pt; text-transform: uppercase; border: solid #ddd !important; border-width: 0 1px 1px 0 !important; } ' +
 	//'tr { display: inline-block; page-break-inside: avoid; -webkit-region-break-inside: avoid;  }' +
 	//'th { page-break-inside:avoid; page-break-after:auto }' +
 	'thead {display: table-header-group;}' +
@@ -231,7 +229,7 @@ function printAllStudentWeeklySchedule() {
 	mywindow.document.write('<title>Print Preview</title>');
 	mywindow.document.write('<style>' +
 	'@page { size: A4; }' +
-	'body { -webkit-print-color-adjust: exact;  margin: 5mm 0 5mm 0; font-size: 11px;}' +
+	'body { -webkit-print-color-adjust: exact; font-size: 11px;}' +
 	'#tblSched {color: blue;font-weight: bold;}' +
 	'.table {width: 100%; max-width: 100%; margin-bottom: 20%; border-spacing: 0; border-collapse: collapse; background-color: transparent;}' +
 	'.table>tbody>tr>td, .table>tbody>tr>td, .table>tbody>tr>th, ' +
@@ -520,13 +518,12 @@ jQuery(document).on("change", ".student-weeks", function() {
 });
 
 
-jQuery(document).on('change', '.for_buddy_teacher_value', function() {
-	var str = jQuery(this).parents("table:first").find(".for_buddy_teacher").eq(0).val();
-	var test = jQuery(this).val();
-
-	if (str.toLowerCase().indexOf("review") >= 0) {
-		jQuery(this).parents("table:first").find(".buddy_teacher").eq(0).val(test);
-		jQuery(this).parents("table:first").find(".lbuddy_teacher").eq(0).text(test);
+jQuery(document).on('change', 'input[name*="class"]', function(e) {
+	var cID = ("" + e.target.id).replace("time","teacher");
+	if(jQuery(this).val().toLowerCase().indexOf("review") == 0){
+		jQuery(this).parents("table:first").find(".buddy_teacher").eq(0).val(jQuery('#' + cID).val());
+		jQuery(this).parents("table:first").find(".lbuddy_teacher").eq(0).text(jQuery('#' + cID).val());
+        console.log("true");
 	}
 });
 
